@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- * PopulateDatabase.xml * * Copyright (C) 2016 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+
+	<!-- User accounts -->
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin" />
+		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="gestor" />
+		<property name="password" value="a55607442fca264cf37e935503d646c2" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="GESTOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount3" class="security.UserAccount">
+		<property name="username" value="cliente" />
+		<property name="password" value="4983a0ab83ed86e0e7213c8783940193" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CLIENTE" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="empleado" />
+		<property name="password" value="088ef99bff55c67dc863f83980a66a9b" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="EMPLEADO" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Gestor -->
+	<bean id="gestor1" class="domain.Gestor">
+		<property name="nombre" value="José María" />
+		<property name="apellidos" value="Rosso Cuenca" />
+		<property name="codigoPostal" value="41410" />
+		<property name="direccion" value="Urbanización Los Jinetes" />
+		<property name="email" value="info@sevillamultiservicios.com" />
+		<property name="localidad" value="Carmona" />
+		<property name="provincia" value="Sevilla" />
+		<property name="identificacion" value="48122003T" />
+		
+		<property name="userAccount" ref="userAccount2" />
+	</bean>
+	
+	<!-- Empleados -->
+	<bean id="empleado1" class="domain.Empleado">
+		<property name="nombre" value="Tomás" />
+		<property name="apellidos" value="Carrera Sánchez" />
+		<property name="codigoPostal" value="11001" />
+		<property name="direccion" value="Calle Cádiz la buena 2" />
+		<property name="email" value="tomas@sevillamultiservicios.com" />
+		<property name="localidad" value="Cadiz" />
+		<property name="provincia" value="Cadiz" />
+		<property name="userAccount" ref="userAccount4" />
+		<property name="identificacion" value="48122003T" />
+	</bean>
+	
+	<!-- Tipo de Trabajo -->
+
+	<bean id="tipoTrabajo1" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Reformas" />
+	</bean>
+
+	<bean id="tipoTrabajo2" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Electricidad" />
+	</bean>
+
+	<bean id="tipoTrabajo3" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Fontanería" />
+	</bean>
+
+	<bean id="tipoTrabajo4" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Albañilería" />
+	</bean>
+
+	<bean id="tipoTrabajo5" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Climatización" />
+	</bean>
+
+	<bean id="tipoTrabajo6" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Carpintería" />
+	</bean>
+
+	<bean id="tipoTrabajo7" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Herrería" />
+	</bean>
+
+	<bean id="tipoTrabajo8" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Cerrajería" />
+	</bean>
+
+	<bean id="tipoTrabajo9" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Pintura" />
+	</bean>
+
+	<bean id="tipoTrabajo10" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Pulidos y Abrillantados" />
+	</bean>
+
+	<bean id="tipoTrabajo11" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Limpieza" />
+	</bean>
+
+	<bean id="tipoTrabajo12" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Alicatados y enlosados" />
+	</bean>
+
+	<bean id="tipoTrabajo13" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Certificaciones y tramitaciones" />
+	</bean>
+
+	<bean id="tipoTrabajo14" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Yeso, Perlita y Pladur" />
+	</bean>
+
+	<bean id="tipoTrabajo15" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Cubiertas" />
+	</bean>
+
+	<bean id="tipoTrabajo16" class="domain.TipoTrabajo">
+		<property name="descripcion" value="Insonorizaciones" />
+	</bean>
+
+	<!-- Clientes -->
+	<bean id="cliente1" class="domain.Cliente">
+		<property name="nombre" value="Paco" />
+		<property name="apellidos" value="Caro García" />
+		<property name="codigoPostal" value="41710" />
+		<property name="direccion" value="Calle Semana Santa" />
+		<property name="email" value="pacocaro@noticias.com" />
+		<property name="localidad" value="Utrera" />
+		<property name="provincia" value="Sevilla" />
+		<property name="userAccount" ref="userAccount3" />
+	<property name="identificacion" value="48122003T" />
+	</bean>
+
+	<!-- Solicitudes -->
+	<bean id="solicitud1" class="domain.Solicitud">
+		<property name="cantidad" value="2000.00" />
+		<property name="descripcion" value="Quiero reformar el cuarto de baño." />
+		<property name="estado" value="ENVIADO" />
+		<property name="leidoCliente" value="false" />
+		<property name="leidoGestor" value="false" />
+		<property name="titulo" value="Reforma Baño" />
+		<property name="tipoTrabajo" ref="tipoTrabajo1" />
+		<property name="cliente" ref="cliente1" />
+	</bean>
+	
+	<!-- Gastos -->
+	<bean id="gasto1" class="domain.Gasto">
+		<property name="cantidad" value="200.00" />
+		<property name="concepto" value="Azulejos" />
+		<property name="fecha" value="01/05/2018" />
+		<property name="proveedor" value="Azulejos Manuel SL" />
+
+	</bean>
+	
+		<bean id="gasto2" class="domain.Gasto">
+		<property name="cantidad" value="100.00" />
+		<property name="concepto" value="Ladrillos" />
+		<property name="fecha" value="01/05/2018" />
+		<property name="proveedor" value="Ladrillos Antonio SL" />
+
+	</bean>
+	
+		<bean id="gasto3" class="domain.Gasto">
+		<property name="cantidad" value="20.00" />
+		<property name="concepto" value="Plasticos" />
+		<property name="fecha" value="01/05/2018" />
+		<property name="proveedor" value="Plasticos Pedro SL" />
+
+	</bean>
+
+	<!-- Cobros -->
+	
+		
+	<bean id="cobro1" class="domain.Cobro">
+		<property name="liquidado" value="20.00" />
+		<property name="pendiente" value="200.00" />
+		<property name="fecha" value="01/05/2018" />
+		<property name="total" value="20.00" />
+
+	</bean>
+	
+	<bean id="cobro2" class="domain.Cobro">
+		<property name="liquidado" value="20.00" />
+		<property name="pendiente" value="180.00" />
+		<property name="fecha" value="01/05/2018" />
+		<property name="total" value="40.00" />
+
+	</bean>
+	
+	<!-- Tareas -->
+	<bean id="tarea1" class="domain.Tarea">
+		<property name="descripcion" value="Limpieza de la arqueta con pinzas sutiles" />
+		<property name="unidades" value="1" />
+		<property name="precioUnidad" value="10.00" />
+		<property name="subTotal" value="20.00" />
+	</bean>
+	
+	<bean id="tarea2" class="domain.Tarea">
+		<property name="descripcion" value="Cambiada la arqueta secundaria por una mas grande" />
+		<property name="unidades" value="1" />
+		<property name="precioUnidad" value="10.00" />
+		<property name="subTotal" value="20.00" />
+	</bean>
+	
+	<bean id="tarea3" class="domain.Tarea">
+		<property name="descripcion" value="Limpieza posterior de la zona afectada tras la obra" />
+		<property name="unidades" value="1" />
+		<property name="precioUnidad" value="10.00" />
+		<property name="subTotal" value="20.00" />
+	</bean>
+	
+	<bean id="tarea4" class="domain.Tarea">
+		<property name="descripcion" value="Limpieza posterior de la zona afectada tras la obra" />
+		<property name="unidades" value="1" />
+		<property name="precioUnidad" value="10.00" />
+		<property name="subTotal" value="20.00" />
+	</bean>
+	
+	<!-- Conceptos -->
+	
+		<bean id="concepto1" class="domain.Concepto">
+		<property name="Titulo" value="Titulo" />
+		<property name="total" value="40.00" />
+		<property name="tareas">
+			<list>
+				<ref bean="tarea1"/>
+				<ref bean="tarea2"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="concepto2" class="domain.Concepto">
+		<property name="Titulo" value="Titulo" />
+		<property name="total" value="80.00" />
+		<property name="tareas">
+			<list>
+				<ref bean="tarea3"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="concepto3" class="domain.Concepto">
+		<property name="Titulo" value="Titulo" />
+		<property name="total" value="80.00" />
+		<property name="tareas">
+			<list>
+				<ref bean="tarea4"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Presupuesto -->
+	<bean id="presupuesto1" class="domain.Presupuesto">
+		<property name="aceptado" value="true" />
+		<property name="codigo" value="PL-040" />
+		<property name="direccionObra" value="Calle Romania" />
+		<property name="fechaFin" value="21/11/2018" />
+		<property name="fechaInicio" value="21/10/2018" />
+		<property name="localidad" value="Utrera" />
+		<property name="provincia" value="Sevilla" />
+		<property name="titulo" value="Arreglo de casa" />
+		<property name="cliente" ref="cliente1" />
+		<property name="gastos">
+			<list>
+				<ref bean="gasto1"/>
+				<ref bean="gasto2"/>
+				<ref bean="gasto3"/>
+			</list>
+		</property>
+		<property name="cobros">
+			<list>
+				<ref bean="cobro1"/>
+				<ref bean="cobro2"/>
+			</list>
+		</property>
+		<property name="conceptos">
+			<list>
+				<ref bean="concepto1"/>
+			</list>
+		</property>
+		
+	</bean>
+	
+	<!-- Agenda -->
+	<bean id="agenda1" class="domain.Agenda">
+		<property name="entrada" value="He realizado la limpieza total de la arqueta. También recogí los escombros más grandes para llevarlos a reciclar." />
+		<property name="fecha" value="01/05/2018" />
+		<property name="empleado" ref="empleado1" />
+		<property name="presupuesto" ref="presupuesto1" />
+		
+	</bean>
+	
+	<!-- IVA -->
+	<bean id="iva" class="domain.IVA">
+		<property name="porcentaje" value="21" />
+	</bean>
+	
+	<!-- Facturas -->
+	<bean id="factura1" class="domain.Factura">
+		<property name="importeTotalConIVA" value="2000.00" />
+		<property name="importeTotalSinIVA" value="2100.00" />
+		<property name="presupuesto" ref="presupuesto1" />
+		<property name="conceptos">
+			<list>
+				<ref bean="concepto2"/>
+			</list>
+		</property>
+		
+	</bean>
+	
+	<!-- Albaranes -->
+	<bean id="albaran1" class="domain.Albaran">
+		<property name="importeTotalSinIVA" value="2000.00" />
+		<property name="presupuesto" ref="presupuesto1" />
+		<property name="conceptos">
+			<list>
+				<ref bean="concepto3"/>
+			</list>
+		</property>
+		
+	</bean>
+	
+</beans>
