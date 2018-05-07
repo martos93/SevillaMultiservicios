@@ -80,17 +80,26 @@ public class ClienteGestorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/editarCliente", method = RequestMethod.GET)
-	public @ResponseBody Cliente editarCliente(@RequestParam final int clienteId) {
+	public @ResponseBody ClienteForm editarCliente(@RequestParam final int clienteId) {
+		final ClienteForm clienteForm = new ClienteForm();
 		Cliente cliente = new Cliente();
-
 		try {
-			cliente = this.clienteService.findOne(clienteId);
 			this.actorService.checkGestor();
+			cliente = this.clienteService.findOne(clienteId);
+			clienteForm.setNombre(cliente.getNombre());
+			clienteForm.setApellidos(cliente.getApellidos());
+			clienteForm.setIdentificacion(cliente.getIdentificacion());
+			clienteForm.setCodigoPostal(cliente.getCodigoPostal());
+			clienteForm.setDireccion(cliente.getDireccion());
+			clienteForm.setLocalidad(cliente.getLocalidad());
+			clienteForm.setProvincia(cliente.getProvincia());
+			clienteForm.setEmail(cliente.getEmail());
+			clienteForm.setClienteId(clienteId);
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
 
-		return cliente;
+		return clienteForm;
 	}
 
 	@RequestMapping(value = "/modificarCliente", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
