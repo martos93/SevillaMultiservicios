@@ -24,7 +24,7 @@
 	     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Presupuestos
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
-            <li><a href="#">Ver presupuestos</a></li>
+            <li><a href="gestor/cliente/listAll.do">Ver presupuestos</a></li>
 			<li role="separator" class="divider"></li>
             <li><a href="#">Solicitudes de presupuestos</a></li>
             <li><a href="#">Nuevo presupuesto</a></li>

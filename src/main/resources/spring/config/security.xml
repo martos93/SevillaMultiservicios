@@ -44,6 +44,15 @@
 		<security:intercept-url pattern="/gestor/empleado/listAll.do" access="hasRole('GESTOR')" /> 
 		<security:intercept-url pattern="/gestor/empleado/nuevoEmpleado.do" access="hasRole('GESTOR')" /> 
 		<security:intercept-url pattern="/gestor/empleado/eliminaEmpleado.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/empleado/editarEmpleado.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/empleado/modificarEmpleado.do" access="hasRole('GESTOR')" /> 
+		
+		<security:intercept-url pattern="/gestor/cliente/listAll.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/cliente/nuevoCliente.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/cliente/eliminaCliente.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/cliente/editarCliente.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/cliente/modificarCliente.do" access="hasRole('GESTOR')" /> 
+		
 		
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
 	

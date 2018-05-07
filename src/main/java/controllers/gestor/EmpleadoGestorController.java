@@ -1,14 +1,17 @@
 
 package controllers.gestor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import controllers.AbstractController;
@@ -23,7 +26,7 @@ import services.EmpleadoService;
 @RequestMapping("/gestor/empleado")
 public class EmpleadoGestorController extends AbstractController {
 
-	private final Logger	logger	= Logger.getLogger(EmpleadoGestorController.class);;
+	private final Logger	logger	= LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private ActorService	actorService;
@@ -47,20 +50,22 @@ public class EmpleadoGestorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/nuevoEmpleado", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ModelAndView crearEmpleado(@RequestBody final EmpleadoForm empleadoForm) {
+	public @ResponseBody ModelAndView crearEmpleado(@RequestBody final EmpleadoForm empleadoForm) {
 		Empleado empleado = new Empleado();
 		empleado = this.empleadoService.create(empleadoForm);
 		ModelAndView result = null;
 		try {
 			empleado = this.empleadoService.save(empleado);
 			result = this.creaVistaPadre();
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha creado correctamente el empleado.");
 
-		} catch (final Exception e) {
-			this.logger.error(e);
+		} catch (final DataIntegrityViolationException e) {
+			result = this.creaVistaPadre();
+			result.addObject("error", true);
+			result.addObject("mensaje", "Ya existe ese nombre de usuario.");
+			this.logger.error(e.getMessage());
 		}
-
-		result.addObject("success", true);
-		result.addObject("mensaje", "Se ha creado correctamente el empleado.");
 
 		return result;
 	}
@@ -77,13 +82,55 @@ public class EmpleadoGestorController extends AbstractController {
 			this.empleadoService.delete(empleado);
 
 		} catch (final Exception e) {
-			this.logger.error(e);
+			this.logger.error(e.getMessage());
 		}
 
 		result = this.creaVistaPadre();
 
 		result.addObject("success", true);
 		result.addObject("mensaje", "Se ha borrado correctamente el empleado.");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/editarEmpleado", method = RequestMethod.GET)
+	public @ResponseBody Empleado editarEmpleado(@RequestParam final int empleadoId) {
+		Empleado empleado = new Empleado();
+		empleado = this.empleadoService.findOne(empleadoId);
+		try {
+			this.actorService.checkGestor();
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+
+		return empleado;
+	}
+
+	@RequestMapping(value = "/modificarEmpleado", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ModelAndView modificarEmpleado(@RequestBody final EmpleadoForm empleadoForm) {
+		Empleado empleado = new Empleado();
+		empleado = this.empleadoService.findOne(empleadoForm.getEmpleadoId());
+		ModelAndView result = null;
+		try {
+			empleado.setNombre(empleadoForm.getNombre());
+			empleado.setApellidos(empleadoForm.getApellidos());
+			empleado.setCodigoPostal(empleadoForm.getCodigoPostal());
+			empleado.setDireccion(empleadoForm.getDireccion());
+			empleado.setLocalidad(empleadoForm.getLocalidad());
+			empleado.setProvincia(empleadoForm.getProvincia());
+			empleado.setIdentificacion(empleadoForm.getIdentificacion());
+			empleado.setEmail(empleadoForm.getEmail());
+			empleado = this.empleadoService.save(empleado);
+			result = this.creaVistaPadre();
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha modificado correctamente el empleado.");
+
+		} catch (final Exception e) {
+			result = this.creaVistaPadre();
+			result.addObject("error", true);
+			result.addObject("mensaje", "Se ha producido un error al modificar usuario.");
+			this.logger.error(e.getMessage());
+		}
 
 		return result;
 	}

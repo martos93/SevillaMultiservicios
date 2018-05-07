@@ -6,8 +6,8 @@ $(function () {
 	  $('[data-toggle="tooltip"]').tooltip()
 	})
 
-// función para abrir el modal de editar empleados
-function editarEmpleado(id) {
+// función para abrir el modal de editar clientes
+function editarCliente(id) {
 	$('#password').hide();
 	$('#passwordRepeat').hide();
 	$('#usuario').hide();
@@ -16,11 +16,11 @@ function editarEmpleado(id) {
 	$('#usuariolabel').hide();
 	$('#editar').show();
 	$('#guardar').hide();
-	$('#empleadoId').val(id);
+	$('#clienteId').val(id);
 	
 	editar = true;
 		$.ajax({
-		    url : "gestor/empleado/editarEmpleado.do?empleadoId="+id,
+		    url : "gestor/cliente/editarCliente.do?clienteId="+id,
 		    type: "GET",
 		    data: id,
 		    success : function(data) {
@@ -34,13 +34,13 @@ function editarEmpleado(id) {
 		    	$('#email').val(data.email);
 		    	},      
 		    error : function(){
-		    	alertaError("Se ha producido un error al encontrar el empleado.");
+		    	alertaError("Se ha producido un error al encontrar el cliente.");
 		    }
 		});
 }
 
-// función para modificar empleados
-function modificarEmpleado() {
+// función para modificar clientes
+function modificarCliente() {
 	toastr.clear()
 	$('.has-error').hide();
 	var identificacion = $('#identificacion').val();
@@ -51,7 +51,7 @@ function modificarEmpleado() {
 	var localidad = $('#localidad').val();
 	var provincia = $('#provincia').val();
 	var email = $('#email').val();
-	var empleadoId = $('#empleadoId').val();
+	var clienteId = $('#clienteId').val();
 	var error = 'false';
 	
 	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email];
@@ -90,10 +90,10 @@ function modificarEmpleado() {
 			"provincia":provincia,
 			"identificacion":identificacion,
 			"email":email,
-			"empleadoId":empleadoId};
+			"clienteId":clienteId};
 	
 	$.ajax({
-	    url : "gestor/empleado/modificarEmpleado.do",
+	    url : "gestor/cliente/modificarCliente.do",
 	    type: "POST",
 	    data: JSON.stringify(json),
 	    beforeSend: function(xhr) {
@@ -104,7 +104,7 @@ function modificarEmpleado() {
 	    	$('body').html(data);
 	    },      
 	    error : function(data){
-	    	alertaError("Se ha producido un error al modificar el empleado.");
+	    	alertaError("Se ha producido un error al modificar el cliente.");
 	    }
 	});
 	        
@@ -112,30 +112,30 @@ function modificarEmpleado() {
 
 
 	
-// función para eliminar empleados
-function eliminaEmpleado(id) {
+// función para eliminar clientes
+function eliminarCliente(id) {
 	
-	if(confirm("Se borrará el empleado seleccionado junto con sus agendas asociadas. Una vez borrado no podrá recuperar los datos. ¿Está seguro?")){
-		
+	if(confirm("Se borrará el cliente seleccionado junto con sus datos asociados. ¿Está seguro?")){
+		if(confirm("Una vez borrado no podrá recuperar los datos. ¿Está seguro?")){
 		$.ajax({
-		    url : "gestor/empleado/eliminaEmpleado.do?empleadoId="+id,
+		    url : "gestor/cliente/eliminaCliente.do?clienteId="+id,
 		    type: "GET",
 		    data: id,
 		    success : function(data) {
 		    	$('body').html(data);
 		    	},      
 		    error : function(){
-		    	alertaError("Se ha producido un error al borrar el empleado.");
+		    	alertaError("Se ha producido un error al borrar el cliente.");
 		    }
 		});
 		
 	}
-	
+}
 	
 }
 	
-// Función para guardar empleados
-function guardarEmpleado() {
+// Función para guardar clientes
+function guardarCliente() {
 	toastr.clear()
 	$('.has-error').hide();
 	var identificacion = $('#identificacion').val();
@@ -205,7 +205,7 @@ function guardarEmpleado() {
 			"passwordRepeat":pswr};
 	
 	$.ajax({
-	    url : "gestor/empleado/nuevoEmpleado.do",
+	    url : "gestor/cliente/nuevoCliente.do",
 	    type: "POST",
 	    data: JSON.stringify(json),
 	    beforeSend: function(xhr) {
@@ -216,7 +216,7 @@ function guardarEmpleado() {
 	    	$('body').html(data);
 	    },      
 	    error : function(data){
-	    	alertaError("Se ha producido un error al guardar el empleado.");
+	    	alertaError("Se ha producido un error al guardar el cliente.");
 	    }
 	});
 	        

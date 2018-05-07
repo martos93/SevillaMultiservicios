@@ -63,14 +63,6 @@ th.order2 a {
 	background-position: right;	
 }
 
-tr.odd {
-	background-color: #fff
-}
-
-tr.tableRowEven,tr.even {
-	background-color: #fea
-}
-
 div.exportlinks {
 	background-color: #eee;
 	border: 1px dotted #999;

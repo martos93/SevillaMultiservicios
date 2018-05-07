@@ -90,4 +90,14 @@ public class ActorService {
 		return userAccount;
 	}
 
+	public UserAccount userAccountCliente() {
+		final UserAccount userAccount = new UserAccount();
+		final Authority aut = new Authority();
+		aut.setAuthority(Authority.CLIENTE);
+		final Collection<Authority> authorities = userAccount.getAuthorities();
+		authorities.add(aut);
+		userAccount.setAuthorities(authorities);
+		return userAccount;
+	}
+
 }

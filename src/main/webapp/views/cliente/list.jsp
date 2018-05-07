@@ -20,9 +20,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<script src="scripts/ajaxEmpleado.js"></script>
+<script src="scripts/ajaxCliente.js"></script>
 <script>
-	crearTabla('empleado');
+	crearTabla('cliente');
 </script>
 
 <jstl:if test="${success == true}">
@@ -40,54 +40,66 @@
 </jstl:if>
 
 <div class="container">
+<h1>Seleccione un cliente</h1>
+</div>
+
+<div class="container">
 	<div class="row">
 		<div class="col-md-2 col-md-offset-5">
 			<button type="button" class="btn btn-danger" data-toggle="modal"
-				data-target="#modalEmpleado" onclick="limpiarDatos()">
-				<span class="glyphicon glyphicon-plus"></span> Nuevo Empleado
+				data-target="#modalCliente" onclick="limpiarDatos()">
+				<span class="glyphicon glyphicon-plus"></span> Nuevo Cliente
 			</button>
 		</div>
 	</div>
 	<br>
 
 
-	<display:table name="empleados" id="empleado"
+	<display:table name="clientes" id="cliente"
 		requestURI="${requestURI}" class="table">
 
-		<spring:message code="empleado.dni" var="dni" />
+		<spring:message code="cliente.dni" var="dni" />
 		<display:column property="identificacion" title="${dni}" />
 
-		<spring:message code="empleado.nombre" var="nombre" />
+		<spring:message code="cliente.nombre" var="nombre" />
 		<display:column property="nombre" title="${nombre}" />
 
-		<spring:message code="empleado.apellidos" var="apellidos" />
+		<spring:message code="cliente.apellidos" var="apellidos" />
 		<display:column property="apellidos" title="${apellidos}" />
 
-		<spring:message code="empleado.codigoPostal" var="codigoPostal" />
+		<spring:message code="cliente.codigoPostal" var="codigoPostal" />
 		<display:column property="codigoPostal" title="${codigoPostal}" />
 
-		<spring:message code="empleado.direccion" var="direccion" />
+		<spring:message code="cliente.direccion" var="direccion" />
 		<display:column property="direccion" title="${direccion}" />
 
-		<spring:message code="empleado.localidad" var="localidad" />
+		<spring:message code="cliente.localidad" var="localidad" />
 		<display:column property="localidad" title="${localidad}" />
 
-		<spring:message code="empleado.provincia" var="provincia" />
+		<spring:message code="cliente.provincia" var="provincia" />
 		<display:column property="provincia" title="${provincia}" />
 
 		<display:column sortable="disabled">
-				<a class="btn btn-secondary" data-toggle="tooltip"
-				data-placement="top" title="Eliminar">
-				<button type="button" class="btn btn-danger"
-				onclick="eliminaEmpleado(${empleado.id})">
-				<span class="glyphicon glyphicon-remove"></span>
-				</button></a>
 				<a data-toggle="tooltip"
 				data-placement="top" title="Editar">
 				<button type="button" class="btn btn-success"  data-toggle="modal"
-				data-target="#modalEmpleado"
-				onclick="editarEmpleado(${empleado.id})">
+				data-target="#modalCliente"
+				onclick="editarCliente(${cliente.id})">
 				<span class="glyphicon glyphicon-pencil"></span>
+				</button></a>
+				<a class="btn b
+				tn-secondary" data-toggle="tooltip"
+				data-placement="top" title="Eliminar">
+				<button type="button" class="btn btn-danger"
+				onclick="eliminarCliente(${cliente.id})">
+				<span class="glyphicon glyphicon-remove"></span>
+				</button></a>
+				
+					<a class="btn btn-secondary" data-toggle="tooltip"
+				data-placement="top" title="Ver presupuestos">
+				<button type="button" class="btn btn-danger"
+				onclick="verPresupuestos(${cliente.id})">
+				<span class="glyphicon glyphicon-file"></span>
 				</button></a>
 				
 				
@@ -98,8 +110,8 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="modalEmpleado" tabindex="-1" role="dialog"
-	aria-labelledby="modalEmpleadoLabel">
+<div class="modal fade" id="modalCliente" tabindex="-1" role="dialog"
+	aria-labelledby="modalClienteLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -107,11 +119,11 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="modalEmpleadoLabel">Nuevo Empleado</h4>
+				<h4 class="modal-title" id="modalClienteLabel">Nuevo Cliente</h4>
 			</div>
 			<div class="modal-body">
-				<form:form id="formularioEmpleado" modelAttribute="empleadoForm">
-				<input type=hidden id="empleadoId" name="empleadoId">
+				<form:form id="formularioCliente" modelAttribute="clienteForm">
+				<input type=hidden id="clienteId" name="clienteId">
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-5 col-md-offset-0">
@@ -190,9 +202,9 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 				<button id="guardar" type="button" class="btn btn-danger"
-					onclick="guardarEmpleado()">Guardar</button>
+					onclick="guardarCliente()">Guardar</button>
 					<button id="editar" type="button" class="btn btn-danger"
-					onclick="modificarEmpleado()">Editar</button>
+					onclick="modificarCliente()">Editar</button>
 			</div>
 		</div>
 	</div>

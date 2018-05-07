@@ -3,9 +3,9 @@ package forms;
 
 import java.io.Serializable;
 
-public class EmpleadoForm implements Serializable {
+public class ClienteForm implements Serializable {
 
-	private static final long	serialVersionUID	= -3476856080759986487L;
+	private static final long	serialVersionUID	= 5516106408520622324L;
 	private String				identificacion;
 	private String				nombre;
 	private String				apellidos;
@@ -17,7 +17,7 @@ public class EmpleadoForm implements Serializable {
 	private String				password;
 	private String				passwordRepeat;
 	private String				usuario;
-	private int					empleadoId;
+	private int					clienteId;
 
 
 	public String getPassword() {
@@ -92,10 +92,6 @@ public class EmpleadoForm implements Serializable {
 		this.provincia = provincia;
 	}
 
-	public static long getSerialversionuid() {
-		return EmpleadoForm.serialVersionUID;
-	}
-
 	public String getNombre() {
 		return this.nombre;
 	}
@@ -112,12 +108,11 @@ public class EmpleadoForm implements Serializable {
 		this.email = email;
 	}
 
-	public int getEmpleadoId() {
-		return this.empleadoId;
+	public int getClienteId() {
+		return this.clienteId;
 	}
 
-	public void setEmpleadoId(final int empleadoId) {
-		this.empleadoId = empleadoId;
+	public void setClienteId(final int clienteId) {
+		this.clienteId = clienteId;
 	}
-
 }

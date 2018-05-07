@@ -27,6 +27,7 @@
 		<value>/views/customer/messages</value>
 		<value>/views/profile/messages</value>
 		<value>/views/empleado/messages</value>
+		<value>/views/cliente/messages</value>
 		
 	</util:list>
 
