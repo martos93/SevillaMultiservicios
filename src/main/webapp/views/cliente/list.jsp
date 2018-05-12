@@ -69,7 +69,7 @@
 		<display:column sortable="disabled">
 				<a data-toggle="tooltip"
 				data-placement="top" title="Editar">
-				<button type="button" class="btn btn-success"  data-toggle="modal"
+				<button type="button" class="btn btn-danger"  data-toggle="modal"
 				data-target="#modalCliente"
 				onclick="limpiarDatosEdit();editarCliente(${cliente.id})">
 				<span class="glyphicon glyphicon-pencil"></span>

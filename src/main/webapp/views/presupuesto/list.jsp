@@ -10,6 +10,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script>
 	crearTabla('presupuesto');
 </script>
@@ -37,7 +38,9 @@
 		
 		<display:column property="titulo" title="Titulo" />
 
-		<display:column property="fechaInicio" title="Iniciado" />
+		<display:column title="Iniciado">
+		 <fmt:formatDate value="${presupuesto.fechaInicio}" pattern="dd-MM-yyyy" />
+		</display:column>
 
 		<display:column property="localidad" title="Localidad" />
 

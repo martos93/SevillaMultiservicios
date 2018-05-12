@@ -57,6 +57,7 @@
 		<security:intercept-url pattern="/gestor/iva/modificarIVA.do" access="hasRole('GESTOR')" /> 
 		
 		<security:intercept-url pattern="/gestor/**" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/concepto/eliminarConcepto.do" access="hasRole('GESTOR')" /> 
 		
 		
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 

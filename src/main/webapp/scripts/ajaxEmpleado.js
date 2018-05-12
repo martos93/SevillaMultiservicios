@@ -115,9 +115,7 @@ function modificarEmpleado() {
 	
 // función para eliminar empleados
 function eliminaEmpleado(id) {
-	
 	if(confirm("Se borrará el empleado seleccionado junto con sus agendas asociadas. Una vez borrado no podrá recuperar los datos. ¿Está seguro?")){
-		
 		$.ajax({
 		    url : "gestor/empleado/eliminaEmpleado.do?empleadoId="+id,
 		    type: "GET",
@@ -129,10 +127,7 @@ function eliminaEmpleado(id) {
 		    	alertaError("Se ha producido un error al borrar el empleado.");
 		    }
 		});
-		
 	}
-	
-	
 }
 	
 // Función para guardar empleados

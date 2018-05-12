@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -42,7 +43,7 @@ public class Concepto extends DomainEntity {
 	private Collection<Tarea> tareas;
 
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	public Collection<Tarea> getTareas() {
 		return this.tareas;
 	}

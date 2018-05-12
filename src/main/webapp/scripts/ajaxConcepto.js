@@ -6,6 +6,27 @@ function limpiarDatosNuevoConcepto(){
 	$('#tituloC').val("");
 }
 
+//función para eliminar conceptos
+function eliminarConcepto(conceptoId,presupuestoId) {
+	debugger;
+	if(confirm("Se borrará el concepto y todas sus tareas asociadas. Una vez borrado no podrá recuperar los datos. ¿Está seguro?")){
+		$.ajax({
+		    url : "gestor/concepto/eliminarConcepto.do?conceptoId="+conceptoId+"&presupuestoId="+presupuestoId,
+		    type: "GET",
+		    data: conceptoId,
+		    success : function(data) {
+		    	$('body').html(data);
+		    	},      
+		    error : function(){
+		    	alertaError("Se ha producido un error al borrar el concepto.");
+		    }
+		});
+		
+	}
+	
+	
+}
+
 function guardarConcepto(){
 	toastr.clear()
 	$('.has-error').hide();

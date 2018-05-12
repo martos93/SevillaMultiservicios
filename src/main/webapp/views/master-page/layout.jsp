@@ -31,22 +31,19 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
- <script src="scripts/toastr.js"></script>
- <script src="scripts/alertas.js"></script>
- <script src="scripts/modales.js"></script>
- <script src="scripts/ajaxTarea.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="scripts/toastr.js"></script>
+<script src="scripts/alertas.js"></script>
+<script src="scripts/modales.js"></script>
+<script src="scripts/ajaxTarea.js"></script>
 <script src="scripts/ajaxConcepto.js"></script>
 <script src="scripts/ajaxPresupuesto.js"></script>
 <script src="scripts/ajaxEmpleado.js"></script>
-
- <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 <link rel="stylesheet" href="styles/common.css" type="text/css">
-<link rel="stylesheet" href="styles/jmenu.css" media="screen"
-	type="text/css" />
+<link rel="stylesheet" href="styles/jmenu.css" media="screen" type="text/css" />
 <link rel="stylesheet" href="styles/displaytag.css" type="text/css">
 <link rel="stylesheet" href="styles/toastr.css" type="text/css">
 <link rel="stylesheet" href="styles/jquery.dataTables.min.css" type="text/css">

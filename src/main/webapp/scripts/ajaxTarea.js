@@ -1,26 +1,43 @@
-$(function() {
-  $('#uds').on('keydown', '#unidades', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||(/65|67|86|88/.test(e.keyCode)&&(e.ctrlKey===true||e.metaKey===true))&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-});
-$(function() {
-  $('#pud').on('keydown', '#precioUnidad', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||(/65|67|86|88/.test(e.keyCode)&&(e.ctrlKey===true||e.metaKey===true))&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-});
-
 function limpiarDatosCrearTarea(conceptoId){
 	$('.has-error').hide();
 	$('#editarTarea').hide();
 	$('#guardarTarea').show();
+	$('#descripcion').val("");
+	$('#unidades').val("");
+	$('#precioUnidad').val("");
+	$('#subTotal').val("");
 	$("#subtotal").prop( "disabled", true );
 	$('#conceptoId').val(conceptoId);
+	$('#unidades').prop("type", "number");
+	$('#unidades').prop("min", "0");
+	$('#precioUnidad').prop("type","number");
+	$('#precioUnidad').prop("min","0");
 }
 
 function actualizaSubtotalTarea(){
-	var precioUd = $('#precioUnidad').val();
+	debugger;
+	var precioUd = $('#precioUnidad').val()*1;
 	var unidades = $('#unidades').val();
-	
-	if(precioUd !== null && unidades !== null && precioUd>0 && unidades > 0){
-	$('#subTotal').val(precioUd*unidades);
+
+	if(String(unidades).includes("-")){
+		$('#unidades').val(unidades.replace("-",""));
+	}
+	if(String(unidades).includes(".")){
+		$('#unidades').val(unidades.split(".")[0]);
+	}
+	if(String(precioUd).includes("-")){
+		$('#precioUnidad').val(String(precioUd).replace("-",""));
+	}
+	if(String(precioUd).includes(".")){
+		$('#precioUnidad').val(String(precioUd).split("\.")[0]);
 	}
 	
+	precioUd = $('#precioUnidad').val()*1;
+	unidades = $('#unidades').val();
+	if(precioUd !== null && unidades !== null && precioUd>0 && unidades > 0){
+	$('#subTotal').val((precioUd*unidades).toFixed(2));
+	$('#precioUnidad').val(precioUnidad.toFixed(2));
+	}
 }
 
 function guardarTarea(){
@@ -33,19 +50,25 @@ function guardarTarea(){
 	var unidades = $('#unidades').val();
 	var subTotal = $('#subTotal').val();
 	var conceptoId = $('#conceptoId').val();
-	
+	var error = false;
 	
 	if(descripcion==""){
 		$("#descripcion").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
     	alertaError("Debe indicar una descripción para la tarea");
+    	error = true;
 	}
 	if(precioUnidad=="" || precioUnidad<0){
 		$("#precioUnidad").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
     	alertaError("Debe indicar un precio válido");
+    	error = true;
 	}
 	if(unidades=="" || unidades<0){
 		$("#unidades").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
     	alertaError("Debe indicar un valor valido");
+    	error = true;
+	}
+	if(error){
+		return false;
 	}
 	
 	var json = {"descripcion":descripcion,

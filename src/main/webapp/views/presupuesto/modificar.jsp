@@ -78,7 +78,7 @@
     <tr>
         <td><b>${concepto.titulo}</b>
         <button onclick="addTarea()" data-toggle="tooltip" data-placement="top" title="Editar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-pencil'></span></button>
-        <button data-toggle="tooltip" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
+        <button data-toggle="tooltip" onclick="eliminarConcepto('${concepto.id}','${presupuestoForm.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
         <button data-toggle="modal" onclick="limpiarDatosCrearTarea('${concepto.id}')"	data-target="#modalTarea" title="Nueva tarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Nueva tarea" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
         
         </td>
@@ -194,7 +194,7 @@
 						<div class="row">
 							<div id="uds" class="col-md-4 col-md-offset-0">
 								<form:label path="unidades" for="unidades">Unidades:</form:label>
-								<form:input cssClass="form-control" path="unidades" onchange="actualizaSubtotalTarea()"/>
+								<form:input cssClass="form-control numeric" path="unidades" onchange="actualizaSubtotalTarea()"/>
 							</div>
 							<div id="pud" class="col-md-4 col-md-offset-0">
 								<form:label path="precioUnidad" for="precioUnidad">Precio unidad:</form:label>
