@@ -269,8 +269,7 @@
 		<property name="total" value="80.00" />
 		<property name="tareas">
 		<list>
-				<ref bean="tarea1"/>
-				<ref bean="tarea2"/>
+				<ref bean="tarea3"/>
 			</list>
 		</property>
 	</bean>
