@@ -9,9 +9,10 @@
  --%>
 
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -31,7 +32,7 @@
         </ul>
 	  </li>
       <li><a href="gestor/empleado/listAll.do">Empleados</a></li>
-	  <li><a href="#">Control Económico</a></li>
+	  <li><a href="gestor/iva/list.do">Gestión IVA</a></li>
 	   </security:authorize>
     </ul>
 	<security:authorize access="isAnonymous()">
@@ -51,5 +52,13 @@
 </nav>
 
 <div>
-	<img src="images/logo-sms.jpg" class="img-responsive center-block" height="266px" width="496px" alt="Sevilla Multiservicios" />
-</div>
+<c:choose>
+<c:when test="${ocultaCabecera == true}">
+
+</c:when>
+<c:otherwise>
+<img src="images/logo-sms.jpg" class="img-responsive center-block" height="266px" width="496px" alt="Sevilla Multiservicios" />
+
+</c:otherwise>
+</c:choose>
+	</div>

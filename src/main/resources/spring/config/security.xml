@@ -53,6 +53,13 @@
 		<security:intercept-url pattern="/gestor/cliente/editarCliente.do" access="hasRole('GESTOR')" /> 
 		<security:intercept-url pattern="/gestor/cliente/modificarCliente.do" access="hasRole('GESTOR')" /> 
 		
+		<security:intercept-url pattern="/gestor/iva/list.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/iva/modificarIVA.do" access="hasRole('GESTOR')" /> 
+		
+		<security:intercept-url pattern="/gestor/presupuesto/verPresupuestos.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/presupuesto/**" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/gestor/concepto/**" access="hasRole('GESTOR')" /> 
+		
 		
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
 	

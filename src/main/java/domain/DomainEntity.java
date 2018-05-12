@@ -10,8 +10,6 @@
 
 package domain;
 
-import java.util.Date;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
@@ -20,12 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
-
-import org.hibernate.validator.constraints.SafeHtml;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -41,12 +34,8 @@ public abstract class DomainEntity {
 
 	// Identification ---------------------------------------------------------
 
-	private int		id;
-	private int		version;
-	private Date	fechaCreacion;
-	private Date	fechaModificacion;
-	private String	usuarioModificacion;
-	private String	usuarioCreacion;
+	private int	id;
+	private int	version;
 
 
 	@Id
@@ -66,44 +55,6 @@ public abstract class DomainEntity {
 
 	public void setVersion(final int version) {
 		this.version = version;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
-	public Date getFechaCreacion() {
-		return this.fechaCreacion;
-	}
-
-	public void setFechaCreacion(final Date fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
-	public Date getFechaModificacion() {
-		return this.fechaModificacion;
-	}
-
-	public void setFechaModificacion(final Date fechaModificacion) {
-		this.fechaModificacion = fechaModificacion;
-	}
-
-	@SafeHtml
-	public String getUsuarioModificacion() {
-		return this.usuarioModificacion;
-	}
-
-	public void setUsuarioModificacion(final String usuarioModificacion) {
-		this.usuarioModificacion = usuarioModificacion;
-	}
-
-	@SafeHtml
-	public String getUsuarioCreacion() {
-		return this.usuarioCreacion;
-	}
-
-	public void setUsuarioCreacion(final String usuarioCreacion) {
-		this.usuarioCreacion = usuarioCreacion;
 	}
 
 	// Object interface -------------------------------------------------------

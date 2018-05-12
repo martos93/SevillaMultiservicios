@@ -1,26 +1,19 @@
 
-package domain;
+package forms;
 
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import domain.Agenda;
+import domain.Albaran;
+import domain.Cliente;
+import domain.Cobro;
+import domain.Concepto;
+import domain.Factura;
+import domain.Gasto;
+import domain.Solicitud;
 
-import org.hibernate.validator.constraints.SafeHtml;
-import org.springframework.format.annotation.DateTimeFormat;
-
-@Entity
-@Access(AccessType.PROPERTY)
-public class Presupuesto extends DomainEntity {
+public class PresupuestoForm {
 
 	// Atributos
 	private boolean	aceptado;
@@ -32,7 +25,16 @@ public class Presupuesto extends DomainEntity {
 	private String	provincia;
 	private String	observaciones;
 	private String	titulo;
+	private int		id;
 
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(final int id) {
+		this.id = id;
+	}
 
 	public boolean isAceptado() {
 		return this.aceptado;
@@ -42,7 +44,6 @@ public class Presupuesto extends DomainEntity {
 		this.aceptado = aceptado;
 	}
 
-	@SafeHtml
 	public String getCodigo() {
 		return this.codigo;
 	}
@@ -51,7 +52,6 @@ public class Presupuesto extends DomainEntity {
 		this.codigo = codigo;
 	}
 
-	@SafeHtml
 	public String getDireccionObra() {
 		return this.direccionObra;
 	}
@@ -60,8 +60,6 @@ public class Presupuesto extends DomainEntity {
 		this.direccionObra = direccionObra;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getFechaFin() {
 		return this.fechaFin;
 	}
@@ -70,9 +68,6 @@ public class Presupuesto extends DomainEntity {
 		this.fechaFin = fechaFin;
 	}
 
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getFechaInicio() {
 		return this.fechaInicio;
 	}
@@ -81,7 +76,6 @@ public class Presupuesto extends DomainEntity {
 		this.fechaInicio = fechaInicio;
 	}
 
-	@SafeHtml
 	public String getLocalidad() {
 		return this.localidad;
 	}
@@ -90,7 +84,6 @@ public class Presupuesto extends DomainEntity {
 		this.localidad = localidad;
 	}
 
-	@SafeHtml
 	public String getProvincia() {
 		return this.provincia;
 	}
@@ -99,7 +92,6 @@ public class Presupuesto extends DomainEntity {
 		this.provincia = provincia;
 	}
 
-	@SafeHtml
 	public String getObservaciones() {
 		return this.observaciones;
 	}
@@ -108,7 +100,6 @@ public class Presupuesto extends DomainEntity {
 		this.observaciones = observaciones;
 	}
 
-	@SafeHtml
 	public String getTitulo() {
 		return this.titulo;
 	}
@@ -129,8 +120,6 @@ public class Presupuesto extends DomainEntity {
 	private Solicitud				solicitud;
 
 
-	@Valid
-	@OneToMany
 	public Collection<Gasto> getGastos() {
 		return this.gastos;
 	}
@@ -139,8 +128,6 @@ public class Presupuesto extends DomainEntity {
 		this.gastos = gastos;
 	}
 
-	@Valid
-	@OneToMany
 	public Collection<Concepto> getConceptos() {
 		return this.conceptos;
 	}
@@ -149,8 +136,6 @@ public class Presupuesto extends DomainEntity {
 		this.conceptos = conceptos;
 	}
 
-	@Valid
-	@OneToMany
 	public Collection<Cobro> getCobros() {
 		return this.cobros;
 	}
@@ -159,8 +144,6 @@ public class Presupuesto extends DomainEntity {
 		this.cobros = cobros;
 	}
 
-	@Valid
-	@OneToOne(optional = true)
 	public Albaran getAlbaran() {
 		return this.albaran;
 	}
@@ -169,8 +152,6 @@ public class Presupuesto extends DomainEntity {
 		this.albaran = albaran;
 	}
 
-	@Valid
-	@OneToOne(optional = true)
 	public Factura getFactura() {
 		return this.factura;
 	}
@@ -179,8 +160,6 @@ public class Presupuesto extends DomainEntity {
 		this.factura = factura;
 	}
 
-	@Valid
-	@OneToMany(mappedBy = "presupuesto")
 	public Collection<Agenda> getAgendas() {
 		return this.agendas;
 	}
@@ -189,8 +168,6 @@ public class Presupuesto extends DomainEntity {
 		this.agendas = agendas;
 	}
 
-	@Valid
-	@ManyToOne(optional = false)
 	public Cliente getCliente() {
 		return this.cliente;
 	}
@@ -199,7 +176,6 @@ public class Presupuesto extends DomainEntity {
 		this.cliente = cliente;
 	}
 
-	@OneToOne(optional = true)
 	public Solicitud getSolicitud() {
 		return this.solicitud;
 	}

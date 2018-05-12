@@ -31,11 +31,11 @@ public class SolicitudService {
 		return this.presupuestoRepository.findOne(id);
 	}
 
-	public Solicitud save(final Solicitud presupuesto) {
-		Assert.notNull(presupuesto);
-		return this.presupuestoRepository.save(presupuesto);
+	public Solicitud save(final Solicitud solicitud) {
+		Assert.notNull(solicitud);
+		return this.presupuestoRepository.save(solicitud);
 	}
-	public void delete(final Solicitud presupuesto) {
-		this.presupuestoRepository.delete(presupuesto);
+	public void delete(final Solicitud solicitud) {
+		this.presupuestoRepository.delete(solicitud);
 	}
 }

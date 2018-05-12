@@ -1,10 +1,20 @@
 // Variables regex
 var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
-// Inicializar los tooltip en caso de que los haya
-$(function () {
-	  $('[data-toggle="tooltip"]').tooltip()
-	})
+// Función para ver los presupuestos
+function verPresupuestos(id){
+	$.ajax({
+	    url : "gestor/presupuesto/verPresupuestos.do?clienteId="+id,
+	    type: "GET",
+	    data: id,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	},      
+	    error : function(){
+	    	alertaError("Se ha producido un error al encontrar los presupuestos.");
+	    }
+	});
+}
 
 // función para abrir el modal de editar clientes
 function editarCliente(id) {
@@ -32,6 +42,8 @@ function editarCliente(id) {
 		    	$('#localidad').val(data.localidad);
 		    	$('#provincia').val(data.provincia);
 		    	$('#email').val(data.email);
+		    	$('#refCatastro').val(data.refCatastro);
+		    	
 		    	},      
 		    error : function(){
 		    	alertaError("Se ha producido un error al encontrar el cliente.");
@@ -52,10 +64,11 @@ function modificarCliente() {
 	var provincia = $('#provincia').val();
 	var email = $('#email').val();
 	var clienteId = $('#clienteId').val();
+	var refCatastro = $('#refCatastro').val();
 	var error = 'false';
 	
-	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email];
-	var nombresAtributos = ["identificacion","nombre","apellidos","codigoPostal","direccion","localidad","provincia","email"];
+	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email,refCatastro];
+	var nombresAtributos = ["identificacion","nombre","apellidos","codigoPostal","direccion","localidad","provincia","email","refCatastro"];
 	
 	validaciones.forEach(function (atributo, i, validaciones) {
 	    if(atributo==""){
@@ -90,7 +103,8 @@ function modificarCliente() {
 			"provincia":provincia,
 			"identificacion":identificacion,
 			"email":email,
-			"clienteId":clienteId};
+			"clienteId":clienteId,
+			"refCatastro":refCatastro};
 	
 	$.ajax({
 	    url : "gestor/cliente/modificarCliente.do",
@@ -149,10 +163,12 @@ function guardarCliente() {
 	var psw = $('#password').val();
 	var pswr = $('#passwordRepeat').val();
 	var usuario = $('#usuario').val();
+	var refCatastro = $('#refCatastro').val();
+	
 	var error = 'false';
 	
-	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email,usuario];
-	var nombresAtributos = ["identificacion","nombre","apellidos","codigoPostal","direccion","localidad","provincia","email","usuario"];
+	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email,usuario,refCatastro];
+	var nombresAtributos = ["identificacion","nombre","apellidos","codigoPostal","direccion","localidad","provincia","email","usuario","refCatastro"];
 	
 	if(psw=="" || pswr=="" || psw!=pswr){
 		$("#password").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
@@ -202,10 +218,12 @@ function guardarCliente() {
 			"email":email,
 			"usuario":usuario,
 			"password":psw,
-			"passwordRepeat":pswr};
+			"passwordRepeat":pswr,
+			"refCatastro":refCatastro};
 	
 	$.ajax({
-	    url : "gestor/cliente/nuevoCliente.do",
+	    dataType : "json",
+		url : "gestor/cliente/nuevoCliente.do",
 	    type: "POST",
 	    data: JSON.stringify(json),
 	    beforeSend: function(xhr) {
@@ -257,7 +275,7 @@ function limpiarDatos(){
 	$('#provincia').val("");
 	$('#email').val("");
 	$('#editar').hide();
-	
+	$('#refCatastro').val("");
 	$('#password').show();
 	$('#passwordRepeat').show();
 	$('#usuario').show();
@@ -265,6 +283,18 @@ function limpiarDatos(){
 	$('#pwdrlabel').show();
 	$('#usuariolabel').show();
 	$('#guardar').show();
+}
+
+function limpiarDatosEdit(){
+	$('.has-error').hide();
+	$('#guardar').hide();
+	$('#password').hide();
+	$('#passwordRepeat').hide();
+	$('#usuario').hide();
+	$('#pwdlabel').hide();
+	$('#pwdrlabel').hide();
+	$('#usuariolabel').hide();
+	$('#editar').show();
 }
 
 function compruebaDni(dni) {

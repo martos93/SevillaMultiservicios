@@ -28,6 +28,8 @@
 		<value>/views/profile/messages</value>
 		<value>/views/empleado/messages</value>
 		<value>/views/cliente/messages</value>
+		<value>/views/iva/messages</value>
+		<value>/views/presupuesto/messages</value>
 		
 	</util:list>
 

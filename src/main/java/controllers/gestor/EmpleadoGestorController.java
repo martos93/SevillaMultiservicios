@@ -41,6 +41,7 @@ public class EmpleadoGestorController extends AbstractController {
 	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
+		this.actorService.checkGestor();
 		result = new ModelAndView("empleado/listAll");
 		result.addObject("empleados", this.empleadoService.findAll());
 		result.addObject("empleadoForm", new EmpleadoForm());
@@ -52,6 +53,7 @@ public class EmpleadoGestorController extends AbstractController {
 	@RequestMapping(value = "/nuevoEmpleado", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ModelAndView crearEmpleado(@RequestBody final EmpleadoForm empleadoForm) {
 		Empleado empleado = new Empleado();
+		this.actorService.checkGestor();
 		empleado = this.empleadoService.create(empleadoForm);
 		ModelAndView result = null;
 		try {
@@ -74,6 +76,7 @@ public class EmpleadoGestorController extends AbstractController {
 	public ModelAndView borrarEmpleado(@RequestParam final int empleadoId) {
 		Empleado empleado = new Empleado();
 		ModelAndView result = null;
+		this.actorService.checkGestor();
 		empleado = this.empleadoService.findOne(empleadoId);
 		for (final Agenda a : empleado.getAgendas())
 			this.agendaService.delete(a);
@@ -94,21 +97,33 @@ public class EmpleadoGestorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/editarEmpleado", method = RequestMethod.GET)
-	public @ResponseBody Empleado editarEmpleado(@RequestParam final int empleadoId) {
+	public @ResponseBody EmpleadoForm editarEmpleado(@RequestParam final int empleadoId) {
 		Empleado empleado = new Empleado();
-		empleado = this.empleadoService.findOne(empleadoId);
+
+		final EmpleadoForm empleadoForm = new EmpleadoForm();
 		try {
 			this.actorService.checkGestor();
+			empleado = this.empleadoService.findOne(empleadoId);
+			empleadoForm.setNombre(empleado.getNombre());
+			empleadoForm.setApellidos(empleado.getApellidos());
+			empleadoForm.setIdentificacion(empleado.getIdentificacion());
+			empleadoForm.setCodigoPostal(empleado.getCodigoPostal());
+			empleadoForm.setDireccion(empleado.getDireccion());
+			empleadoForm.setLocalidad(empleado.getLocalidad());
+			empleadoForm.setProvincia(empleado.getProvincia());
+			empleadoForm.setEmail(empleado.getEmail());
+			empleadoForm.setEmpleadoId(empleadoId);
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
 
-		return empleado;
+		return empleadoForm;
 	}
 
 	@RequestMapping(value = "/modificarEmpleado", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ModelAndView modificarEmpleado(@RequestBody final EmpleadoForm empleadoForm) {
 		Empleado empleado = new Empleado();
+		this.actorService.checkGestor();
 		empleado = this.empleadoService.findOne(empleadoForm.getEmpleadoId());
 		ModelAndView result = null;
 		try {

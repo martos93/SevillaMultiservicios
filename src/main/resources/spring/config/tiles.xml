@@ -27,6 +27,8 @@
 		<value>/views/profile/tiles.xml</value>
 		<value>/views/empleado/tiles.xml</value>
 		<value>/views/cliente/tiles.xml</value>
+		<value>/views/iva/tiles.xml</value>
+		<value>/views/presupuesto/tiles.xml</value>
 		
 	</util:list>
 

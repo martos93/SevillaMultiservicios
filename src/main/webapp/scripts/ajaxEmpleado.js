@@ -93,7 +93,8 @@ function modificarEmpleado() {
 			"empleadoId":empleadoId};
 	
 	$.ajax({
-	    url : "gestor/empleado/modificarEmpleado.do",
+		dataType : "json",
+		url : "gestor/empleado/modificarEmpleado.do",
 	    type: "POST",
 	    data: JSON.stringify(json),
 	    beforeSend: function(xhr) {
@@ -205,7 +206,7 @@ function guardarEmpleado() {
 			"passwordRepeat":pswr};
 	
 	$.ajax({
-	    url : "gestor/empleado/nuevoEmpleado.do",
+		url : "gestor/empleado/nuevoEmpleado.do",
 	    type: "POST",
 	    data: JSON.stringify(json),
 	    beforeSend: function(xhr) {

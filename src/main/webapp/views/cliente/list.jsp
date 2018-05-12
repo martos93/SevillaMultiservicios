@@ -21,23 +21,10 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <script src="scripts/ajaxCliente.js"></script>
+<script src="scripts/ajaxPresupuesto.js"></script>
 <script>
 	crearTabla('cliente');
 </script>
-
-<jstl:if test="${success == true}">
-	<script>
-	var mensaje = '${mensaje}';
-		alertaExito(mensaje);
-	</script>
-</jstl:if>
-
-<jstl:if test="${error == true}">
-	<script>
-	var mensaje = '${mensaje}';
-		alertaError(mensaje);
-	</script>
-</jstl:if>
 
 <div class="container">
 <h1>Seleccione un cliente</h1>
@@ -56,7 +43,7 @@
 
 
 	<display:table name="clientes" id="cliente"
-		requestURI="${requestURI}" class="table">
+		requestURI="${requestURI}" class="table dt-responsive nowrap">
 
 		<spring:message code="cliente.dni" var="dni" />
 		<display:column property="identificacion" title="${dni}" />
@@ -84,18 +71,10 @@
 				data-placement="top" title="Editar">
 				<button type="button" class="btn btn-success"  data-toggle="modal"
 				data-target="#modalCliente"
-				onclick="editarCliente(${cliente.id})">
+				onclick="limpiarDatosEdit();editarCliente(${cliente.id})">
 				<span class="glyphicon glyphicon-pencil"></span>
 				</button></a>
-				<a class="btn b
-				tn-secondary" data-toggle="tooltip"
-				data-placement="top" title="Eliminar">
-				<button type="button" class="btn btn-danger"
-				onclick="eliminarCliente(${cliente.id})">
-				<span class="glyphicon glyphicon-remove"></span>
-				</button></a>
-				
-					<a class="btn btn-secondary" data-toggle="tooltip"
+				<a class="btn btn-secondary" data-toggle="tooltip"
 				data-placement="top" title="Ver presupuestos">
 				<button type="button" class="btn btn-danger"
 				onclick="verPresupuestos(${cliente.id})">
@@ -191,6 +170,13 @@
 							<div class="col-md-5 col-md-offset-1">
 								<form:label path="localidad" for="provincia">Provincia:</form:label>
 						<form:input cssClass="form-control" path="provincia" />
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-5 col-md-offset-0">
+								<form:label path="localidad" for="localidad">Referencia Catastral:</form:label>
+						<form:input cssClass="form-control" path="refCatastro" />
 							</div>
 						</div>
 						</div>

@@ -47,13 +47,29 @@
 <link rel="stylesheet" href="styles/jquery.dataTables.min.css" type="text/css">
 
 
-
+<script>
+$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
+	</script>
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 
 </head>
 
 <body>
+<jstl:if test="${success == true}">
+	<script>
+	var mensaje = '${mensaje}';
+		alertaExito(mensaje);
+	</script>
+</jstl:if>
 
+<jstl:if test="${error == true}">
+	<script>
+	var mensaje = '${mensaje}';
+		alertaError(mensaje);
+	</script>
+</jstl:if>
 	<div>
 		<tiles:insertAttribute name="header" />
 	</div>
@@ -62,10 +78,6 @@
 			<tiles:insertAttribute name="title" />
 		</h1>
 		<tiles:insertAttribute name="body" />	
-		<jstl:if test="${message != null}">
-			<br />
-			<span class="message"><spring:message code="${message}" /></span>
-		</jstl:if>	
 	</div>
 	<div>
 		<tiles:insertAttribute name="footer" />

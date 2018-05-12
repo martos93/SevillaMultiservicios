@@ -16,13 +16,11 @@
        
 <tiles-definitions>
 
-	<definition name="security/login" extends="master.page">
-		<put-attribute name="body" value="/views/security/login.jsp" />
+	<definition name="presupuesto/verPresupuestos" extends="master.page">	
+		<put-attribute name="body" value="/views/presupuesto/list.jsp" />
 	</definition>
-		
-		<definition name="security/404" extends="master.page">
-		<put-attribute name="body" value="/views/security/404.jsp" />
+	
+		<definition name="presupuesto/modificarPresupuesto" extends="master.page">	
+		<put-attribute name="body" value="/views/presupuesto/modificar.jsp" />
 	</definition>
-		
-			
 </tiles-definitions>

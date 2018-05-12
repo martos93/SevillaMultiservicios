@@ -257,10 +257,6 @@
 		<property name="Titulo" value="Titulo" />
 		<property name="total" value="40.00" />
 		<property name="tareas">
-			<list>
-				<ref bean="tarea1"/>
-				<ref bean="tarea2"/>
-			</list>
 		</property>
 	</bean>
 	
@@ -268,9 +264,6 @@
 		<property name="Titulo" value="Titulo" />
 		<property name="total" value="80.00" />
 		<property name="tareas">
-			<list>
-				<ref bean="tarea3"/>
-			</list>
 		</property>
 	</bean>
 	
@@ -278,9 +271,6 @@
 		<property name="Titulo" value="Titulo" />
 		<property name="total" value="80.00" />
 		<property name="tareas">
-			<list>
-				<ref bean="tarea4"/>
-			</list>
 		</property>
 	</bean>
 	
