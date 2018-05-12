@@ -1,7 +1,9 @@
-function limpiarDatosCrearConcepto(){
+
+function limpiarDatosNuevoConcepto(){
 	$('.has-error').hide();
-	$('#editar').hide();
-	$('#guardar').show();
+	$('#editarConcepto').hide();
+	$('#guardarConcepto').show();
+	$('#tituloC').val("");
 }
 
 function guardarConcepto(){
@@ -9,13 +11,13 @@ function guardarConcepto(){
 	$('.has-error').hide();
 	var tituloC = $('#tituloC').val();
 	var conceptoId = $('#conceptoId').val();
-	console.log(conceptoId);
 	var presupuestoId = $('#presupuestoId').val();
 	var clienteId = $('#clienteId').val();
 	
 	if(titulo==""){
 		$("#tituloC").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
     	alertaError("El nombre del concepto es obligatorio");
+    	return false;
 	}
 	
 	var json = {"tituloC":tituloC,"conceptoId":conceptoId,"presupuestoId":presupuestoId,"clienteId":clienteId};

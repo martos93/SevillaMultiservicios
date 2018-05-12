@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<script src="scripts/ajaxEmpleado.js"></script>
 <script>
 	crearTabla('empleado');
 </script>

@@ -12,8 +12,6 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<script src="scripts/ajaxConcepto.js"></script>
-
 <form:form id="formularioConcepto"  modelAttribute="presupuestoForm">
 		<div class="container">
 		${presupuestoForm.aceptado}
@@ -81,7 +79,7 @@
         <td><b>${concepto.titulo}</b>
         <button onclick="addTarea()" data-toggle="tooltip" data-placement="top" title="Editar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-pencil'></span></button>
         <button data-toggle="tooltip" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
-        <button data-toggle="tooltip" data-placement="top" title="Nueva tarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-plus'></span></button>
+        <button data-toggle="modal" onclick="limpiarDatosCrearTarea('${concepto.id}')"	data-target="#modalTarea" title="Nueva tarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Nueva tarea" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
         
         </td>
         <td></td>
@@ -110,7 +108,7 @@
         <td><b>*Este presupuesto no incluye el 21% de IVA.</b></td>
         <td></td>
         <td></td>
-        <td><b>TOTAL PRESUPUESTO<b></td>
+        <td><b>TOTAL PRESUPUESTO</b></td>
         <td><b>${totalPresupuesto}</b></td>
       </tr>
     </tbody>
@@ -126,7 +124,7 @@
 
 				<button type="button" class="btn btn-danger"  data-toggle="modal"
 				data-target="#modalConcepto"
-				onclick="limpiarDatosCrearConcepto()">Añadir concepto
+				onclick="limpiarDatosNuevoConcepto()">Añadir concepto
 				<span class="glyphicon glyphicon-pencil"></span>
 				</button>
 </div>
@@ -160,9 +158,9 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button id="guardar" type="button" class="btn btn-danger"
+				<button id="guardarConcepto" type="button" class="btn btn-danger"
 					onclick="guardarConcepto()">Guardar</button>
-					<button id="editar" type="button" class="btn btn-danger"
+					<button id="editarConcepto" type="button" class="btn btn-danger"
 					onclick="modificarConcepto()">Editar</button>
 			</div>
 		</div>
@@ -182,16 +180,29 @@
 			</div>
 			<div class="modal-body">
 				<form:form id="formularioConcepto" modelAttribute="tareaForm">
-				<input type=hidden id="conceptoId" name="conceptoId" value="${tareaForm.conceptoId}">
+				<input type=hidden id="conceptoId" name="conceptoId" value="">
 				<input type=hidden id="presupuestoId" name="presupuestoId" value="${tareaForm.presupuestoId}">
-				<input type=hidden id="clienteId" name="clienteId" value="${tareaForm.clienteId}">
-				<input type=hidden id="tareaId" name=""tareaId"" value="${tareaForm.tareaId}">
+				<input type=hidden id="tareaId" name="tareaId" value="${tareaForm.tareaId}">
 					
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-12 col-md-offset-0">
-								<form:label path="tituloC" for="tituloC">Concepto:</form:label>
-								<form:input cssClass="form-control" path="tituloC" />
+								<form:label path="descripcion" for="descripcion">Descripcion:</form:label>
+								<form:input cssClass="form-control" path="descripcion" /><br>
+							</div>
+						</div>
+						<div class="row">
+							<div id="uds" class="col-md-4 col-md-offset-0">
+								<form:label path="unidades" for="unidades">Unidades:</form:label>
+								<form:input cssClass="form-control" path="unidades" onchange="actualizaSubtotalTarea()"/>
+							</div>
+							<div id="pud" class="col-md-4 col-md-offset-0">
+								<form:label path="precioUnidad" for="precioUnidad">Precio unidad:</form:label>
+								<form:input cssClass="form-control" onchange="actualizaSubtotalTarea()" path="precioUnidad" />
+							</div>
+							<div  class="col-md-4 col-md-offset-0">
+								<form:label path="subTotal" for="subTotal">Subtotal:</form:label>
+								<form:input cssClass="form-control" path="subTotal" disabled="true" />
 							</div>
 						</div>
 					</div>
@@ -199,10 +210,10 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button id="guardar" type="button" class="btn btn-danger"
-					onclick="guardarConcepto()">Guardar</button>
-					<button id="editar" type="button" class="btn btn-danger"
-					onclick="modificarConcepto()">Editar</button>
+				<button id="guardarTarea" type="button" class="btn btn-danger"
+					onclick="guardarTarea()">Guardar</button>
+					<button id="editarTarea" type="button" class="btn btn-danger"
+					onclick="modificarTarea()">Editar</button>
 			</div>
 		</div>
 	</div>
