@@ -79,8 +79,10 @@
     <jstl:forEach items="${presupuestoForm.conceptos}" var="concepto">
     <tr>
         <td><b>${concepto.titulo}</b>
-        <button data-toggle="tooltip" data-placement="top" title="Editar" style="margin:-9px -16px -2px -12px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-pencil'></span></button>
-        <button data-toggle="tooltip" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -12px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
+        <button onclick="addTarea()" data-toggle="tooltip" data-placement="top" title="Editar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-pencil'></span></button>
+        <button data-toggle="tooltip" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
+        <button data-toggle="tooltip" data-placement="top" title="Nueva tarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-plus'></span></button>
+        
         </td>
         <td></td>
         <td></td>
@@ -121,13 +123,12 @@
 </form:form>
 
 <div class="container">
-<a data-toggle="tooltip"
-				data-placement="top" title="Nuevo concepto">
+
 				<button type="button" class="btn btn-danger"  data-toggle="modal"
 				data-target="#modalConcepto"
 				onclick="limpiarDatosCrearConcepto()">Añadir concepto
 				<span class="glyphicon glyphicon-pencil"></span>
-				</button></a>
+				</button>
 </div>
 
 <!-- Modal concepto-->
@@ -147,6 +148,45 @@
 				<input type=hidden id="conceptoId" name="conceptoId" value="${conceptoForm.conceptoId}">
 				<input type=hidden id="presupuestoId" name="presupuestoId" value="${conceptoForm.presupuestoId}">
 				<input type=hidden id="clienteId" name="clienteId" value="${conceptoForm.clienteId}">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-12 col-md-offset-0">
+								<form:label path="tituloC" for="tituloC">Concepto:</form:label>
+								<form:input cssClass="form-control" path="tituloC" />
+							</div>
+						</div>
+					</div>
+				</form:form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="guardar" type="button" class="btn btn-danger"
+					onclick="guardarConcepto()">Guardar</button>
+					<button id="editar" type="button" class="btn btn-danger"
+					onclick="modificarConcepto()">Editar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal Tarea-->
+<div class="modal fade" id="modalTarea" tabindex="-1" role="dialog"
+	aria-labelledby="modalTareaLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalTareaLabel">Nueva tarea</h4>
+			</div>
+			<div class="modal-body">
+				<form:form id="formularioConcepto" modelAttribute="tareaForm">
+				<input type=hidden id="conceptoId" name="conceptoId" value="${tareaForm.conceptoId}">
+				<input type=hidden id="presupuestoId" name="presupuestoId" value="${tareaForm.presupuestoId}">
+				<input type=hidden id="clienteId" name="clienteId" value="${tareaForm.clienteId}">
+				<input type=hidden id="tareaId" name=""tareaId"" value="${tareaForm.tareaId}">
+					
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-12 col-md-offset-0">

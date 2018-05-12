@@ -1,3 +1,11 @@
+/* Estilo botón danger*/)
+.btn-danger {
+    color: #fff !important;
+    background-color: #bf1200 !important;
+    border-color: #bf1200 !important;
+}
+
+
 /*Estilo modal*/
 .modal{
     @media(min-width: 768px) {
