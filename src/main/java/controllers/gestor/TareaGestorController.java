@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -89,10 +90,96 @@ public class TareaGestorController extends AbstractController {
 			final TareaForm tareaFormNew = new TareaForm();
 			tareaFormNew.setPresupuestoId(p.getId());
 			result.addObject("tareaForm", tareaFormNew);
-
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/eliminarTarea", method = RequestMethod.GET)
+	public ModelAndView borrarConcepto(@RequestParam final int tareaId, @RequestParam final int presupuestoId, @RequestParam final int conceptoId) {
+		ModelAndView result = new ModelAndView();
+		try {
+
+			this.actorService.checkGestor();
+			final Tarea tarea = this.tareaService.findOne(tareaId);
+			final Presupuesto p = this.presupuestoService.findOne(presupuestoId);
+			Concepto concepto = this.conceptoService.findOne(conceptoId);
+			concepto.getTareas().remove(tarea);
+			concepto = this.conceptoService.save(concepto);
+			this.tareaService.delete(tarea);
+			result = this.crearVistaPadre(p);
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha borrado correctamente la tarea.");
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+		return result;
+	}
+
+	public ModelAndView crearVistaPadre(final Presupuesto p) {
+
+		final Cliente cliente = this.clienteService.findOne(p.getCliente().getId());
+		final PresupuestoForm presupuestoForm = this.presupuestoService.createForm(p);
+		final ModelAndView result = new ModelAndView("presupuesto/modificarPresupuesto");
+		result.addObject("ocultaCabecera", true);
+		result.addObject("cliente", cliente);
+		result.addObject("presupuestoForm", presupuestoForm);
+		final BigDecimal totalPresupuesto = OperacionesPresupuesto.totalPresupuesto(p);
+		result.addObject("totalPresupuesto", totalPresupuesto);
+		final ConceptoForm conceptoForm = new ConceptoForm();
+		conceptoForm.setClienteId(cliente.getId());
+		conceptoForm.setPresupuestoId(p.getId());
+		result.addObject("conceptoForm", conceptoForm);
+		final TareaForm tareaForm = new TareaForm();
+		tareaForm.setPresupuestoId(p.getId());
+		result.addObject("tareaForm", tareaForm);
+		return result;
+	}
+
+	@RequestMapping(value = "/editarTarea", method = RequestMethod.GET)
+	public @ResponseBody TareaForm editarTarea(@RequestParam final int tareaId) {
+		final TareaForm tareaForm = new TareaForm();
+		Tarea tarea = new Tarea();
+		try {
+			this.actorService.checkGestor();
+			tarea = this.tareaService.findOne(tareaId);
+			tareaForm.setDescripcion(tarea.getDescripcion());
+			tareaForm.setPrecioUnidad(tarea.getPrecioUnidad());
+			tareaForm.setSubTotal(tarea.getSubTotal());
+			tareaForm.setTareaId(tareaId);
+			tareaForm.setUnidades(tarea.getUnidades());
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+
+		return tareaForm;
+	}
+
+	@RequestMapping(value = "/modificarTarea", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ModelAndView modificarTarea(@RequestBody final TareaForm tareaForm) {
+		final Presupuesto p = this.presupuestoService.findOne(tareaForm.getPresupuestoId());
+		ModelAndView result = null;
+		try {
+			Tarea t = this.tareaService.findOne(tareaForm.getTareaId());
+			t.setDescripcion(tareaForm.getDescripcion());
+			t.setPrecioUnidad(tareaForm.getPrecioUnidad());
+			t.setSubTotal(tareaForm.getSubTotal());
+			t.setUnidades(tareaForm.getUnidades());
+			t = this.tareaService.save(t);
+
+			result = this.crearVistaPadre(p);
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha modificado correctamente la tarea.");
+
+		} catch (final Exception e) {
+			result = this.crearVistaPadre(p);
+			result.addObject("error", true);
+			result.addObject("mensaje", "Se ha producido un error al modificar la tarea.");
+			this.logger.error(e.getMessage());
+		}
+
+		return result;
+	}
+
 }

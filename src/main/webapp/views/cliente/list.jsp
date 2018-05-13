@@ -34,6 +34,7 @@
 	<div class="row">
 		<div class="col-md-2 col-md-offset-5">
 			<button type="button" class="btn btn-danger" data-toggle="modal"
+			style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 				data-target="#modalCliente" onclick="limpiarDatos()">
 				<span class="glyphicon glyphicon-plus"></span> Nuevo Cliente
 			</button>
@@ -67,20 +68,9 @@
 		<display:column property="provincia" title="${provincia}" />
 
 		<display:column sortable="disabled">
-				<a data-toggle="tooltip"
-				data-placement="top" title="Editar">
-				<button type="button" class="btn btn-danger"  data-toggle="modal"
-				data-target="#modalCliente"
-				onclick="limpiarDatosEdit();editarCliente(${cliente.id})">
-				<span class="glyphicon glyphicon-pencil"></span>
-				</button></a>
-				<a class="btn btn-secondary" data-toggle="tooltip"
-				data-placement="top" title="Ver presupuestos">
-				<button type="button" class="btn btn-danger"
-				onclick="verPresupuestos(${cliente.id})">
-				<span class="glyphicon glyphicon-file"></span>
-				</button></a>
-				
+				<button onclick="limpiarDatosEdit();editarCliente(${cliente.id})" data-toggle="modal" data-target="#modalCliente" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+       			<button onclick="verPresupuestos(${cliente.id})" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Ver Presupuestos" style="color:#bf1200;"><span class='glyphicon glyphicon-file'></span></a></button>
+       
 				
 		</display:column>
 
@@ -137,6 +127,10 @@
 								<form:label path="identificacion" for="identificacion">DNI:</form:label>
 								<form:input cssClass="form-control" path="identificacion" />
 							</div>
+							<div class="col-md-5 col-md-offset-1">
+								<form:label path="localidad" for="localidad">Referencia Catastral:</form:label>
+						<form:input cssClass="form-control" path="refCatastro" />
+							</div>
 						</div>
 
 						<div class="row">
@@ -173,12 +167,6 @@
 							</div>
 						</div>
 						
-						<div class="row">
-							<div class="col-md-5 col-md-offset-0">
-								<form:label path="localidad" for="localidad">Referencia Catastral:</form:label>
-						<form:input cssClass="form-control" path="refCatastro" />
-							</div>
-						</div>
 						</div>
 						
 						
@@ -188,8 +176,10 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 				<button id="guardar" type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 					onclick="guardarCliente()">Guardar</button>
 					<button id="editar" type="button" class="btn btn-danger"
+					style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 					onclick="modificarCliente()">Editar</button>
 			</div>
 		</div>

@@ -43,7 +43,7 @@
 			<form:input path="password" type="password" class="form-control btn-signin"
 				id="pwd" placeholder="Introduce contraseña" name="pwd" />
 		</div>
-		<center><button type="submit" class="btn btn-danger">Entrar</button></center>
+		<center><button type="submit" class="btn btn-danger" style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;">Entrar</button></center>
 	</form:form>
 	</div>
 	</div>

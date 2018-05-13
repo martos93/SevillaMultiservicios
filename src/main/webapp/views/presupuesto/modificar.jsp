@@ -11,20 +11,43 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%int var=0;%>
 <form:form id="formularioConcepto"  modelAttribute="presupuestoForm">
-		<div class="container">
-		${presupuestoForm.aceptado}
-		</div>		
+			
 <div class="container">
 <div class="row">
-<div class="col-md-2 col-md-offset-4">
+<div class="col-md-4 col-md-offset-0">
 	<form:label path="titulo" for="titulo">Titulo: </form:label><form:input path="titulo" id="titulo" cssClass="form-control" />
 	</div>
-	<div class="col-md-2 col-md-offset-0">
-	<form:label path="codigo" for="titulo">Código: </form:label><form:input path="codigo" id="codigo" cssClass="form-control" />
+	<div class="col-md-1 col-md-offset-0">
+	<form:label path="codigo" for="codigo">Código: </form:label><form:input path="codigo" id="codigo" cssClass="form-control" />
 	</div>
-	</div>	
+	<div class="col-md-3 col-md-offset-0">
+	<form:label path="direccionObra" for="direccionObra">Dirección obra: </form:label><form:input path="direccionObra" id="direccionObra" cssClass="form-control" />
+	</div>
+	<div class="col-md-2 col-md-offset-0">
+	<form:label path="localidad" for="localidad">Localidad: </form:label><form:input path="localidad" id="localidad" cssClass="form-control" />
+	</div>
+	<div class="col-md-2 col-md-offset-0">
+	<form:label path="provincia" for="provincia">Provincia: </form:label><form:input path="provincia" id="provincia" cssClass="form-control" />
+	</div>
+	
+</div>
+<div class="row">
+<div class="col-md-12 col-md-offset-0">
+	<br>
+	<c:choose>
+    <c:when test="${presupuestoForm.aceptado}">
+	<label><b>Aceptado:</b><a data-toggle="tooltip" data-placement="top" title="El presupuesto ha sido aceptado por el cliente." style="color:green;"><span style="margin-left:5px;font-size:18px;" class='glyphicon glyphicon-ok'></span></a></label>
+     </c:when>    
+    <c:otherwise>
+    <label><b>Aceptado:</b><a data-toggle="tooltip" data-placement="top" title="El presupuesto no ha sido aceptado por el cliente." style="color:red;"><span style="margin-left:5px;font-size:18px;" class='glyphicon glyphicon-remove'></span></a></label>
+    
+    </c:otherwise>
+</c:choose>
+	</div>
+</div>
 <br><br>
 	<div class="row">
 		<div class="col-md-5 col-md-offset-1">
@@ -74,28 +97,35 @@
       </tr>
     </thead>
     <tbody>
-    <jstl:forEach items="${presupuestoForm.conceptos}" var="concepto">
+    
+    <jstl:forEach items="${presupuestoForm.conceptos}" var="concepto" varStatus="loopConcepto">
+    
     <tr>
         <td><b>${concepto.titulo}</b>
-        <button onclick="addTarea()" data-toggle="tooltip" data-placement="top" title="Editar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-pencil'></span></button>
-        <button data-toggle="tooltip" onclick="eliminarConcepto('${concepto.id}','${presupuestoForm.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
+        <button onclick="editarConcepto('${concepto.id}')" data-toggle="modal" data-target="#modalConcepto" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+        <button data-toggle="tooltip" onclick="eliminarConcepto('${concepto.id}','${presupuestoForm.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></a></button>
         <button data-toggle="modal" onclick="limpiarDatosCrearTarea('${concepto.id}')"	data-target="#modalTarea" title="Nueva tarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Nueva tarea" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
-        
+        <script>actualizaPreciosConceptos('${loopConcepto.index}','${concepto.total}');</script>
         </td>
         <td></td>
         <td></td>
         <td></td>
-        <td><b>${concepto.total}</b></td>
+        <td id="totalConcepto_${loopConcepto.index}"></td>
       </tr>
-      <jstl:forEach items="${concepto.tareas}" var="tarea">
+      <jstl:forEach items="${concepto.tareas}" var="tarea" varStatus="loop">
+      <script>actualizaPrecios('<%=var %>','${tarea.precioUnidad}','${tarea.subTotal}');</script>
       <tr>
-        <td>&nbsp ${tarea.descripcion}</td>
+        <td>&nbsp ${tarea.descripcion}<button onclick="editarTarea('${tarea.id}')"  data-toggle="modal" data-target="#modalTarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+        <button data-toggle="tooltip" onclick="eliminarTarea('${concepto.id}','${presupuestoForm.id}','${tarea.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
+        </td>
         <td>&nbsp ${tarea.unidades}</td>
-        <td>&nbsp ${tarea.precioUnidad}</td>
-        <td>&nbsp ${tarea.subTotal}</td>
+        <td id="precioUd_<%=var %>"></td>
+        <td id="subTotal_<%=var %>"></td>
         <td id="totalPres"></td>
       </tr>
+      <%var=var+1;%>
       </jstl:forEach>
+      
     </jstl:forEach>
      <tr>
      <td> </td>
@@ -104,12 +134,13 @@
      <td> </td>
      <td> </td>
      </tr>
-      <tr>
+      <tr id="ultimaFila">
         <td><b>*Este presupuesto no incluye el 21% de IVA.</b></td>
         <td></td>
         <td></td>
-        <td><b>TOTAL PRESUPUESTO</b></td>
-        <td><b>${totalPresupuesto}</b></td>
+        <td id="totalPresupuestoTabla"><b>TOTAL PRESUPUESTO</b> <input type=hidden id="totalPresupuestoHidden" name="titalPresupuestoHidden" value="${totalPresupuesto}">
+		</td>
+        <td id="totalPresupuesto"><b><script>formateaTotalPresup();</script></b></td>
       </tr>
     </tbody>
   </table>
@@ -124,8 +155,15 @@
 
 				<button type="button" class="btn btn-danger"  data-toggle="modal"
 				data-target="#modalConcepto"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 				onclick="limpiarDatosNuevoConcepto()">Añadir concepto
 				<span class="glyphicon glyphicon-pencil"></span>
+				</button>
+				
+				<button type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="guardarDatosPresupuesto(${presupuestoForm.id},${cliente.id})">Guardar presupuesto
+				<span class="glyphicon glyphicon-floppy-save"></span>
 				</button>
 </div>
 
@@ -140,6 +178,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title" id="modalConceptoLabel">Nuevo Concepto</h4>
+				<h4 class="modal-title" id="modalConceptoLabelEdit">Modificar Concepto</h4>
 			</div>
 			<div class="modal-body">
 				<form:form id="formularioConcepto" modelAttribute="conceptoForm">
@@ -159,8 +198,10 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 				<button id="guardarConcepto" type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 					onclick="guardarConcepto()">Guardar</button>
 					<button id="editarConcepto" type="button" class="btn btn-danger"
+					style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 					onclick="modificarConcepto()">Editar</button>
 			</div>
 		</div>
@@ -183,7 +224,6 @@
 				<input type=hidden id="conceptoId" name="conceptoId" value="">
 				<input type=hidden id="presupuestoId" name="presupuestoId" value="${tareaForm.presupuestoId}">
 				<input type=hidden id="tareaId" name="tareaId" value="${tareaForm.tareaId}">
-					
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-12 col-md-offset-0">
@@ -211,8 +251,10 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 				<button id="guardarTarea" type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 					onclick="guardarTarea()">Guardar</button>
 					<button id="editarTarea" type="button" class="btn btn-danger"
+					style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 					onclick="modificarTarea()">Editar</button>
 			</div>
 		</div>

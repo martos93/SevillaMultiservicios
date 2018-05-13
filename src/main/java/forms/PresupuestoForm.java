@@ -26,6 +26,7 @@ public class PresupuestoForm {
 	private String	observaciones;
 	private String	titulo;
 	private int		id;
+	private int		clienteId;
 
 
 	public int getId() {
@@ -182,6 +183,14 @@ public class PresupuestoForm {
 
 	public void setSolicitud(final Solicitud solicitud) {
 		this.solicitud = solicitud;
+	}
+
+	public int getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(int clienteId) {
+		this.clienteId = clienteId;
 	}
 
 }

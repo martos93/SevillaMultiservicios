@@ -56,6 +56,8 @@
 	<div class="row">
 		<div class="col-md-2 col-md-offset-5">
 <button id="guardar" type="button" class="btn btn-danger"
+style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				
 					onclick="guardarIVA()">Guardar</button>
 		
 </div></div>

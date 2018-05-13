@@ -42,6 +42,8 @@
 	<div class="row">
 		<div class="col-md-2 col-md-offset-5">
 			<button type="button" class="btn btn-danger" data-toggle="modal"
+			style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				
 				data-target="#modalEmpleado" onclick="limpiarDatos()">
 				<span class="glyphicon glyphicon-plus"></span> Nuevo Empleado
 			</button>
@@ -75,21 +77,23 @@
 		<display:column property="provincia" title="${provincia}" />
 
 		<display:column sortable="disabled">
-				<a class="btn btn-secondary" data-toggle="tooltip"
-				data-placement="top" title="Eliminar">
-				<button type="button" class="btn btn-danger"
-				onclick="eliminaEmpleado(${empleado.id})">
-				<span class="glyphicon glyphicon-remove"></span>
-				</button></a>
-				<a data-toggle="tooltip"
-				data-placement="top" title="Editar">
-				<button type="button" class="btn btn-success"  data-toggle="modal"
-				data-target="#modalEmpleado"
-				onclick="editarEmpleado(${empleado.id})">
-				<span class="glyphicon glyphicon-pencil"></span>
-				</button></a>
+				<button onclick="editarEmpleado(${empleado.id})"
+				data-toggle="modal" data-target="#modalEmpleado"
+				style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;"
+				type="button" class="btn btn-link">
+				<a data-toggle="tooltip" data-placement="top" title="Editar"
+				style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'>
+				</span></a></button>
 				
-				
+				<button data-toggle="tooltip"
+				onclick="eliminarConcepto('${concepto.id}','${presupuestoForm.id}')"
+				data-placement="top" title="Eliminar"
+				style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button"
+				class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Eliminar"
+				style="color:#bf1200;"><span class='glyphicon glyphicon-remove'></span></a></button>
+      
+        
+        
 		</display:column>
 
 	</display:table>
@@ -189,8 +193,10 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 				<button id="guardar" type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 					onclick="guardarEmpleado()">Guardar</button>
 					<button id="editar" type="button" class="btn btn-danger"
+					style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
 					onclick="modificarEmpleado()">Editar</button>
 			</div>
 		</div>

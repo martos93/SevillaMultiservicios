@@ -51,6 +51,45 @@ public class ConceptoGestorController extends AbstractController {
 	private TareaService		tareaService;
 
 
+	@RequestMapping(value = "/modificarConcepto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ModelAndView modificarConcepto(@RequestBody final ConceptoForm conceptoForm) {
+		final Presupuesto p = this.presupuestoService.findOne(conceptoForm.getPresupuestoId());
+		ModelAndView result = null;
+		try {
+			Concepto c = this.conceptoService.findOne(conceptoForm.getConceptoId());
+			c.setTitulo(conceptoForm.getTituloC());
+			c = this.conceptoService.save(c);
+
+			result = this.crearVistaPadre(p);
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha modificado correctamente el concepto.");
+
+		} catch (final Exception e) {
+			result = this.crearVistaPadre(p);
+			result.addObject("error", true);
+			result.addObject("mensaje", "Se ha producido un error al modificar el concepto.");
+			this.logger.error(e.getMessage());
+		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/editarConcepto", method = RequestMethod.GET)
+	public @ResponseBody ConceptoForm editarConcepto(@RequestParam final int conceptoId) {
+		final ConceptoForm conceptoForm = new ConceptoForm();
+		Concepto concepto = new Concepto();
+		try {
+			this.actorService.checkGestor();
+			concepto = this.conceptoService.findOne(conceptoId);
+			conceptoForm.setTituloC(concepto.getTitulo());
+			conceptoForm.setConceptoId(conceptoId);
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+
+		return conceptoForm;
+	}
+
 	@RequestMapping(value = "/eliminarConcepto", method = RequestMethod.GET)
 	public ModelAndView borrarConcepto(@RequestParam final int conceptoId, @RequestParam final int presupuestoId) {
 		ModelAndView result = new ModelAndView();
@@ -59,12 +98,6 @@ public class ConceptoGestorController extends AbstractController {
 			this.actorService.checkGestor();
 			final Concepto concepto = this.conceptoService.findOne(conceptoId);
 			final Presupuesto p = this.presupuestoService.findOne(presupuestoId);
-			//			final ArrayList<Tarea> tareas = (ArrayList<Tarea>) concepto.getTareas();
-
-			//			for (final Tarea t : tareas)
-			//				this.tareaService.delete(t);
-			//			concepto.setTareas(new ArrayList<Tarea>());
-			//			concepto = this.conceptoService.save(concepto);
 			p.getConceptos().remove(concepto);
 			this.presupuestoService.save(p);
 			this.conceptoService.delete(concepto);
@@ -80,7 +113,7 @@ public class ConceptoGestorController extends AbstractController {
 
 	@RequestMapping(value = "/nuevoConcepto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ModelAndView nuevoConcepto(@RequestBody final ConceptoForm conceptoForm) {
-		final ModelAndView result = null;
+		ModelAndView result = null;
 		try {
 			this.actorService.checkGestor();
 			Presupuesto p = this.presupuestoService.findOne(conceptoForm.getPresupuestoId());
@@ -89,7 +122,7 @@ public class ConceptoGestorController extends AbstractController {
 			c = this.conceptoService.save(c);
 			p.getConceptos().add(c);
 			p = this.presupuestoService.save(p);
-
+			result = this.crearVistaPadre(p);
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}

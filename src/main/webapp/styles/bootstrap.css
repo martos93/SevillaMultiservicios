@@ -1,12 +1,8 @@
-/* Estilo botón danger*/)
-.btn-danger {
-    color: #fff !important;
-    background-color: #bf1200 !important;
-    border-color: #bf1200 !important;
+/*Estilo modal*/
+.modal-backdrop, .modal-backdrop.fade.in{
+opacity: 0.1;
 }
 
-
-/*Estilo modal*/
 .modal{
     @media(min-width: 768px) {
         text-align: center;
@@ -143,4 +139,12 @@
     line-height: 1.42857143;
     vertical-align: top;
     border-top: 0px;
+}
+
+#ultimaFila{
+   border-top: 1px solid #666 !important;
+}
+
+#totalPresupuestoTabla{
+	border-left: 1px solid #666 !important;
 }
