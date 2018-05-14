@@ -30,6 +30,7 @@
 		<value>/views/cliente/messages</value>
 		<value>/views/iva/messages</value>
 		<value>/views/presupuesto/messages</value>
+		<value>/views/gasto/messages</value>
 		
 		
 	</util:list>

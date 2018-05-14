@@ -1,4 +1,3 @@
-
 function limpiarDatosNuevoConcepto(){
 	$('.has-error').hide();
 	$('#editarConcepto').hide();
@@ -7,6 +6,7 @@ function limpiarDatosNuevoConcepto(){
 	$('#modalConceptoLabel').show();
 	$('#modalConceptoLabelEdit').hide();
 }
+
 
 //función para eliminar conceptos
 function eliminarConcepto(conceptoId,presupuestoId) {

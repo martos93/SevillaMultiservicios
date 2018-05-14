@@ -39,16 +39,6 @@ public class ClienteGestorController extends AbstractController {
 	@Autowired
 	private PresupuestoService	presupuestoService;
 
-	@Autowired
-	private AgendaService		agendaService;
-
-	@Autowired
-	private SolicitudService	solicitudService;
-
-	@Autowired
-	private FacturaService		facturaService;
-
-
 	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;

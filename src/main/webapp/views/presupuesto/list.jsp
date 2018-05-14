@@ -54,7 +54,7 @@
 		<display:column>
 			 <button onclick="modificarPresupuesto('${presupuesto.id}')"style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
        <button onclick="verResumenFinanciero('${presupuesto.id}')" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Resumen financiero" style="color:#bf1200;"><span class='glyphicon glyphicon-piggy-bank'></span></a></button>
-         <button onclick="gastosPresupuesto('${presupuesto.id}')" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Hoja de gastos" style="color:#bf1200;"><span class='glyphicon glyphicon-eur'></span></a></button>
+         <button onclick="verGastos('${presupuesto.id}')" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Hoja de gastos" style="color:#bf1200;"><span class='glyphicon glyphicon-eur'></span></a></button>
        
        	
 		</display:column>
