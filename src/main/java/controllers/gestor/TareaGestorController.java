@@ -97,7 +97,7 @@ public class TareaGestorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/eliminarTarea", method = RequestMethod.GET)
-	public ModelAndView borrarConcepto(@RequestParam final int tareaId, @RequestParam final int presupuestoId, @RequestParam final int conceptoId) {
+	public ModelAndView eliminarTarea(@RequestParam final int tareaId, @RequestParam final int presupuestoId, @RequestParam final int conceptoId) {
 		ModelAndView result = new ModelAndView();
 		try {
 

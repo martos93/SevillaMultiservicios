@@ -86,7 +86,7 @@
 				</span></a></button>
 				
 				<button data-toggle="tooltip"
-				onclick="eliminarConcepto('${concepto.id}','${presupuestoForm.id}')"
+				onclick="eliminaEmpleado('${empleado.id}')"
 				data-placement="top" title="Eliminar"
 				style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button"
 				class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Eliminar"
@@ -111,6 +111,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title" id="modalEmpleadoLabel">Nuevo Empleado</h4>
+			<h4 class="modal-title" id="modalEmpleadoLabelEdit">Editar Empleado</h4>
 			</div>
 			<div class="modal-body">
 				<form:form id="formularioEmpleado" modelAttribute="empleadoForm">

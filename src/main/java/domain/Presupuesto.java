@@ -28,6 +28,7 @@ public class Presupuesto extends DomainEntity {
 	private String	direccionObra;
 	private Date	fechaFin;
 	private Date	fechaInicio;
+	private Date	fechaObra;
 	private String	localidad;
 	private String	provincia;
 	private String	observaciones;
@@ -206,6 +207,16 @@ public class Presupuesto extends DomainEntity {
 
 	public void setSolicitud(final Solicitud solicitud) {
 		this.solicitud = solicitud;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	public Date getFechaObra() {
+		return this.fechaObra;
+	}
+
+	public void setFechaObra(final Date fechaObra) {
+		this.fechaObra = fechaObra;
 	}
 
 }

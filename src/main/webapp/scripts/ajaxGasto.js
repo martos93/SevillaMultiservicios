@@ -21,6 +21,7 @@ function editarGasto(gastoId) {
 	$('#modalGastoLabel').hide();
 	$('#modalGastoLabelEdit').show();
 	$('#guardar').hide();
+	$('#gastoId').val(gastoId);
 	var presupuestoId = $('#presupuestoId').val();
 		$.ajax({
 		    url : "gestor/gasto/editarGasto.do?gastoId="+gastoId+"&presupuestoId="+presupuestoId,
@@ -30,7 +31,7 @@ function editarGasto(gastoId) {
 		    	var cantidad = formateaNum(data.cantidad);
 		    	$('#cantidad').val(cantidad);
 		    	$('#concepto').val(data.concepto);
-		    	$('#fecha').val(new Date(fecha));
+		    	$('#fecha').val(data.fecha);
 		    	$('#proveedor').val(data.proveedor);
 		    	$('#observaciones').val(data.observaciones);
 		    	$('#presupuestoId').val(presupuestoId);
@@ -54,9 +55,87 @@ function limpiarDatosGasto(){
 	$('#guardar').show();
 }
 
+function modificarGasto() {
+	toastr.clear();
+	$('.has-error').hide();
+	var cantidad = $('#cantidad').val();
+	var concepto = $('#concepto').val();
+	var fecha = $('#fecha').val();
+	var proveedor = $('#proveedor').val();
+	var observaciones = $('#observaciones').val();
+	var presupuestoId = $('#presupuestoId').val();
+	var gastoId = $('#gastoId').val();
+	
+	var gastoId = $('#gastoId').val();
+	var error = 'false';
+	
+	var validaciones = [cantidad,concepto,fecha,proveedor];
+	var nombresAtributos = ["cantidad","concepto","fecha","proveedor"];
+	
+	debugger
+	validaciones.forEach(function (atributo, i, validaciones) {
+	    if(atributo==""){
+	    	if(nombresAtributos[i]=="fecha"){
+	    		debugger
+	    		$("#fechaSpan").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+	    	}else{
+	    	$("#"+nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+	    	}
+	    	error = 'true';
+	    	
+	    }else{
+	    	if(nombresAtributos[i]=="fecha" && !fechaRegex.test(fecha)){
+	    		$("#"+nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		    	error = 'true';
+	    		alertaError("Formato de fecha no válido.");
+	    	}
+	    	
+	    }
+	});
+	
+	if(error=='true'){
+		alertaError("Debe completar los campos obligatorios.");
+		return false;
+	}
+	
+	cantidad = cantidad.split(".");
+	cantidad = cantidad.join('');
+	cantidad = cantidad.replace(",","\.");
+	if(cantidad.split(".")[1].length>2){
+		alertaError("Formato no válido de cantidad.");
+		return false;
+	}
+	var json = {"cantidad":cantidad,
+			"concepto":concepto,
+			"fecha":fecha,
+			"proveedor":proveedor,
+			"presupuestoId":presupuestoId,
+			"observaciones":observaciones,
+			"gastoId":gastoId,
+			};
+	
+	$.ajax({
+		url : "gestor/gasto/modificarGasto.do",
+	    type: "POST",
+	    data: JSON.stringify(json),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success : function(data) {
+	    	$('body').html(data);
+	    	
+	    },      
+	    error : function(data){
+	    	$('#modal').html(data);
+	    	
+	    }
+	});
+	        
+	}
+
 function guardarGasto() {
 	toastr.clear();
-	debugger;
 	$('.has-error').hide();
 	var cantidad = $('#cantidad').val();
 	var concepto = $('#concepto').val();
@@ -67,13 +146,16 @@ function guardarGasto() {
 	
 	var error = 'false';
 	
-	var validaciones = [cantidad,concepto,fecha,proveedor,observaciones];
-	var nombresAtributos = ["cantidad","concepto","fecha","proveedor","observaciones"];
+	var validaciones = [cantidad,concepto,fecha,proveedor];
+	var nombresAtributos = ["cantidad","concepto","fecha","proveedor"];
 	
 	validaciones.forEach(function (atributo, i, validaciones) {
 	    if(atributo==""){
+	    	if(nombresAtributos[i]=="fecha"){
+	    		$("#fechaSpan").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+	    	}else{
 	    	$("#"+nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
-	    	error = 'true';
+	    	}
 	    	
 	    }else{
 	    	if(nombresAtributos[i]=="fecha" && !fechaRegex.test(fecha)){
@@ -113,9 +195,9 @@ function guardarGasto() {
             xhr.setRequestHeader("Accept", "application/json");
             xhr.setRequestHeader("Content-Type", "application/json");
         },
+        
 	    success : function(data) {
 	    	$('body').html(data);
-	    	alertaExito("Se ha guardado correctamente el gasto.");
 	    },      
 	    error : function(data){
 	    	alertaError("Se ha producido un error al guardar el gasto.");
@@ -161,3 +243,32 @@ $(document).ready(function() {
         }
     });
 });
+
+function eliminarGasto(gastoId) {
+	if(confirm("Se borrará el gasto. Una vez borrado no podrá recuperar los datos. ¿Está seguro?")){
+		var presupuestoId = $("#presupuestoId").val();
+		$.ajax({
+		    url : "gestor/gasto/eliminarGasto.do?gastoId="+gastoId+"&presupuestoId="+presupuestoId,
+		    type: "GET",
+		    data: gastoId,
+		    success : function(data) {
+		    	$('body').html(data);
+		    	},      
+		    error : function(){
+		    	alertaError("Se ha producido un error al borrar el concepto.");
+		    }
+		});
+		
+	}
+}
+
+function formateaTablaGastos(){
+	var aux = "";
+	var auxNum = null;
+	var filas = $('#tablaGastos tr').length;
+	for(var i=1;i<filas;i++){
+		aux = $(".cantidad_"+i).html();
+		auxNum = formateaNum(parseFloat(aux));
+		$(".cantidad_"+i).html(auxNum + " €");
+	}
+}

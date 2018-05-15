@@ -17,6 +17,8 @@ function editarEmpleado(id) {
 	$('#editar').show();
 	$('#guardar').hide();
 	$('#empleadoId').val(id);
+	$('#modalEmpleadoLabelEdit').show();
+	$('#modalEmpleadoLabel').hide();
 	
 	editar = true;
 		$.ajax({
@@ -253,6 +255,8 @@ function limpiarDatos(){
 	$('#provincia').val("");
 	$('#email').val("");
 	$('#editar').hide();
+	$('#modalEmpleadoLabelEdit').hide();
+	$('#modalEmpleadoLabel').show();
 	
 	$('#password').show();
 	$('#passwordRepeat').show();

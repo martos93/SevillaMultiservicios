@@ -56,7 +56,7 @@
 		</div>
 		<div class="col-md-5 col-md-offset-1">
 		<div class="row">
-				<label>Fecha:</label> <fmt:formatDate value="${presupuestoForm.fechaInicio}" pattern="dd-MM-yyyy" />
+				<label>Fecha:</label> <fmt:formatDate value="${presupuestoForm.fechaInicio}" pattern="dd/MM/yyyy" />
 			</div>
 			<div class="row">
 				<label>Cliente:</label> ${cliente.nombre} ${cliente.apellidos}

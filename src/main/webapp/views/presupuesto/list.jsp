@@ -44,7 +44,7 @@
 
 		<display:column title="Iniciado">
 			<fmt:formatDate value="${presupuesto.fechaInicio}"
-				pattern="dd-MM-yyyy HH:mm" />
+				pattern="dd/MM/yyyy HH:mm" />
 		</display:column>
 
 		<display:column property="localidad" title="Localidad" />

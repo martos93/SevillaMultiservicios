@@ -24,6 +24,10 @@
 <script src="scripts/ajaxCliente.js"></script>
 <script src="scripts/ajaxPresupuesto.js"></script>
 <script src="scripts/ajaxGasto.js"></script>
+ <link href="styles/datepicker.css" rel="stylesheet" type="text/css">
+        <script src="scripts/datepicker/datepicker.min.js"></script>
+
+        <script src="scripts/datepicker/i18n/datepicker.es.js"></script>
 
 <script>
 	crearTabla('gasto');
@@ -46,15 +50,17 @@
 	<br>
 
 <jstl:if test="${fn:length(gastos)>0}">
-	<display:table name="gastos" id="gasto" requestURI="${requestURI}"
+	<display:table name="gastos" htmlId="tablaGastos" id="gasto" requestURI="${requestURI}"
 		class="table dt-responsive nowrap">
 
-		<display:column property="cantidad" title="Cantidad" />
+		<display:column class="cantidad_${gasto_rowNum}" title="Cantidad">
+		${gasto.cantidad} 
+		</display:column>
 
 		<display:column property="concepto" title="concepto" />
 
 		<display:column title="fecha">
-		<fmt:formatDate value="${gasto.fecha}" pattern="dd-MM-yyyy" />
+		<fmt:formatDate value="${gasto.fecha}" pattern="dd/MM/yyyy" />
 		</display:column>
 
 		<display:column property="observaciones" title="observaciones" />
@@ -82,7 +88,7 @@
 	</display:table>
 	</jstl:if>
 </div>
-
+<script>formateaTablaGastos();</script>
 
 <!-- Modal Gasto-->
 <div class="modal fade" id="modalGasto" tabindex="-1" role="dialog"
@@ -100,7 +106,8 @@
 			<div class="modal-body">
 				<form:form id="formularioGasto" modelAttribute="gastoForm">
 					<input type=hidden id="presupuestoId" name="presupuestoId" value="${presupuestoId}">
-					<div class="form-group">
+					<input type=hidden id="gastoId" name="gastoId">
+					
 						<div class="row">
 							<div class="col-md-5 col-md-offset-0">
 								<form:label path="cantidad" for="cantidad">Cantidad</form:label>
@@ -117,12 +124,12 @@
 						<div class="row">
 							<div class="col-md-5 col-md-offset-0">
 							<form:label path="fecha" for="fecha">Fecha:</form:label>
-							 <div class="form-group">
+							 <div class="form-group" id="fechaSpan">
 							 <div class='input-group date' id='fechaD'>
 								
-								<form:input path="fecha" cssClass="form-control" />
-								<span class="input-group-addon"> <span
-									class="glyphicon glyphicon-calendar"></span>
+								<form:input disabled="true" path="fecha" id="fecha" cssClass="form-control datepicker-here" style="cursor: default;" data-position="right top" />
+								<span class="input-group-addon" id="fireDate" style="cursor: pointer;"> <span
+									class="glyphicon glyphicon-calendar" ></span>
 								</span>
 							</div>
 							</div>
@@ -140,6 +147,7 @@
 									cssClass="form-control" />
 					</div>
 					</div>
+					
 
 				</form:form>
 			</div>
@@ -157,3 +165,15 @@
 </div>
 
 
+<script>
+//Initialization
+$('#fecha').datepicker({ language: 'es'});
+// Access instance of plugin
+$('#fecha').data('datepicker');
+dp = $('#fecha').datepicker().data('datepicker');
+$('#fireDate').on('click', function() {
+dp.show();
+$('#fecha').focus();
+});
+$("#datepickers-container").addClass("desplazar");
+</script>

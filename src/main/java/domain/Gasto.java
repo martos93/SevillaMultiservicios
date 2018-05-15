@@ -49,7 +49,7 @@ public class Gasto extends DomainEntity {
 	@NotNull
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getFecha() {
 		return this.fecha;
 	}

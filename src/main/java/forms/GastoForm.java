@@ -11,6 +11,7 @@ public class GastoForm {
 	private String		observaciones;
 	private String		proveedor;
 	private int			presupuestoId;
+	private int			gastoId;
 
 
 	public BigDecimal getCantidad() {
@@ -59,6 +60,14 @@ public class GastoForm {
 
 	public void setFecha(final String fecha) {
 		this.fecha = fecha;
+	}
+
+	public int getGastoId() {
+		return this.gastoId;
+	}
+
+	public void setGastoId(final int gastoId) {
+		this.gastoId = gastoId;
 	}
 
 }
