@@ -12,7 +12,7 @@ import domain.Cobro;
 @Repository
 public interface CobroRepository extends JpaRepository<Cobro, Integer> {
 
-	@Query("select distinct p.cobros from Presupuesto p join p.cobros c where p.id = ?1 order by c.id ASC")
+	@Query("select distinct p.cobros from Presupuesto p join p.cobros c where p.id = ?1 order by CONVERT(DATE, c.fechaCreacion) ASC")
 	ArrayList<Cobro> obtenerCobrosPorFecha(int id);
 
 }

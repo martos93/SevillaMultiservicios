@@ -149,6 +149,7 @@ public class CobroGestorController extends AbstractController {
 				totalPresupuesto = totalPresupuesto.subtract(cobroForm.getLiquidado());
 				c.setPendiente(totalPresupuesto);
 				c.setTotal(cobroForm.getLiquidado());
+				c.setFechaCreacion(new Date(System.currentTimeMillis()));
 				c = this.cobroService.save(c);
 				p.getCobros().add(c);
 				this.presupuestoService.save(p);
@@ -156,6 +157,7 @@ public class CobroGestorController extends AbstractController {
 				final Cobro ultimo = cobros.get(cobros.size() - 1);
 				c.setPendiente(ultimo.getPendiente().subtract(cobroForm.getLiquidado()));
 				c.setTotal(ultimo.getTotal().add(cobroForm.getLiquidado()));
+				c.setFechaCreacion(new Date(System.currentTimeMillis()));
 				c = this.cobroService.save(c);
 				p.getCobros().add(c);
 				this.presupuestoService.save(p);

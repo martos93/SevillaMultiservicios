@@ -23,6 +23,7 @@ public class Cobro extends DomainEntity {
 	private BigDecimal	liquidado;
 	private BigDecimal	pendiente;
 	private BigDecimal	total;
+	private Date		fechaCreacion;
 
 
 	@NotNull
@@ -62,6 +63,17 @@ public class Cobro extends DomainEntity {
 
 	public void setTotal(final BigDecimal total) {
 		this.total = total;
+	}
+
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(final Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
 	}
 
 }
