@@ -1,6 +1,7 @@
 
 package services;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -59,8 +60,10 @@ public class PresupuestoService {
 		return presupuesto;
 	}
 
+	@SuppressWarnings("deprecation")
 	public PresupuestoForm createForm(final Presupuesto p) {
 		final PresupuestoForm pForm = new PresupuestoForm();
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 		pForm.setAceptado(p.isAceptado());
 		pForm.setAgendas(p.getAgendas());
@@ -71,8 +74,23 @@ public class PresupuestoService {
 		pForm.setConceptos(p.getConceptos());
 		pForm.setDireccionObra(p.getDireccionObra());
 		pForm.setFactura(p.getFactura());
-		pForm.setFechaFin(p.getFechaFin());
-		pForm.setFechaInicio(p.getFechaInicio());
+
+		if (p.getFechaFin() != null) {
+			final String d1 = dateFormat.format(p.getFechaFin());
+			pForm.setFechaFin(new Date(d1));
+			pForm.setFechaFinS(d1);
+		}
+		if (p.getFechaObra() != null) {
+			final String d2 = dateFormat.format(p.getFechaObra());
+			pForm.setFechaObra(new Date(d2));
+			pForm.setFechaObraS(d2);
+		}
+
+		if (p.getFechaInicio() != null) {
+			final String d3 = dateFormat.format(p.getFechaInicio());
+			pForm.setFechaInicio(new Date(d3));
+			pForm.setFechaInicioS(d3);
+		}
 		pForm.setGastos(p.getGastos());
 		pForm.setLocalidad(p.getLocalidad());
 		pForm.setObservaciones(p.getObservaciones());

@@ -24,17 +24,19 @@
 <script src="scripts/ajaxCliente.js"></script>
 <script src="scripts/ajaxPresupuesto.js"></script>
 <script src="scripts/ajaxGasto.js"></script>
- <link href="styles/datepicker.css" rel="stylesheet" type="text/css">
-        <script src="scripts/datepicker/datepicker.min.js"></script>
+<link href="styles/datepicker.css" rel="stylesheet" type="text/css">
+<script src="scripts/datepicker/datepicker.min.js"></script>
 
-        <script src="scripts/datepicker/i18n/datepicker.es.js"></script>
+<script src="scripts/datepicker/i18n/datepicker.es.js"></script>
 
 <script>
 	crearTabla('gasto');
 </script>
 
 <div class="container">
-	<h1>Hoja de gastos</h1>
+	<h1>
+		Hoja de gastos del presupuesto: <b>${codigoPresupuesto}</b>
+	</h1>
 </div>
 
 <div class="container">
@@ -49,43 +51,44 @@
 	</div>
 	<br>
 
-<jstl:if test="${fn:length(gastos)>0}">
-	<display:table name="gastos" htmlId="tablaGastos" id="gasto" requestURI="${requestURI}"
-		class="table dt-responsive nowrap">
+	<jstl:if test="${fn:length(gastos)>0}">
+		<display:table name="gastos" htmlId="tablaGastos" id="gasto" sort="external" defaultsort="3"
+			requestURI="${requestURI}" class="table dt-responsive nowrap">
 
-		<display:column class="cantidad_${gasto_rowNum}" title="Cantidad">
+			<display:column class="cantidad_${gasto_rowNum}" title="Cantidad">
 		${gasto.cantidad} 
 		</display:column>
 
-		<display:column property="concepto" title="concepto" />
+			<display:column property="concepto" title="Concepto" />
 
-		<display:column title="fecha">
-		<fmt:formatDate value="${gasto.fecha}" pattern="dd/MM/yyyy" />
-		</display:column>
+			<display:column title="Fecha" >
+				<fmt:formatDate value="${gasto.fecha}" pattern="dd/MM/yyyy" />
+			</display:column>
 
-		<display:column property="observaciones" title="observaciones" />
+			<display:column property="observaciones" title="Observaciones" />
 
-		<display:column property="proveedor" title="proveedor" />
+			<display:column property="proveedor" title="Proveedor" />
 
-		<display:column sortable="disabled">
-			<button onclick="editarGasto(${gasto.id})"
-				data-toggle="modal" data-target="#modalGasto"
-				style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
-				type="button" class="btn btn-link">
-				<a data-toggle="tooltip" data-placement="top" title="Editar"
-					style="color: #bf1200;"><span
-					class='glyphicon glyphicon-pencil'></span></a>
-			</button>
-			<button onclick="eliminarGasto(${gasto.id})"
-				style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
-				type="button" class="btn btn-link">
-				<a data-toggle="tooltip" data-placement="top"
-					title="Eliminar" style="color: #bf1200;"><span
-					class='glyphicon glyphicon-remove'></span></a>
-			</button>
-		</display:column>
+<display:column property="tipo" title="Tipo de gasto" />
+			<display:column sortable="disabled">
+				<button onclick="editarGasto(${gasto.id})" data-toggle="modal"
+					data-target="#modalGasto"
+					style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
+					type="button" class="btn btn-link">
+					<a data-toggle="tooltip" data-placement="top" title="Editar"
+						style="color: #bf1200;"><span
+						class='glyphicon glyphicon-pencil'></span></a>
+				</button>
+				<button onclick="eliminarGasto(${gasto.id})"
+					style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
+					type="button" class="btn btn-link">
+					<a data-toggle="tooltip" data-placement="top" title="Eliminar"
+						style="color: #bf1200;"><span
+						class='glyphicon glyphicon-remove'></span></a>
+				</button>
+			</display:column>
 
-	</display:table>
+		</display:table>
 	</jstl:if>
 </div>
 <script>formateaTablaGastos();</script>
@@ -105,49 +108,65 @@
 			</div>
 			<div class="modal-body">
 				<form:form id="formularioGasto" modelAttribute="gastoForm">
-					<input type=hidden id="presupuestoId" name="presupuestoId" value="${presupuestoId}">
+					<input type=hidden id="presupuestoId" name="presupuestoId"
+						value="${presupuestoId}">
 					<input type=hidden id="gastoId" name="gastoId">
-					
-						<div class="row">
-							<div class="col-md-5 col-md-offset-0">
-								<form:label path="cantidad" for="cantidad">Cantidad</form:label>
-								<form:input cssClass="form-control" path="cantidad" onchange="actualizaCantidadGasto()" />
-							</div>
-							<div class="col-md-5 col-md-offset-1">
-								<form:label path="concepto" for="concepto">Concepto:</form:label>
-								<form:input id="concepto" path="concepto"
-									cssClass="form-control" />
 
+					<div class="row">
+						<div class="col-md-5 col-md-offset-0">
+							<form:label path="cantidad" for="cantidad">Cantidad</form:label>
+							<form:input cssClass="form-control" path="cantidad"
+								onchange="actualizaCantidadGasto()" />
+						</div>
+						<div class="col-md-5 col-md-offset-1">
+							<form:label path="concepto" for="concepto">Concepto:</form:label>
+							<form:input id="concepto" path="concepto" cssClass="form-control" />
+
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-md-offset-0">
+							<form:label path="fecha" for="fecha">Fecha:</form:label>
+							<div class="form-group" id="fechaSpan">
+								<div class='input-group date' id='fechaD'>
+
+									<form:input disabled="true" path="fecha" id="fecha"
+										cssClass="form-control datepicker-here"
+										style="cursor: default;" data-position="right top" />
+									<span class="input-group-addon" id="fireDate"
+										style="cursor: pointer;"> <span
+										class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
 							</div>
 						</div>
-
-						<div class="row">
-							<div class="col-md-5 col-md-offset-0">
-							<form:label path="fecha" for="fecha">Fecha:</form:label>
-							 <div class="form-group" id="fechaSpan">
-							 <div class='input-group date' id='fechaD'>
-								
-								<form:input disabled="true" path="fecha" id="fecha" cssClass="form-control datepicker-here" style="cursor: default;" data-position="right top" />
-								<span class="input-group-addon" id="fireDate" style="cursor: pointer;"> <span
-									class="glyphicon glyphicon-calendar" ></span>
-								</span>
-							</div>
-							</div>
-							</div>
-							<div class="col-md-5 col-md-offset-1">
-								<form:label path="proveedor" for="proveedor">Proveedor:</form:label>
-								<form:input type="proveedor" path="proveedor"
-									cssClass="form-control" />
-							</div>
+						<div class="col-md-5 col-md-offset-1">
+							<form:label path="proveedor" for="proveedor">Proveedor:</form:label>
+							<form:input type="proveedor" path="proveedor"
+								cssClass="form-control" />
+						</div>
 					</div>
 					<div class="row">
-					<div class="col-md-11 col-md-offset-0">
-					<form:label path="observaciones" for="observaciones">Observaciones:</form:label>
-					<form:input type="observaciones" path="observaciones"
-									cssClass="form-control" />
+						<div class="col-md-11 col-md-offset-0">
+							<form:label path="tipo" for="tipo">Tipo de gasto:</form:label>
+							<form:label path="tipo" for="sel1">Select list:</form:label>
+							<form:select path="tipo" name="tipo" class="form-control"
+								id="tipo">
+								<option value="Material" selected>Material</option>
+								<option value="Mano de obra">Mano de obra</option>
+								<option value="Subcontratación">Subcontratación</option>
+							</form:select>
+						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-11 col-md-offset-0">
+							<form:label path="observaciones" for="observaciones">Observaciones:</form:label>
+							<form:input type="observaciones" path="observaciones"
+								cssClass="form-control" />
+						</div>
 					</div>
-					
+
 
 				</form:form>
 			</div>
@@ -167,7 +186,7 @@
 
 <script>
 //Initialization
-$('#fecha').datepicker({ language: 'es'});
+$('#fecha').datepicker({ language: 'es', maxDate: new Date() });
 // Access instance of plugin
 $('#fecha').data('datepicker');
 dp = $('#fecha').datepicker().data('datepicker');

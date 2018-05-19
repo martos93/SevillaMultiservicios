@@ -22,6 +22,7 @@ function editarGasto(gastoId) {
 	$('#modalGastoLabelEdit').show();
 	$('#guardar').hide();
 	$('#gastoId').val(gastoId);
+	
 	var presupuestoId = $('#presupuestoId').val();
 		$.ajax({
 		    url : "gestor/gasto/editarGasto.do?gastoId="+gastoId+"&presupuestoId="+presupuestoId,
@@ -35,6 +36,7 @@ function editarGasto(gastoId) {
 		    	$('#proveedor').val(data.proveedor);
 		    	$('#observaciones').val(data.observaciones);
 		    	$('#presupuestoId').val(presupuestoId);
+		    	$('#tipo').val(data.tipo);
 		    	},      
 		    error : function(){
 		    	alertaError("Se ha producido un error al editar el gasto.");
@@ -53,6 +55,8 @@ function limpiarDatosGasto(){
 	$('#modalGastoLabelEdit').hide();
 	$('#modalGastoLabel').show();
 	$('#guardar').show();
+	$('#tipo').val("Material");
+	
 }
 
 function modificarGasto() {
@@ -66,7 +70,7 @@ function modificarGasto() {
 	var presupuestoId = $('#presupuestoId').val();
 	var gastoId = $('#gastoId').val();
 	
-	var gastoId = $('#gastoId').val();
+	var tipo = $('#tipo').val();
 	var error = 'false';
 	
 	var validaciones = [cantidad,concepto,fecha,proveedor];
@@ -112,6 +116,7 @@ function modificarGasto() {
 			"presupuestoId":presupuestoId,
 			"observaciones":observaciones,
 			"gastoId":gastoId,
+			"tipo":tipo
 			};
 	
 	$.ajax({
@@ -143,7 +148,7 @@ function guardarGasto() {
 	var proveedor = $('#proveedor').val();
 	var observaciones = $('#observaciones').val();
 	var presupuestoId = $('#presupuestoId').val();
-	
+	var tipo = $('#tipo').val();
 	var error = 'false';
 	
 	var validaciones = [cantidad,concepto,fecha,proveedor];
@@ -184,7 +189,8 @@ function guardarGasto() {
 			"fecha":fecha,
 			"proveedor":proveedor,
 			"presupuestoId":presupuestoId,
-			"observaciones":observaciones
+			"observaciones":observaciones,
+			"tipo":tipo
 			};
 	
 	$.ajax({

@@ -41,6 +41,8 @@
 <script src="scripts/ajaxPresupuesto.js"></script>
 <script src="scripts/ajaxEmpleado.js"></script>
 <script src="scripts/ajaxGasto.js"></script>
+<script src="scripts/ajaxCobro.js"></script>
+
 <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 <link rel="stylesheet" href="styles/common.css" type="text/css">
@@ -54,6 +56,7 @@
 $(function () {
 	  $('[data-toggle="tooltip"]').tooltip()
 	})
+	$('.dropdown-toggle').dropdown();
 	</script>
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 

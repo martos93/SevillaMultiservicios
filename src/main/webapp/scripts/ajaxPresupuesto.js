@@ -89,6 +89,8 @@ function guardarDatosPresupuesto(presupuestoId,clienteId){
 	var direccionObra = $('#direccionObra').val();
 	var localidad = $('#localidad').val();
 	var provincia = $('#provincia').val();
+	var fechaFinS = $('#fechaFinS').val();
+	var fechaObraS = $('#fechaObraS').val();
 	
 	var validaciones = [titulo,codigo,direccionObra,localidad,provincia];
 	var nombres = ["titulo","codigo","direccionObra","localidad","provincia"];
@@ -113,7 +115,9 @@ function guardarDatosPresupuesto(presupuestoId,clienteId){
 			"localidad":localidad,
 			"provincia":provincia,
 			"id":presupuestoId,
-			"clienteId":clienteId
+			"clienteId":clienteId,
+			"fechaFinS":fechaFinS,
+			"fechaObraS":fechaObraS
 	}
 	
 	$.ajax({
@@ -134,3 +138,4 @@ function guardarDatosPresupuesto(presupuestoId,clienteId){
 	});
 	
 }
+

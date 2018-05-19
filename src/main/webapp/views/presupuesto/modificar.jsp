@@ -12,15 +12,20 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+ <link href="styles/datepicker.css" rel="stylesheet" type="text/css">
+        <script src="scripts/datepicker/datepicker.min.js"></script>
+
+        <script src="scripts/datepicker/i18n/datepicker.es.js"></script>
+
 <%int var=0;%>
 <form:form id="formularioConcepto"  modelAttribute="presupuestoForm">
 			
 <div class="container">
 <div class="row">
-<div class="col-md-4 col-md-offset-0">
+	<div class="col-md-3 col-md-offset-0">
 	<form:label path="titulo" for="titulo">Titulo: </form:label><form:input path="titulo" id="titulo" cssClass="form-control" />
 	</div>
-	<div class="col-md-1 col-md-offset-0">
+	<div class="col-md-2 col-md-offset-0">
 	<form:label path="codigo" for="codigo">Código: </form:label><form:input path="codigo" id="codigo" cssClass="form-control" />
 	</div>
 	<div class="col-md-3 col-md-offset-0">
@@ -32,10 +37,40 @@
 	<div class="col-md-2 col-md-offset-0">
 	<form:label path="provincia" for="provincia">Provincia: </form:label><form:input path="provincia" id="provincia" cssClass="form-control" />
 	</div>
+</div><br>
+<div class="row">
+<div class="col-md-2 col-md-offset-0">
+	<form:label path="fechaInicioS" for="fechaInicioS">Fecha Presupuesto: </form:label><form:input disabled="true" path="fechaInicioS" id="fechaInicioS" cssClass="form-control" style="cursor:default"/>
+	</div>
+	<div class="col-md-2 col-md-offset-0">
+	<form:label path="fechaObraS" for="fechaObraS">Fecha Inicio Obra: </form:label>
 	
+<div class="form-group" id="fechaSpan">
+							 <div class='input-group date'>
+								
+								<form:input disabled="true" path="fechaObraS" id="fechaObraS" cssClass="form-control" style="cursor: default;" data-position="right top" />
+								<span class="input-group-addon" id="fireDate" style="cursor: pointer;"> <span
+									class="glyphicon glyphicon-calendar" ></span>
+								</span>
+							</div>
+							</div>
+	</div>
+	<div class="col-md-2 col-md-offset-0">
+	<form:label path="fechaFinS" for="fechaFinS">Fecha Fin Obra: </form:label>
+	 <div class="form-group" id="fechaSpanS">
+							 <div class='input-group date'>
+								
+								<form:input disabled="true" path="fechaFinS" id="fechaFinS" cssClass="form-control" style="cursor: default;" data-position="right top" />
+								<span class="input-group-addon" id="fireDateS" style="cursor: pointer;"> <span
+									class="glyphicon glyphicon-calendar" ></span>
+								</span>
+							</div>
+							</div>
+</div>
+
 </div>
 <div class="row">
-<div class="col-md-12 col-md-offset-0">
+<div class="col-md-5 col-md-offset-0">
 	<br>
 	<c:choose>
     <c:when test="${presupuestoForm.aceptado}">
@@ -260,4 +295,32 @@
 		</div>
 	</div>
 </div>
+
+<script>
+var fin = $('#fechaFinS').val();
+$('#fechaFinS').datepicker({ language: 'es', maxDate: new Date() });
+$('#fechaFinS').data('datepicker');
+var dp2 = $('#fechaFinS').datepicker().data('datepicker');
+$('#fireDateS').on('click', function() {
+dp2.show();
+$('#fechaFinS').focus();
+});
+$("#datepickers-container").addClass("desplazar");
+$('#fechaFinS').val(fin);
+
+var fechaObra = $('#fechaObraS').val();
+$('#fechaObraS').datepicker({ language: 'es' });
+$('#fechaObraS').data('datepicker');
+var dp = $('#fechaObraS').datepicker().data('datepicker');
+$('#fireDate').on('click', function() {
+dp.show();
+$('#fechaObraS').focus();
+});
+$("#datepickers-container").addClass("desplazar");
+$('#fechaObraS').val(fechaObra);
+
+
+</script>
+
+
 

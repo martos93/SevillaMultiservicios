@@ -25,6 +25,7 @@ public class Gasto extends DomainEntity {
 	private Date		fecha;
 	private String		observaciones;
 	private String		proveedor;
+	private String		tipo;
 
 
 	@NotNull
@@ -75,6 +76,16 @@ public class Gasto extends DomainEntity {
 
 	public void setProveedor(final String proveedor) {
 		this.proveedor = proveedor;
+	}
+
+	@NotBlank
+	@SafeHtml
+	public String getTipo() {
+		return this.tipo;
+	}
+
+	public void setTipo(final String tipo) {
+		this.tipo = tipo;
 	}
 
 }

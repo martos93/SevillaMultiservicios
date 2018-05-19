@@ -15,19 +15,47 @@ import domain.Solicitud;
 
 public class PresupuestoForm {
 
-	// Atributos
+	// Atributoscliente
 	private boolean	aceptado;
 	private String	codigo;
 	private String	direccionObra;
 	private Date	fechaFin;
 	private Date	fechaInicio;
+	private Date	fechaObra;
 	private String	localidad;
 	private String	provincia;
 	private String	observaciones;
 	private String	titulo;
 	private int		id;
 	private int		clienteId;
+	private String	fechaFinS;
+	private String	fechaInicioS;
+	private String	fechaObraS;
 
+
+	public String getFechaFinS() {
+		return this.fechaFinS;
+	}
+
+	public void setFechaFinS(final String fechaFinS) {
+		this.fechaFinS = fechaFinS;
+	}
+
+	public String getFechaInicioS() {
+		return this.fechaInicioS;
+	}
+
+	public void setFechaInicioS(final String fechaInicioS) {
+		this.fechaInicioS = fechaInicioS;
+	}
+
+	public String getFechaObraS() {
+		return this.fechaObraS;
+	}
+
+	public void setFechaObraS(final String fechaObraS) {
+		this.fechaObraS = fechaObraS;
+	}
 
 	public int getId() {
 		return this.id;
@@ -186,11 +214,19 @@ public class PresupuestoForm {
 	}
 
 	public int getClienteId() {
-		return clienteId;
+		return this.clienteId;
 	}
 
-	public void setClienteId(int clienteId) {
+	public void setClienteId(final int clienteId) {
 		this.clienteId = clienteId;
+	}
+
+	public Date getFechaObra() {
+		return this.fechaObra;
+	}
+
+	public void setFechaObra(final Date fechaObra) {
+		this.fechaObra = fechaObra;
 	}
 
 }

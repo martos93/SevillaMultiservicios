@@ -2,6 +2,8 @@
 package controllers.gestor;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +72,7 @@ public class PresupuestoGestorController extends AbstractController {
 			presupuesto.setLocalidad(presupuestoForm.getLocalidad());
 			presupuesto.setProvincia(presupuestoForm.getProvincia());
 			presupuesto = this.presupuestoService.save(presupuesto);
-			presupuestoForm.setFechaInicio(presupuesto.getFechaInicio());
+			presupuesto.setFechaInicio(presupuestoForm.getFechaInicio());
 
 			result = new ModelAndView("presupuesto/modificarPresupuesto");
 			result.addObject("ocultaCabecera", true);
@@ -126,16 +128,23 @@ public class PresupuestoGestorController extends AbstractController {
 	@RequestMapping(value = "/guardarDatosPresupuesto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ModelAndView guardarDatos(@RequestBody PresupuestoForm presupuestoForm) {
 		ModelAndView result = null;
+		final Cliente cliente = this.clienteService.findOne(presupuestoForm.getClienteId());
+		Presupuesto presupuesto = this.presupuestoService.findOne(presupuestoForm.getId());
+
 		try {
-			final Cliente cliente = this.clienteService.findOne(presupuestoForm.getClienteId());
 			this.actorService.checkGestor();
-			Presupuesto presupuesto = this.presupuestoService.findOne(presupuestoForm.getId());
 
 			presupuesto.setTitulo(presupuestoForm.getTitulo());
 			presupuesto.setCodigo(presupuestoForm.getCodigo());
 			presupuesto.setDireccionObra(presupuestoForm.getDireccionObra());
 			presupuesto.setLocalidad(presupuestoForm.getLocalidad());
 			presupuesto.setProvincia(presupuestoForm.getProvincia());
+
+			final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			final Date d = dateFormat.parse(presupuestoForm.getFechaObraS());
+			presupuesto.setFechaObra(d);
+			final Date d2 = dateFormat.parse(presupuestoForm.getFechaFinS());
+			presupuesto.setFechaFin(d2);
 			presupuesto = this.presupuestoService.save(presupuesto);
 
 			result = new ModelAndView("presupuesto/modificarPresupuesto");
@@ -155,6 +164,22 @@ public class PresupuestoGestorController extends AbstractController {
 			tareaForm.setPresupuestoId(presupuesto.getId());
 			result.addObject("tareaForm", tareaForm);
 		} catch (final Exception e) {
+			result = new ModelAndView("presupuesto/modificarPresupuesto");
+			result.addObject("ocultaCabecera", true);
+			result.addObject("cliente", cliente);
+
+			presupuestoForm = this.presupuestoService.createForm(presupuesto);
+			result.addObject("presupuestoForm", presupuestoForm);
+			final BigDecimal totalPresupuesto = OperacionesPresupuesto.totalPresupuesto(presupuesto);
+			result.addObject("totalPresupuesto", totalPresupuesto);
+			final ConceptoForm conceptoForm = new ConceptoForm();
+			conceptoForm.setClienteId(cliente.getId());
+			conceptoForm.setPresupuestoId(presupuesto.getId());
+			result.addObject("conceptoForm", conceptoForm);
+
+			final TareaForm tareaForm = new TareaForm();
+			tareaForm.setPresupuestoId(presupuesto.getId());
+			result.addObject("tareaForm", tareaForm);
 			this.logger.error("Se ha producido un error al crear el presupuesto");
 		}
 		return result;

@@ -48,13 +48,16 @@ public class GastoGestorController extends AbstractController {
 	public ModelAndView list(@RequestParam final int presupuestoId) {
 		ModelAndView result = null;
 		try {
+			final Presupuesto p = this.presupuestoService.findOne(presupuestoId);
 			result = new ModelAndView("gasto/listAll");
-			result.addObject("gastos", this.presupuestoService.findOne(presupuestoId).getGastos());
+			result.addObject("gastos", p.getGastos());
 			final GastoForm gastoForm = new GastoForm();
 			gastoForm.setPresupuestoId(presupuestoId);
 			result.addObject("gastoForm", gastoForm);
 			result.addObject("requestURI", "gestor/gasto/listAll.do");
 			result.addObject("presupuestoId", presupuestoId);
+			result.addObject("codigoPresupuesto", p.getCodigo());
+
 		} catch (final Exception e) {
 			this.logger.error(e.getLocalizedMessage());
 		}
@@ -84,6 +87,7 @@ public class GastoGestorController extends AbstractController {
 			gasto.setFecha(d);
 			gasto.setObservaciones(gastoForm.getObservaciones());
 			gasto.setProveedor(gastoForm.getProveedor());
+			gasto.setTipo(gastoForm.getTipo());
 			gasto = this.gastoService.save(gasto);
 			p.getGastos().add(gasto);
 			p = this.presupuestoService.save(p);
@@ -121,6 +125,7 @@ public class GastoGestorController extends AbstractController {
 			gasto.setFecha(date);
 			gasto.setObservaciones(gastoForm.getObservaciones());
 			gasto.setProveedor(gastoForm.getProveedor());
+			gasto.setTipo(gastoForm.getTipo());
 			gasto = this.gastoService.save(gasto);
 			result = this.crearVistaPadre(p);
 			result.addObject("success", true);
@@ -152,6 +157,7 @@ public class GastoGestorController extends AbstractController {
 			gastoForm.setPresupuestoId(presupuestoId);
 			gastoForm.setProveedor(gasto.getProveedor());
 			gastoForm.setGastoId(gastoId);
+			gastoForm.setTipo(gasto.getTipo());
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
@@ -187,6 +193,7 @@ public class GastoGestorController extends AbstractController {
 		result.addObject("presupuestoId", p.getId());
 		result.addObject("gastoForm", gastoForm);
 		result.addObject("requestURI", "gestor/gasto/listAll.do");
+		result.addObject("codigoPresupuesto", p.getCodigo());
 		return result;
 	}
 }

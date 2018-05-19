@@ -12,6 +12,7 @@ public class GastoForm {
 	private String		proveedor;
 	private int			presupuestoId;
 	private int			gastoId;
+	private String		tipo;
 
 
 	public BigDecimal getCantidad() {
@@ -68,6 +69,14 @@ public class GastoForm {
 
 	public void setGastoId(final int gastoId) {
 		this.gastoId = gastoId;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 }

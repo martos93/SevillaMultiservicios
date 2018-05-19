@@ -1,34 +1,35 @@
 
-package domain;
+package forms;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
+public class CobroForm {
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-@Entity
-@Access(AccessType.PROPERTY)
-public class Cobro extends DomainEntity {
-
-	// Atributos
 	private Date		fecha;
 	private BigDecimal	liquidado;
 	private BigDecimal	pendiente;
 	private BigDecimal	total;
+	private int			presupuestoId;
+	private int			cobroId;
 
 
-	@NotNull
-	@Past
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	public int getPresupuestoId() {
+		return this.presupuestoId;
+	}
+
+	public void setPresupuestoId(final int presupuestoId) {
+		this.presupuestoId = presupuestoId;
+	}
+
+	public int getCobroId() {
+		return this.cobroId;
+	}
+
+	public void setCobroId(final int cobroId) {
+		this.cobroId = cobroId;
+	}
+
 	public Date getFecha() {
 		return this.fecha;
 	}
@@ -37,7 +38,6 @@ public class Cobro extends DomainEntity {
 		this.fecha = fecha;
 	}
 
-	@NotNull
 	public BigDecimal getLiquidado() {
 		return this.liquidado;
 	}
@@ -46,7 +46,6 @@ public class Cobro extends DomainEntity {
 		this.liquidado = liquidado;
 	}
 
-	@NotNull
 	public BigDecimal getPendiente() {
 		return this.pendiente;
 	}
@@ -55,7 +54,6 @@ public class Cobro extends DomainEntity {
 		this.pendiente = pendiente;
 	}
 
-	@NotNull
 	public BigDecimal getTotal() {
 		return this.total;
 	}

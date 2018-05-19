@@ -184,6 +184,7 @@
 		<property name="concepto" value="Azulejos" />
 		<property name="fecha" value="01/05/2018" />
 		<property name="proveedor" value="Azulejos Manuel SL" />
+<property name="tipo" value="MAT" />
 
 	</bean>
 	
@@ -192,7 +193,7 @@
 		<property name="concepto" value="Ladrillos" />
 		<property name="fecha" value="01/05/2018" />
 		<property name="proveedor" value="Ladrillos Antonio SL" />
-
+<property name="tipo" value="OBRA" />
 	</bean>
 	
 		<bean id="gasto3" class="domain.Gasto">
@@ -200,7 +201,7 @@
 		<property name="concepto" value="Plasticos" />
 		<property name="fecha" value="01/05/2018" />
 		<property name="proveedor" value="Plasticos Pedro SL" />
-
+	<property name="tipo" value="SUB" />
 	</bean>
 
 	<!-- Cobros -->

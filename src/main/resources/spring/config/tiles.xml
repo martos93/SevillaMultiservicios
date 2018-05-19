@@ -30,7 +30,7 @@
 		<value>/views/iva/tiles.xml</value>
 		<value>/views/presupuesto/tiles.xml</value>
 		<value>/views/gasto/tiles.xml</value>
-		
+		<value>/views/cobro/tiles.xml</value>
 	</util:list>
 
 </beans>
