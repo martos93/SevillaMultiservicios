@@ -4,7 +4,6 @@ package controllers.gestor;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -30,7 +29,6 @@ import services.ActorService;
 import services.ClienteService;
 import services.CobroService;
 import services.PresupuestoService;
-import utilities.CobroComparator;
 
 @Controller
 @RequestMapping("/gestor/cobro")
@@ -91,7 +89,7 @@ public class CobroGestorController extends AbstractController {
 
 			if (margenManiobra.compareTo(new BigDecimal(0)) == -1)
 				result.addObject("margenNegativo", true);
-			result.addObject("cobros", p.getCobros());
+			result.addObject("cobros", this.cobroService.obtenerCobrosPorFecha(p.getId()));
 
 			final CobroForm cobroForm = new CobroForm();
 			cobroForm.setPresupuestoId(presupuestoId);
@@ -130,13 +128,12 @@ public class CobroGestorController extends AbstractController {
 
 	@RequestMapping(value = "/nuevoCobro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ModelAndView nuevoConcepto(@RequestBody final CobroForm cobroForm) {
-		final ModelAndView result = null;
+		ModelAndView result = null;
 		try {
 			this.actorService.checkGestor();
 			final Presupuesto p = this.presupuestoService.findOne(cobroForm.getPresupuestoId());
-			final ArrayList<Cobro> cobros = (ArrayList<Cobro>) p.getCobros();
-			Collections.sort(cobros, new CobroComparator());
-			final Cobro c = new Cobro();
+			final ArrayList<Cobro> cobros = this.cobroService.obtenerCobrosPorFecha(p.getId());
+			Cobro c = new Cobro();
 			final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			final Date fecha = dateFormat.parse(cobroForm.getFechaS());
 			c.setFecha(fecha);
@@ -152,13 +149,74 @@ public class CobroGestorController extends AbstractController {
 				totalPresupuesto = totalPresupuesto.subtract(cobroForm.getLiquidado());
 				c.setPendiente(totalPresupuesto);
 				c.setTotal(cobroForm.getLiquidado());
+				c = this.cobroService.save(c);
+				p.getCobros().add(c);
+				this.presupuestoService.save(p);
 			} else {
-
+				final Cobro ultimo = cobros.get(cobros.size() - 1);
+				c.setPendiente(ultimo.getPendiente().subtract(cobroForm.getLiquidado()));
+				c.setTotal(ultimo.getTotal().add(cobroForm.getLiquidado()));
+				c = this.cobroService.save(c);
+				p.getCobros().add(c);
+				this.presupuestoService.save(p);
 			}
 
+			result = this.crearVistaPadre(cobroForm.getPresupuestoId());
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
+		return result;
+	}
+
+	public ModelAndView crearVistaPadre(final int presupuestoId) {
+		ModelAndView result = null;
+		final Presupuesto p = this.presupuestoService.findOne(presupuestoId);
+		final PresupuestoForm presupuestoForm = this.presupuestoService.createForm(p);
+		result = new ModelAndView("cobro/resumenFinanciero");
+		BigDecimal presupuestado = new BigDecimal(0);
+		for (final Concepto g : p.getConceptos())
+			presupuestado = presupuestado.add(g.getTotal());
+		result.addObject("presupuestado", presupuestado);
+		BigDecimal addFactura = new BigDecimal(0);
+		if (p.getFactura() != null)
+			for (final Concepto c : p.getFactura().getConceptos())
+				addFactura = addFactura.add(c.getTotal());
+		result.addObject("addFactura", addFactura);
+		BigDecimal mo = new BigDecimal(0);
+		BigDecimal mat = new BigDecimal(0);
+		BigDecimal sub = new BigDecimal(0);
+		for (final Gasto g : p.getGastos())
+			if (g.getTipo().equals("Mano de obra"))
+				mo = mo.add(g.getCantidad());
+			else if (g.getTipo().equals("Material"))
+				mat = mat.add(g.getCantidad());
+			else
+				sub = sub.add(g.getCantidad());
+		result.addObject("manoObra", mo);
+		result.addObject("material", mat);
+		result.addObject("subCont", sub);
+
+		BigDecimal margenManiobra = new BigDecimal(0);
+		margenManiobra = margenManiobra.add(presupuestado);
+		margenManiobra = margenManiobra.add(addFactura);
+		margenManiobra = margenManiobra.subtract(mo);
+		margenManiobra = margenManiobra.subtract(mat);
+		margenManiobra = margenManiobra.subtract(sub);
+		result.addObject("margenManiobra", margenManiobra);
+
+		if (margenManiobra.compareTo(new BigDecimal(0)) == -1)
+			result.addObject("margenNegativo", true);
+		result.addObject("cobros", this.cobroService.obtenerCobrosPorFecha(p.getId()));
+
+		final CobroForm cobroForm = new CobroForm();
+		cobroForm.setPresupuestoId(presupuestoId);
+		result.addObject("cobroForm", cobroForm);
+		result.addObject("presupuestoId", presupuestoId);
+		result.addObject("codigoPresupuesto", p.getCodigo());
+		result.addObject("ocultaCabecera", true);
+		result.addObject("presupuestoForm", presupuestoForm);
+		result.addObject("cliente", this.clienteService.findOne(p.getCliente().getId()));
+
 		return result;
 	}
 }

@@ -53,9 +53,7 @@ function actualizaLiqCobro() {
 	if (String(liquidado).includes("-")) {
 		$('#liquidado').val(String(liquidado).replace("-", ""));
 	}
-	if (String(liquidado).includes(".")) {
-		$('#liquidado').val(String(liquidado).split("\.")[0]);
-	}
+	
 	liquidado = $('#liquidado').val() * 1;
 	if (liquidado !== null && liquidado > 0) {
 		liquidado = formateaNum(liquidado);
@@ -93,7 +91,7 @@ function formateaValoresCobro() {
 		for(var i =1;i<=filas;i++){
 			val = $("#"+variables[j]+i).html();
 			val = formateaNum(parseFloat(val));
-			$("#"+variables[j]+i).html("&nbsp;"+val+" €");
+			$("#"+variables[j]+i).html(val+" €");
 		}
 	}
 }
@@ -121,6 +119,7 @@ $(document).ready(function() {
 });
 
 function guardarCobro(){
+	debugger
 	toastr.clear()
 	$('.has-error').hide();
 	var fecha = $('#fecha').val();
@@ -140,7 +139,6 @@ function guardarCobro(){
 	liquidado = liquidado.replace(/\./g , "");
 	liquidado = liquidado.replace(/,/g,"\.");
 	liquidado = parseFloat(liquidado);
-	window.alert(liquidado);
 	if(error){
 		alertaError("Debe completar los campos obligatorios.");
 		return false;
@@ -158,6 +156,7 @@ function guardarCobro(){
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	
 	    	alertaExito("Se ha guardado correctamente el cobro.");
 	    },      
 	    error : function(data){

@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,10 @@ public class CobroService {
 	}
 	public void delete(final Cobro cobro) {
 		this.cobroRepository.delete(cobro);
+	}
+
+	public ArrayList<Cobro> obtenerCobrosPorFecha(final int id) {
+		return this.cobroRepository.obtenerCobrosPorFecha(id);
 	}
 
 }
