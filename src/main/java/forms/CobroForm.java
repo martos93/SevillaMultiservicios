@@ -7,6 +7,7 @@ import java.util.Date;
 public class CobroForm {
 
 	private Date		fecha;
+	private String		fechaS;
 	private BigDecimal	liquidado;
 	private BigDecimal	pendiente;
 	private BigDecimal	total;
@@ -60,6 +61,14 @@ public class CobroForm {
 
 	public void setTotal(final BigDecimal total) {
 		this.total = total;
+	}
+
+	public String getFechaS() {
+		return this.fechaS;
+	}
+
+	public void setFechaS(final String fechaS) {
+		this.fechaS = fechaS;
 	}
 
 }
