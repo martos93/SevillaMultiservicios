@@ -75,6 +75,7 @@ function modificarConcepto(){
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    	alertaExito("Se ha modificado correctamente el concepto.");
 	    },      
 	    error : function(data){
@@ -110,6 +111,7 @@ function guardarConcepto(){
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    	alertaExito("Se ha guardado correctamente el concepto.");
 	    },      
 	    error : function(data){

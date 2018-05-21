@@ -18,11 +18,8 @@ import controllers.AbstractController;
 import domain.Cliente;
 import forms.ClienteForm;
 import services.ActorService;
-import services.AgendaService;
 import services.ClienteService;
-import services.FacturaService;
 import services.PresupuestoService;
-import services.SolicitudService;
 
 @Controller
 @RequestMapping("/gestor/cliente")
@@ -38,6 +35,7 @@ public class ClienteGestorController extends AbstractController {
 
 	@Autowired
 	private PresupuestoService	presupuestoService;
+
 
 	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -88,6 +86,7 @@ public class ClienteGestorController extends AbstractController {
 			clienteForm.setEmail(cliente.getEmail());
 			clienteForm.setClienteId(clienteId);
 			clienteForm.setRefCatastro(cliente.getRefCatastro());
+			clienteForm.setTelefono(cliente.getTelefono());
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
@@ -110,6 +109,7 @@ public class ClienteGestorController extends AbstractController {
 			cliente.setIdentificacion(clienteForm.getIdentificacion());
 			cliente.setEmail(clienteForm.getEmail());
 			cliente.setRefCatastro(clienteForm.getRefCatastro());
+			cliente.setTelefono(clienteForm.getTelefono());
 			cliente = this.clienteService.save(cliente);
 			result = this.creaVistaPadreList();
 			result.addObject("success", true);

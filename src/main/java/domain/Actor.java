@@ -29,7 +29,18 @@ public abstract class Actor extends DomainEntity {
 	protected String	provincia;
 	protected String	refCatastro;
 	protected String	identificacion;
+	protected String	telefono;
 
+
+	@NotBlank
+	@SafeHtml
+	public String getTelefono() {
+		return this.telefono;
+	}
+
+	public void setTelefono(final String telefono) {
+		this.telefono = telefono;
+	}
 
 	@NotBlank
 	@SafeHtml

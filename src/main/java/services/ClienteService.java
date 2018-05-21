@@ -58,6 +58,7 @@ public class ClienteService {
 		cliente.setLocalidad(clienteForm.getLocalidad());
 		cliente.setProvincia(clienteForm.getProvincia());
 		cliente.setEmail(clienteForm.getEmail());
+		cliente.setTelefono(clienteForm.getTelefono());
 		final UserAccount userAccount = this.actorService.userAccountCliente();
 		userAccount.setUsername(clienteForm.getUsuario());
 		final Md5PasswordEncoder enc = new Md5PasswordEncoder();

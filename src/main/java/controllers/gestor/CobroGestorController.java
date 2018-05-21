@@ -19,15 +19,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import controllers.AbstractController;
+import domain.Agenda;
 import domain.Cobro;
 import domain.Concepto;
+import domain.Empleado;
 import domain.Gasto;
 import domain.Presupuesto;
 import forms.CobroForm;
 import forms.PresupuestoForm;
 import services.ActorService;
+import services.AgendaService;
 import services.ClienteService;
 import services.CobroService;
+import services.EmpleadoService;
 import services.PresupuestoService;
 
 @Controller
@@ -43,7 +47,13 @@ public class CobroGestorController extends AbstractController {
 	private ClienteService		clienteService;
 
 	@Autowired
+	private EmpleadoService		empleadoService;
+
+	@Autowired
 	private PresupuestoService	presupuestoService;
+
+	@Autowired
+	private AgendaService		agendaService;
 
 	@Autowired
 	private CobroService		cobroService;
@@ -99,6 +109,14 @@ public class CobroGestorController extends AbstractController {
 			result.addObject("ocultaCabecera", true);
 			result.addObject("presupuestoForm", presupuestoForm);
 			result.addObject("cliente", this.clienteService.findOne(p.getCliente().getId()));
+			result.addObject("direccionObra", p.getInvolucradosObra());
+			final ArrayList<Empleado> empleados = (ArrayList<Empleado>) this.empleadoService.findAll();
+			final ArrayList<Empleado> empleadosPresupuesto = new ArrayList<Empleado>();
+			for (final Agenda e : p.getAgendas())
+				empleadosPresupuesto.add(e.getEmpleado());
+			empleados.removeAll(empleadosPresupuesto);
+			result.addObject("empleadosPresupuesto", empleadosPresupuesto);
+			result.addObject("empleados", empleados);
 		} catch (final Exception e) {
 			this.logger.error(e.getLocalizedMessage());
 		}
@@ -126,8 +144,163 @@ public class CobroGestorController extends AbstractController {
 		return cobroForm;
 	}
 
+	@RequestMapping(value = "/guardarEmpleado", method = RequestMethod.GET)
+	public @ResponseBody ModelAndView guardarEmpleado(@RequestParam final int empleadoId, @RequestParam final int presupuestoId) {
+		final Empleado empleado = this.empleadoService.findOne(empleadoId);
+		final Presupuesto presupuesto = this.presupuestoService.findOne(presupuestoId);
+
+		try {
+			this.actorService.checkGestor();
+			final Agenda agenda = new Agenda();
+			agenda.setEmpleado(empleado);
+			agenda.setPresupuesto(presupuesto);
+			agenda.setEntradas(new ArrayList<String>());
+			this.agendaService.save(agenda);
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+		final ModelAndView result = this.crearVistaPadre(presupuestoId);
+		result.addObject("success", true);
+		result.addObject("mensaje", "Se ha guardado correctamente el empleado");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/eliminarCobro", method = RequestMethod.GET)
+	public ModelAndView borrarCobro(@RequestParam final int cobroId, @RequestParam final int presupuestoId) {
+		ModelAndView result = new ModelAndView();
+		try {
+
+			this.actorService.checkGestor();
+			final Cobro cobro = this.cobroService.findOne(cobroId);
+			final Presupuesto p = this.presupuestoService.findOne(presupuestoId);
+			final ArrayList<Cobro> cobros = this.cobroService.obtenerCobrosPorFecha(p.getId());
+			final int posicion = cobros.indexOf(cobro);
+			p.getCobros().remove(cobro);
+			this.presupuestoService.save(p);
+
+			Cobro actual = null;
+			Cobro anterior = null;
+			if (cobros.size() == 1) {
+				this.cobroService.delete(cobro);
+				result = this.crearVistaPadre(p.getId());
+				result.addObject("success", true);
+				result.addObject("mensaje", "Se ha borrado correctamente el cobro.");
+				return result;
+			}
+			if (posicion == 0) {
+				actual = cobros.get(posicion + 1);
+				BigDecimal presupuestado = new BigDecimal(0);
+				for (final Concepto g : p.getConceptos())
+					presupuestado = presupuestado.add(g.getTotal());
+
+				actual.setPendiente(presupuestado.subtract(actual.getLiquidado()));
+				actual.setTotal(actual.getLiquidado());
+				actual = this.cobroService.save(actual);
+				anterior = actual;
+				for (int i = posicion + 1; i < cobros.size(); i++) {
+					actual = cobros.get(i);
+					actual.setPendiente(anterior.getPendiente().subtract(actual.getLiquidado()));
+					actual.setTotal(anterior.getTotal().add(actual.getLiquidado()));
+					anterior = this.cobroService.save(actual);
+				}
+				this.cobroService.delete(cobro);
+			} else if (posicion == cobros.size() - 1)
+				this.cobroService.delete(cobro);
+			else {
+				actual = cobros.get(posicion + 1);
+				anterior = cobros.get(posicion - 1);
+				for (int i = posicion + 1; i < cobros.size(); i++) {
+					actual = cobros.get(i);
+					actual.setPendiente(anterior.getPendiente().subtract(actual.getLiquidado()));
+					actual.setTotal(anterior.getTotal().add(actual.getLiquidado()));
+					anterior = this.cobroService.save(actual);
+				}
+			}
+
+			result = this.crearVistaPadre(p.getId());
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha borrado correctamente el cobro.");
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/modificarCobro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ModelAndView modificarConcepto(@RequestBody final CobroForm cobroForm) {
+		final Presupuesto p = this.presupuestoService.findOne(cobroForm.getPresupuestoId());
+		ModelAndView result = null;
+		try {
+			BigDecimal presupuestado = new BigDecimal(0);
+			for (final Concepto g : p.getConceptos())
+				presupuestado = presupuestado.add(g.getTotal());
+			Cobro c = this.cobroService.findOne(cobroForm.getCobroId());
+			Cobro anterior = null;
+			final ArrayList<Cobro> cobros = this.cobroService.obtenerCobrosPorFecha(cobroForm.getPresupuestoId());
+			if (cobros.size() > 1) {
+
+				if (cobros.indexOf(c) == 0)
+					anterior = cobros.get(0);
+				else
+					anterior = cobros.get(cobros.indexOf(c) - 1);
+
+				if (anterior.getPendiente().subtract(cobroForm.getLiquidado()).compareTo(new BigDecimal(0)) == -1) {
+					result = this.crearVistaPadre(p.getId());
+					result.addObject("error", true);
+					result.addObject("mensaje", "No puede añadir un cobro mayor de lo presupuestado.");
+					return result;
+				}
+
+				c.setLiquidado(cobroForm.getLiquidado());
+				if (cobros.indexOf(anterior) == 0) {
+
+					c.setPendiente(presupuestado.subtract(cobroForm.getLiquidado()));
+					c.setTotal(cobroForm.getLiquidado());
+				} else {
+					anterior = cobros.get(cobros.indexOf(c) - 1);
+					c.setPendiente(anterior.getPendiente().subtract(cobroForm.getLiquidado()));
+					c.setTotal(anterior.getTotal().add(cobroForm.getLiquidado()));
+				}
+
+				c = this.cobroService.save(c);
+				anterior = c;
+				Cobro actual = null;
+				final int indexNuevo = cobros.indexOf(c);
+				for (int i = indexNuevo + 1; i < cobros.size(); i++) {
+					actual = cobros.get(i);
+					actual.setPendiente(anterior.getPendiente().subtract(actual.getLiquidado()));
+					actual.setTotal(anterior.getTotal().add(actual.getLiquidado()));
+					anterior = this.cobroService.save(actual);
+				}
+			} else {
+				if (c.getPendiente().subtract(cobroForm.getLiquidado()).compareTo(new BigDecimal(0)) == -1) {
+					result = this.crearVistaPadre(p.getId());
+					result.addObject("error", true);
+					result.addObject("mensaje", "No puede añadir un cobro mayor de lo presupuestado.");
+					return result;
+				}
+
+				c.setPendiente(presupuestado.subtract(cobroForm.getLiquidado()));
+				c.setTotal(cobroForm.getLiquidado());
+				c.setLiquidado(cobroForm.getLiquidado());
+			}
+			result = this.crearVistaPadre(p.getId());
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha modificado correctamente el cobro.");
+
+		} catch (final Exception e) {
+			result = this.crearVistaPadre(p.getId());
+			result.addObject("error", true);
+			result.addObject("mensaje", "Se ha producido un error al modificar el concepto.");
+			this.logger.error(e.getMessage());
+		}
+
+		return result;
+	}
+
 	@RequestMapping(value = "/nuevoCobro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ModelAndView nuevoConcepto(@RequestBody final CobroForm cobroForm) {
+	public @ResponseBody ModelAndView nuevoCobro(@RequestBody final CobroForm cobroForm) {
 		ModelAndView result = null;
 		try {
 			this.actorService.checkGestor();
@@ -150,6 +323,12 @@ public class CobroGestorController extends AbstractController {
 				c.setPendiente(totalPresupuesto);
 				c.setTotal(cobroForm.getLiquidado());
 				c.setFechaCreacion(new Date(System.currentTimeMillis()));
+				if (c.getPendiente().compareTo(new BigDecimal(0)) == -1) {
+					result = this.crearVistaPadre(p.getId());
+					result.addObject("error", true);
+					result.addObject("mensaje", "No puede añadir un cobro mayor de lo presupuestado.");
+					return result;
+				}
 				c = this.cobroService.save(c);
 				p.getCobros().add(c);
 				this.presupuestoService.save(p);
@@ -158,12 +337,40 @@ public class CobroGestorController extends AbstractController {
 				c.setPendiente(ultimo.getPendiente().subtract(cobroForm.getLiquidado()));
 				c.setTotal(ultimo.getTotal().add(cobroForm.getLiquidado()));
 				c.setFechaCreacion(new Date(System.currentTimeMillis()));
+				if (c.getPendiente().compareTo(new BigDecimal(0)) == -1) {
+					result = this.crearVistaPadre(p.getId());
+					result.addObject("error", true);
+					result.addObject("mensaje", "No puede añadir un cobro mayor de lo presupuestado.");
+					return result;
+				}
 				c = this.cobroService.save(c);
 				p.getCobros().add(c);
 				this.presupuestoService.save(p);
 			}
 
 			result = this.crearVistaPadre(cobroForm.getPresupuestoId());
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha guardado correctamente el cobro.");
+
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/guardarDireccionObra", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ModelAndView guardarDireccionObra(@RequestBody final PresupuestoForm presupuestoForm) {
+		ModelAndView result = null;
+		try {
+
+			this.actorService.checkGestor();
+			final Presupuesto p = this.presupuestoService.findOne(presupuestoForm.getId());
+			p.setInvolucradosObra(presupuestoForm.getInvolucradosObra());
+			this.presupuestoService.save(p);
+			result = this.crearVistaPadre(presupuestoForm.getId());
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha guardado correctamente la dirección de obra.");
+
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
@@ -218,7 +425,14 @@ public class CobroGestorController extends AbstractController {
 		result.addObject("ocultaCabecera", true);
 		result.addObject("presupuestoForm", presupuestoForm);
 		result.addObject("cliente", this.clienteService.findOne(p.getCliente().getId()));
-
+		result.addObject("direccionObra", p.getInvolucradosObra());
+		final ArrayList<Empleado> empleados = (ArrayList<Empleado>) this.empleadoService.findAll();
+		final ArrayList<Empleado> empleadosPresupuesto = new ArrayList<Empleado>();
+		for (final Agenda e : p.getAgendas())
+			empleadosPresupuesto.add(e.getEmpleado());
+		empleados.removeAll(empleadosPresupuesto);
+		result.addObject("empleadosPresupuesto", empleadosPresupuesto);
+		result.addObject("empleados", empleados);
 		return result;
 	}
 }

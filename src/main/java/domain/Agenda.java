@@ -1,21 +1,14 @@
 
 package domain;
 
-import java.util.Date;
+import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -23,30 +16,16 @@ public class Agenda extends DomainEntity {
 
 	// Atributos
 
-	private String	entrada;
-	private Date	fecha;
+	private Collection<String> entradas;
 
 
-	@NotBlank
-	@SafeHtml
-	public String getEntrada() {
-		return this.entrada;
+	@ElementCollection
+	public Collection<String> getEntradas() {
+		return this.entradas;
 	}
 
-	public void setEntrada(final String entrada) {
-		this.entrada = entrada;
-	}
-
-	@NotNull
-	@Past
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	public Date getFecha() {
-		return this.fecha;
-	}
-
-	public void setFecha(final Date fecha) {
-		this.fecha = fecha;
+	public void setEntradas(final Collection<String> entrada) {
+		this.entradas = entrada;
 	}
 
 	// Constructor

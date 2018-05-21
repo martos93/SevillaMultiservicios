@@ -19,6 +19,7 @@ public class ClienteForm implements Serializable {
 	private String				usuario;
 	private int					clienteId;
 	private String				refCatastro;
+	private String				telefono;
 
 
 	public String getPassword() {
@@ -123,5 +124,13 @@ public class ClienteForm implements Serializable {
 
 	public void setRefCatastro(final String refCatastro) {
 		this.refCatastro = refCatastro;
+	}
+
+	public String getTelefono() {
+		return this.telefono;
+	}
+
+	public void setTelefono(final String telefono) {
+		this.telefono = telefono;
 	}
 }

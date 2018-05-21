@@ -70,6 +70,7 @@
 		<property name="localidad" value="Carmona" />
 		<property name="provincia" value="Sevilla" />
 		<property name="identificacion" value="48122003T" />
+		<property name="telefono" value="659183896" />
 		
 		<property name="userAccount" ref="userAccount2" />
 	</bean>
@@ -85,6 +86,7 @@
 		<property name="provincia" value="Cadiz" />
 		<property name="userAccount" ref="userAccount4" />
 		<property name="identificacion" value="48122003T" />
+		<property name="telefono" value="659183896" />
 	</bean>
 	
 	<!-- Tipo de Trabajo -->
@@ -164,6 +166,7 @@
 		<property name="provincia" value="Sevilla" />
 		<property name="userAccount" ref="userAccount3" />
 	<property name="identificacion" value="48122003T" />
+	<property name="telefono" value="659183896" />
 	</bean>
 
 	<!-- Solicitudes -->
@@ -296,6 +299,9 @@
 		<property name="provincia" value="Sevilla" />
 		<property name="titulo" value="Arreglo de casa" />
 		<property name="cliente" ref="cliente1" />
+		<property name="codigoPostal" value="41710" />
+		<property name="tipoTrabajo" ref="tipoTrabajo1" />
+		
 		<property name="gastos">
 			<list>
 				<ref bean="gasto1"/>
@@ -319,8 +325,15 @@
 	
 	<!-- Agenda -->
 	<bean id="agenda1" class="domain.Agenda">
-		<property name="entrada" value="He realizado la limpieza total de la arqueta. También recogí los escombros más grandes para llevarlos a reciclar." />
-		<property name="fecha" value="01/05/2018" />
+		<property name="entradas">
+		<list>
+			<value>He realizado la limpieza total de la arqueta. También recogí los escombros más grandes para llevarlos a reciclar</value>
+			<value>He realizado la limpieza total de la arqueta. También recogí los escombros más grandes para llevarlos a reciclar</value>
+			<value>He realizado la limpieza total de la arqueta. También recogí los escombros más grandes para llevarlos a reciclar</value>
+			<value>He realizado la limpieza total de la arqueta. También recogí los escombros más grandes para llevarlos a reciclar</value>
+			
+		</list>
+		</property>
 		<property name="empleado" ref="empleado1" />
 		<property name="presupuesto" ref="presupuesto1" />
 		

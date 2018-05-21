@@ -48,6 +48,10 @@ public class EmpleadoService {
 		this.empleadoRepository.delete(empleado);
 	}
 
+	public Empleado obtenerEmpleadoLogueado(final String username) {
+		return this.empleadoRepository.obtenerEmpleadoLogueado(username);
+	}
+
 	public Empleado create(final EmpleadoForm empleadoForm) {
 		final Empleado empleado = new Empleado();
 		empleado.setNombre(empleadoForm.getNombre());
@@ -58,6 +62,7 @@ public class EmpleadoService {
 		empleado.setLocalidad(empleadoForm.getLocalidad());
 		empleado.setProvincia(empleadoForm.getProvincia());
 		empleado.setEmail(empleadoForm.getEmail());
+		empleado.setTelefono(empleadoForm.getTelefono());
 		final UserAccount userAccount = this.actorService.userAccountEmpleado();
 		userAccount.setUsername(empleadoForm.getUsuario());
 		final Md5PasswordEncoder enc = new Md5PasswordEncoder();

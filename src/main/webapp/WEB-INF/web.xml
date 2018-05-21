@@ -25,6 +25,10 @@
       <param-name>contextConfigLocation</param-name>
       <param-value></param-value>
     </init-param>
+    <init-param>
+    <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
     <servlet-name>SevillaMSServlet</servlet-name>

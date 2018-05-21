@@ -7,9 +7,11 @@ function crearPresupuesto(clienteId){
 	var direccionObra = $('#direccionObra').val();
 	var localidad = $('#localidad').val();
 	var provincia = $('#provincia').val();
+	var codigoPostal = $('#codigoPostal').val();
+	var tipoTrabajo = $('#tipoTrabajo').val();
 	
-	var validaciones = [titulo,codigo,direccionObra,localidad,provincia];
-	var nombres = ["titulo","codigo","direccionObra","localidad","provincia"];
+	var validaciones = [titulo,codigo,direccionObra,localidad,provincia,codigoPostal];
+	var nombres = ["titulo","codigo","direccionObra","localidad","provincia","codigoPostal"];
 	var error = false;
 	var i;
 	for (i = 0; i < validaciones.length; i++) { 
@@ -30,7 +32,9 @@ function crearPresupuesto(clienteId){
 			"direccionObra":direccionObra,
 			"localidad":localidad,
 			"provincia":provincia,
-			"clienteId":clienteId
+			"clienteId":clienteId,
+			"codigoPostal":codigoPostal,
+			"tipoTrabajo":tipoTrabajo
 	}
 	
 	$.ajax({
@@ -43,6 +47,7 @@ function crearPresupuesto(clienteId){
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    	alertaExito("Se ha creado correctamente el presupuesto.");
 	    	},      
 	    error : function(data){
@@ -59,6 +64,9 @@ function modificarPresupuesto(id){
 	    data: id,
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
+	    	var ttid = $( "#tipoTrabajoId" ).val();
+	    	$( "#tipoTrabajo" ).val(ttid);
 	    	},      
 	    error : function(){
 	    	alertaError("Se ha producido un error al modificar el presupuesto.");
@@ -91,9 +99,11 @@ function guardarDatosPresupuesto(presupuestoId,clienteId){
 	var provincia = $('#provincia').val();
 	var fechaFinS = $('#fechaFinS').val();
 	var fechaObraS = $('#fechaObraS').val();
+	var codigoPostal = $('#codigoPostal').val();
+	var tipoTrabajo = $('#tipoTrabajo').val();
 	
-	var validaciones = [titulo,codigo,direccionObra,localidad,provincia];
-	var nombres = ["titulo","codigo","direccionObra","localidad","provincia"];
+	var validaciones = [titulo,codigo,direccionObra,localidad,provincia,codigoPostal];
+	var nombres = ["titulo","codigo","direccionObra","localidad","provincia","codigoPostal"];
 	var error = false;
 	var i;
 	for (i = 0; i < validaciones.length; i++) { 
@@ -117,7 +127,9 @@ function guardarDatosPresupuesto(presupuestoId,clienteId){
 			"id":presupuestoId,
 			"clienteId":clienteId,
 			"fechaFinS":fechaFinS,
-			"fechaObraS":fechaObraS
+			"fechaObraS":fechaObraS,
+			"codigoPostal":codigoPostal,
+			"tipoTrabajo":tipoTrabajo
 	}
 	
 	$.ajax({
@@ -130,6 +142,9 @@ function guardarDatosPresupuesto(presupuestoId,clienteId){
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
+	    	var ttid = $( "#tipoTrabajoId" ).val();
+	    	$( "#tipoTrabajo" ).val(ttid);
 	    	alertaExito("Se ha guardado correctamente el presupuesto.");
 	    	},      
 	    error : function(data){

@@ -37,6 +37,7 @@ function editarGasto(gastoId) {
 		    	$('#observaciones').val(data.observaciones);
 		    	$('#presupuestoId').val(presupuestoId);
 		    	$('#tipo').val(data.tipo);
+		    	$( "body" ).removeClass( "modal-open" );
 		    	},      
 		    error : function(){
 		    	alertaError("Se ha producido un error al editar el gasto.");
@@ -80,7 +81,6 @@ function modificarGasto() {
 	validaciones.forEach(function (atributo, i, validaciones) {
 	    if(atributo==""){
 	    	if(nombresAtributos[i]=="fecha"){
-	    		debugger
 	    		$("#fechaSpan").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
 	    	}else{
 	    	$("#"+nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
@@ -129,6 +129,7 @@ function modificarGasto() {
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    	
 	    },      
 	    error : function(data){
@@ -204,6 +205,7 @@ function guardarGasto() {
         
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    },      
 	    error : function(data){
 	    	alertaError("Se ha producido un error al guardar el gasto.");

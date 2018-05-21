@@ -34,6 +34,18 @@
       <li><a href="gestor/empleado/listAll.do">Empleados</a></li>
 	  <li><a href="gestor/iva/list.do">Gestión IVA</a></li>
 	   </security:authorize>
+	    <security:authorize access="hasRole('EMPLEADO')">
+	   <li class="dropdown">
+	     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Opciones empleado
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="empleado/agenda/verAgendas.do">Ver mis agendas</a></li>
+			<li role="separator" class="divider"></li>
+            <li><a href="#">Solicitudes de presupuestos</a></li>
+            <li><a href="#">Nuevo presupuesto</a></li>
+        </ul>
+	  </li>
+	    </security:authorize>
     </ul>
 	<security:authorize access="isAnonymous()">
     <ul class="nav navbar-nav navbar-right">

@@ -39,6 +39,7 @@ function editarCobro(cobroId) {
 			$('#cobroId').val(data.cobroId);
 			var liq = formateaNum(data.liquidado);
 			$('#liquidado').val(liq);
+			$( "body" ).removeClass( "modal-open" );
 
 		},
 		error : function() {
@@ -119,7 +120,6 @@ $(document).ready(function() {
 });
 
 function guardarCobro(){
-	debugger
 	toastr.clear()
 	$('.has-error').hide();
 	var fecha = $('#fecha').val();
@@ -133,7 +133,7 @@ function guardarCobro(){
 		error = true;
 	}
 	if(fecha==""){
-		$("#fireDate").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		$("#fechaSpan").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
 		error = true;
 	}
 	liquidado = liquidado.replace(/\./g , "");
@@ -156,11 +156,140 @@ function guardarCobro(){
         },
 	    success : function(data) {
 	    	$('body').html(data);
-	    	
-	    	alertaExito("Se ha guardado correctamente el cobro.");
+	    	$("body").removeClass("modal-open");
+	    	alertaExito("Se ha producido un error al guardar el cobro.");
 	    },      
 	    error : function(data){
 	    	alertaError("Se ha producido un error al guardar el cobro.");
+	    }
+	});
+	
+}
+
+function modificarCobro(){
+	
+	toastr.clear()
+	$('.has-error').hide();
+	var fecha = $('#fecha').val();
+	var liquidado = $('#liquidado').val();
+	var presupuestoId = $('#presupuestoId').val();
+	var clienteId = $('#clienteId').val();
+	var cobroId = $('#cobroId').val();
+	var error = false;
+	
+	if(liquidado==""){
+		$("#liquidado").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		error = true;
+	}
+	if(fecha==""){
+		$("#fechaSpan").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		error = true;
+	}
+	liquidado = liquidado.replace(/\./g , "");
+	liquidado = liquidado.replace(/,/g,"\.");
+	liquidado = parseFloat(liquidado);
+	if(error){
+		alertaError("Debe completar los campos obligatorios.");
+		return false;
+	}
+	
+	var json = {"fechaS":fecha,"presupuestoId":presupuestoId,"clienteId":clienteId,"liquidado":liquidado,"cobroId":cobroId};
+	$.ajax({
+	    
+		url : "gestor/cobro/modificarCobro.do",
+	    type: "POST",
+	    data: JSON.stringify(json),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success : function(data) {
+	    	$('body').html(data);
+	    	$("body").removeClass("modal-open");
+	    },      
+	    error : function(data){
+	    	alertaError("Se ha producido un error al guardar el cobro.");
+	    }
+	});
+	
+}
+
+function eliminarCobro(cobroId,presupuestoId) {
+	if(confirm("Se borrará el cobro indicado, actualizandose los siguientes en función del resto de cobros. ¿Está seguro?")){
+		$.ajax({
+		    url : "gestor/cobro/eliminarCobro.do?cobroId="+cobroId+"&presupuestoId="+presupuestoId,
+		    type: "GET",
+		    data: cobroId,
+		    success : function(data) {
+		    	$('body').html(data);
+		    	},      
+		    error : function(){
+		    	alertaError("Se ha producido un error al borrar el cobro.");
+		    }
+		});
+		
+	}
+}
+
+function guardarDireccionObra(){
+	var involucradosObra = $('#direccionObra').val();
+	var presupuestoId = $('#presupuestoId').val();
+	var error = false;
+	if(involucradosObra==""){
+		$("#direccionObra").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		error = true;
+	}
+	if(error){
+		alertaError("Debe completar los campos obligatorios.");
+		return false;
+	}
+	var json = {"involucradosObra":involucradosObra,"id":presupuestoId};
+	$.ajax({
+	    url : "gestor/cobro/guardarDireccionObra.do",
+	    type: "POST",
+	    data: JSON.stringify(json),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },	    
+	    success : function(data) {
+	    	$('body').html(data);
+	    	},      
+	    error : function(){
+	    	alertaError("Se ha producido un error al guardar la dirección de obra.");
+	    }
+	});
+	
+}
+
+
+function formateaPersonalObra(){
+	debugger
+	var direccionObra = $("#direccionObra").val();
+	var split = direccionObra.split(",");
+	var html = "<ul>";
+	for(var i=0;i<split.length;i++){
+		html+="<li>"+split[i]+"</li>";
+	}
+	html += "</ul>";
+	$("#personalObra").html(html);
+	
+}
+
+function guardarEmpleados(){
+	var empleado = $("#empleadoPres").val();
+	var presupuestoId = $("#presupuestoId").val();
+	
+	$.ajax({
+	    url : "gestor/cobro/guardarEmpleado.do?empleadoId="+empleado+"&presupuestoId="+presupuestoId,
+	    type: "GET",
+	    data: empleado,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	$("body").removeClass("modal-open");
+	    	},      
+	    error : function(){
+	    	alertaError("Se ha producido un error al borrar el cobro.");
 	    }
 	});
 	

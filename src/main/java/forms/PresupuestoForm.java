@@ -31,6 +31,9 @@ public class PresupuestoForm {
 	private String	fechaFinS;
 	private String	fechaInicioS;
 	private String	fechaObraS;
+	private String	codigoPostal;
+	private int		tipoTrabajo;
+	private String	involucradosObra;
 
 
 	public String getFechaFinS() {
@@ -227,6 +230,30 @@ public class PresupuestoForm {
 
 	public void setFechaObra(final Date fechaObra) {
 		this.fechaObra = fechaObra;
+	}
+
+	public String getCodigoPostal() {
+		return this.codigoPostal;
+	}
+
+	public void setCodigoPostal(final String codigoPostal) {
+		this.codigoPostal = codigoPostal;
+	}
+
+	public int getTipoTrabajo() {
+		return this.tipoTrabajo;
+	}
+
+	public void setTipoTrabajo(final int tipoTrabajo) {
+		this.tipoTrabajo = tipoTrabajo;
+	}
+
+	public String getInvolucradosObra() {
+		return this.involucradosObra;
+	}
+
+	public void setInvolucradosObra(final String involucradosObra) {
+		this.involucradosObra = involucradosObra;
 	}
 
 }

@@ -65,7 +65,6 @@ public class Cobro extends DomainEntity {
 		this.total = total;
 	}
 
-	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
 	public Date getFechaCreacion() {

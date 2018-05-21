@@ -113,6 +113,7 @@ public class EmpleadoGestorController extends AbstractController {
 			empleadoForm.setProvincia(empleado.getProvincia());
 			empleadoForm.setEmail(empleado.getEmail());
 			empleadoForm.setEmpleadoId(empleadoId);
+			empleadoForm.setTelefono(empleado.getTelefono());
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
@@ -135,6 +136,7 @@ public class EmpleadoGestorController extends AbstractController {
 			empleado.setProvincia(empleadoForm.getProvincia());
 			empleado.setIdentificacion(empleadoForm.getIdentificacion());
 			empleado.setEmail(empleadoForm.getEmail());
+			empleado.setTelefono(empleadoForm.getTelefono());
 			empleado = this.empleadoService.save(empleado);
 			result = this.creaVistaPadre();
 			result.addObject("success", true);

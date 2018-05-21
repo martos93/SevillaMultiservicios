@@ -97,6 +97,7 @@ function modificarTarea(){
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    },      
 	    error : function(data){
 	    	alertaError("Se ha producido un error al guardar la tarea.");
@@ -181,6 +182,7 @@ function guardarTarea(){
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    	alertaExito("Se ha guardado correctamente la tarea.");
 	    },      
 	    error : function(data){

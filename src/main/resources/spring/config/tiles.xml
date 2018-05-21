@@ -31,6 +31,8 @@
 		<value>/views/presupuesto/tiles.xml</value>
 		<value>/views/gasto/tiles.xml</value>
 		<value>/views/cobro/tiles.xml</value>
+		<value>/views/agenda/tiles.xml</value>
+		
 	</util:list>
 
 </beans>

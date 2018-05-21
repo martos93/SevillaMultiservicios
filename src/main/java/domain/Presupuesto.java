@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,16 +24,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Presupuesto extends DomainEntity {
 
 	// Atributos
-	private boolean	aceptado;
-	private String	codigo;
-	private String	direccionObra;
-	private Date	fechaFin;
-	private Date	fechaInicio;
-	private Date	fechaObra;
-	private String	localidad;
-	private String	provincia;
-	private String	observaciones;
-	private String	titulo;
+	private boolean		aceptado;
+	private String		codigo;
+	private String		direccionObra;
+	private Date		fechaFin;
+	private Date		fechaInicio;
+	private Date		fechaObra;
+	private String		localidad;
+	private String		provincia;
+	private String		observaciones;
+	private String		titulo;
+	private String		codigoPostal;
+	private TipoTrabajo	tipoTrabajo;
+	private String		involucradosObra;
 
 
 	public boolean isAceptado() {
@@ -217,6 +221,34 @@ public class Presupuesto extends DomainEntity {
 
 	public void setFechaObra(final Date fechaObra) {
 		this.fechaObra = fechaObra;
+	}
+
+	@SafeHtml
+	@NotBlank
+	public String getCodigoPostal() {
+		return this.codigoPostal;
+	}
+
+	public void setCodigoPostal(final String codigoPostal) {
+		this.codigoPostal = codigoPostal;
+	}
+
+	@NotNull
+	@ManyToOne
+	public TipoTrabajo getTipoTrabajo() {
+		return this.tipoTrabajo;
+	}
+
+	public void setTipoTrabajo(final TipoTrabajo tipoTrabajo) {
+		this.tipoTrabajo = tipoTrabajo;
+	}
+
+	public String getInvolucradosObra() {
+		return this.involucradosObra;
+	}
+
+	public void setInvolucradosObra(final String involucradosObra) {
+		this.involucradosObra = involucradosObra;
 	}
 
 }

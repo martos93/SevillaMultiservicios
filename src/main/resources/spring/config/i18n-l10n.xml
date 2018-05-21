@@ -32,7 +32,7 @@
 		<value>/views/presupuesto/messages</value>
 		<value>/views/gasto/messages</value>
 		<value>/views/cobro/messages</value>
-		
+		<value>/views/agenda/messages</value>
 	</util:list>
 
 </beans>

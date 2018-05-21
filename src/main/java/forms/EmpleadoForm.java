@@ -18,6 +18,7 @@ public class EmpleadoForm implements Serializable {
 	private String				passwordRepeat;
 	private String				usuario;
 	private int					empleadoId;
+	private String				telefono;
 
 
 	public String getPassword() {
@@ -118,6 +119,14 @@ public class EmpleadoForm implements Serializable {
 
 	public void setEmpleadoId(final int empleadoId) {
 		this.empleadoId = empleadoId;
+	}
+
+	public String getTelefono() {
+		return this.telefono;
+	}
+
+	public void setTelefono(final String telefono) {
+		this.telefono = telefono;
 	}
 
 }

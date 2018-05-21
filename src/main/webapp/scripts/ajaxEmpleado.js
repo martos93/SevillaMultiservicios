@@ -34,6 +34,9 @@ function editarEmpleado(id) {
 		    	$('#localidad').val(data.localidad);
 		    	$('#provincia').val(data.provincia);
 		    	$('#email').val(data.email);
+		    	debugger
+		    	$('#telefono').val(data.telefono);
+		    	$( "body" ).removeClass( "modal-open" );
 		    	},      
 		    error : function(){
 		    	alertaError("Se ha producido un error al encontrar el empleado.");
@@ -43,6 +46,7 @@ function editarEmpleado(id) {
 
 // función para modificar empleados
 function modificarEmpleado() {
+	debugger
 	toastr.clear()
 	$('.has-error').hide();
 	var identificacion = $('#identificacion').val();
@@ -54,10 +58,11 @@ function modificarEmpleado() {
 	var provincia = $('#provincia').val();
 	var email = $('#email').val();
 	var empleadoId = $('#empleadoId').val();
+	var telefono = $('#telefono').val();
 	var error = 'false';
 	
-	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email];
-	var nombresAtributos = ["identificacion","nombre","apellidos","codigoPostal","direccion","localidad","provincia","email"];
+	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email,telefono];
+	var nombresAtributos = ["identificacion","nombre","apellidos","codigoPostal","direccion","localidad","provincia","email","telefono"];
 	
 	validaciones.forEach(function (atributo, i, validaciones) {
 	    if(atributo==""){
@@ -76,6 +81,13 @@ function modificarEmpleado() {
 	    			error = 'true';
 	    		}
 	    	}
+	    	if (nombresAtributos[i] == "telefono") {
+				if (atributo.length != 9) {
+					$("#" + nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+					alertaError("Formato de telefono no válido. Debe tener 9 dígitos.");
+					error = 'true';
+				}
+			}
 	    }
 	});
 	
@@ -92,10 +104,10 @@ function modificarEmpleado() {
 			"provincia":provincia,
 			"identificacion":identificacion,
 			"email":email,
-			"empleadoId":empleadoId};
+			"empleadoId":empleadoId,
+			"telefono":telefono};
 	
 	$.ajax({
-		dataType : "json",
 		url : "gestor/empleado/modificarEmpleado.do",
 	    type: "POST",
 	    data: JSON.stringify(json),
@@ -105,6 +117,7 @@ function modificarEmpleado() {
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    },      
 	    error : function(data){
 	    	alertaError("Se ha producido un error al modificar el empleado.");
@@ -134,6 +147,7 @@ function eliminaEmpleado(id) {
 	
 // Función para guardar empleados
 function guardarEmpleado() {
+	debugger
 	toastr.clear()
 	$('.has-error').hide();
 	var identificacion = $('#identificacion').val();
@@ -147,10 +161,11 @@ function guardarEmpleado() {
 	var psw = $('#password').val();
 	var pswr = $('#passwordRepeat').val();
 	var usuario = $('#usuario').val();
+	var telefono = $('#telefono').val();
 	var error = 'false';
 	
-	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email,usuario];
-	var nombresAtributos = ["identificacion","nombre","apellidos","codigoPostal","direccion","localidad","provincia","email","usuario"];
+	var validaciones = [identificacion,nombre,apellidos,codigoPostal,direccion,localidad,provincia,email,usuario,telefono];
+	var nombresAtributos = ["identificacion","nombre","apellidos","codigoPostal","direccion","localidad","provincia","email","usuario","telefono"];
 	
 	if(psw=="" || pswr=="" || psw!=pswr){
 		$("#password").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
@@ -182,6 +197,13 @@ function guardarEmpleado() {
 	    			error = 'true';
 	    		}
 	    	}
+	    	if (nombresAtributos[i] == "telefono") {
+				if (atributo.length != 9) {
+					$("#" + nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+					alertaError("Formato de telefono no válido. Debe tener 9 dígitos.");
+					error = 'true';
+				}
+			}
 	    }
 	});
 	
@@ -200,7 +222,8 @@ function guardarEmpleado() {
 			"email":email,
 			"usuario":usuario,
 			"password":psw,
-			"passwordRepeat":pswr};
+			"passwordRepeat":pswr,
+			"telefono":telefono};
 	
 	$.ajax({
 		url : "gestor/empleado/nuevoEmpleado.do",
@@ -212,6 +235,7 @@ function guardarEmpleado() {
         },
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    },      
 	    error : function(data){
 	    	alertaError("Se ha producido un error al guardar el empleado.");
@@ -292,3 +316,25 @@ function compruebaDni(dni) {
 		  return 0;
 	   }
 	}
+
+$(document).ready(function() {
+    $("#telefono").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+             // Allow: Ctrl/cmd+A
+            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+C
+            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+X
+            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+});

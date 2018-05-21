@@ -12,9 +12,37 @@
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script>
-	crearTabla('presupuesto');
+crearTablaBusqueda('presupuesto');
+$("#cliente_filter").html("<label style='float:left'>Buscar:</label><input type='search' aria-controls='cliente'>");
 </script>
+<style>
+.dataTables_filter input:focus {
+    outline: none !important;
+    border-color: #FF0000;
+    box-shadow: 0 0 10px #719ECE;
 
+}
+.dataTables_filter input {
+   display: block;
+    width: 75%;
+    height: 25px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    float: right;
+    margin-bottom: 5px;
+};
+</style>
 <div class="container">
 	<h4>
 		Mostrando los presupuestos del usuario: <b>${cliente.userAccount.username}</b>
@@ -109,6 +137,21 @@
 								cssClass="form-control" />
 						</div>
 						</div>
+						
+						<div class="row">
+						
+						<div class="col-md-3 col-md-offset-0">
+							<form:label path="codigoPostal" for="codigoPostal">Código Postal: </form:label>
+							<form:input path="codigoPostal" id="codigoPostal"
+								cssClass="form-control" />
+						</div>
+						<div class="col-md-5 col-md-offset-0">
+<form:label path="tipoTrabajo" for="codigoPostal">Tipo de trabajo: </form:label><form:select path="tipoTrabajo" cssClass="form-control" items="${tiposTrabajo}"  itemLabel="descripcion" itemValue="id">
+		
+	</form:select>
+</div>
+					</div>
+						
 						
 					</div>
 				</form:form>

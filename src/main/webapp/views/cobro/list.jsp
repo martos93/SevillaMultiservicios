@@ -7,6 +7,7 @@
  * TDG Licence, a copy of which you may download from 
  * http://www.tdg-seville.info/License.html
  --%>
+<div id="body">
 
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -36,10 +37,6 @@
 	color: #f5f5f5 !important";
 }
 </style>
-
-<script>
-	crearTabla('cobro');
-</script>
 
 <br>
 <div class="container">
@@ -139,16 +136,20 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-12 col-md-offset-0">
-					<label>Dirección de obra:</label>
-					<div id="personalObra"></div>
+					<label>Dirección de obra:</label><button data-toggle="modal" data-target="#modalInvolucrados" title="Añadir" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Añadir" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
+        			
+        			<jstl:if test="${fn:length(direccionObra)>0}">
+					<div id="personalObra"><script>formateaPersonalObra()</script></div>
+					</jstl:if>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12 col-md-offset-0">
-					<label>Empleados:</label><br>
+					<label>Empleados:</label><button data-toggle="modal" data-target="#modalEmpleados" title="Añadir" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Añadir" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
+					<br>
 					<ul>
-						<jstl:forEach items="${presupuesto.empleados}" var="empleado">
-							<li>${empleado.nombre}${empleado.apellidos}</li>
+						<jstl:forEach items="${empleadosPresupuesto}" var="empleado">
+							<li>${empleado.nombre} ${empleado.apellidos}</li>
 						</jstl:forEach>
 					</ul>
 				</div>
@@ -241,7 +242,7 @@
 							style="color: #bf1200;"><span
 							class='glyphicon glyphicon-pencil'></span></a>
 					</button>
-					<button onclick="eliminarCobro(${cobro.id})"
+					<button onclick="eliminarCobro(${cobro.id},${presupuestoId})"
 						style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
 						type="button" class="btn btn-link">
 						<a data-toggle="tooltip" data-placement="top" title="Eliminar"
@@ -314,6 +315,83 @@
 	</div>
 </div>
 
+<!-- Modal Involucrados-->
+<div class="modal fade" id="modalInvolucrados" tabindex="-1" role="dialog"
+	aria-labelledby="modalCobroLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalCobroLabelEdit">Editar Dirección de obra</h4>
+			</div>
+			<div class="modal-body">
+				<form:form id="formularioDireccion" modelAttribute="presupuestoForm">
+
+					<div class="row">
+						<div class="col-md-12 col-md-offset-0">
+							<label for="fechaS">Dirección de obra:</label>
+							<div class="form-group">
+									<input id="direccionObra" class="form-control" type="text" aria-describedby="ayuda" value="${direccionObra}"/>
+									<small id="ayuda" class="form-text text-muted">Introduzca los involucrados en la obra separados por comas ","</small>
+							</div>
+						</div>
+					</div>
+
+				</form:form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="guardar" type="button" class="btn btn-danger"
+					style="color: #fff !important; background-color: #bf1200 !important; border-color: #bf1200 !important;"
+					onclick="guardarDireccionObra()">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal empleados-->
+<div class="modal fade" id="modalEmpleados" tabindex="-1" role="dialog"
+	aria-labelledby="modalCobroLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalCobroLabelEdit">Añadir empleados</h4>
+			</div>
+			<div class="modal-body">
+				<form:form id="formularioDireccion">
+
+					<div class="row">
+						<div class="col-md-12 col-md-offset-0">
+							<label for="fechaS">Empleado:</label>
+							<div class="form-group">
+									<select class="form-control" id="empleadoPres">
+									<jstl:forEach items="${empleados}" var="empleado">
+										<option value="${empleado.id}">${empleado.nombre} ${empleado.apellidos}</option>
+									</jstl:forEach>
+									</select>
+									
+							</div>
+						</div>
+					</div>
+
+				</form:form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="guardar" type="button" class="btn btn-danger"
+					style="color: #fff !important; background-color: #bf1200 !important; border-color: #bf1200 !important;"
+					onclick="guardarEmpleados()">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script>
 var fecha = $('#fecha').val();
@@ -331,3 +409,4 @@ $('#fecha').val(fecha);
 </script>
 
 <script>formateaValoresCobro();</script>
+</div>

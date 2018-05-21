@@ -87,12 +87,17 @@
 				
 				<button data-toggle="tooltip"
 				onclick="eliminaEmpleado('${empleado.id}')"
-				data-placement="top" title="Eliminar"
+				data-placement="top"
 				style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button"
 				class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Eliminar"
 				style="color:#bf1200;"><span class='glyphicon glyphicon-remove'></span></a></button>
       
-        
+        <button data-toggle="tooltip"
+				onclick="verAgendas('${empleado.id}')"
+				data-placement="top"
+				style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button"
+				class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Agendas"
+				style="color:#bf1200;"><span class='glyphicon glyphicon-list-alt'></span></a></button>
         
 		</display:column>
 
@@ -163,14 +168,21 @@
 							</div>
 
 						</div>
+						
+						<div class="row">
+						<div class="col-md-5 col-md-offset-0">
+								<form:label path="telefono" for="telefono">Telefono:</form:label>
+								<form:input cssClass="form-control" path="telefono" />
+							</div>
+						</div>
 
 						<div class="row">
 							<div class="col-md-5 col-md-offset-0">
-								<form:label path="direccion" for="direccion">Direcci&oacute;n:</form:label>
+								<form:label path="direccion" for="direccion">Dirección:</form:label>
 								<form:input cssClass="form-control" path="direccion" />
 							</div>
 							<div class="col-md-5 col-md-offset-1">
-								<form:label path="codigoPostal" for="codigoPostal">C&oacute;digo Postal:</form:label>
+								<form:label path="codigoPostal" for="codigoPostal">Código Postal:</form:label>
 								<form:input cssClass="form-control" path="codigoPostal" />
 							</div>
 						</div>

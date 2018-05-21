@@ -39,6 +39,15 @@
 	</div>
 </div><br>
 <div class="row">
+<div class="col-md-3 col-md-offset-0">
+<form:label path="codigoPostal" for="codigoPostal">Código postal: </form:label><form:input path="codigoPostal" id="codigoPostal" cssClass="form-control" />
+</div>
+<div class="col-md-3 col-md-offset-0">
+<input type="hidden" id="tipoTrabajoId" value="${tipoTrabajoId}"/>
+<form:label path="tipoTrabajo" for="codigoPostal">Tipo de trabajo: </form:label><form:select path="tipoTrabajo" cssClass="form-control" items="${tiposTrabajo}"  itemLabel="descripcion" itemValue="id">
+		
+	</form:select>
+</div>
 <div class="col-md-2 col-md-offset-0">
 	<form:label path="fechaInicioS" for="fechaInicioS">Fecha Presupuesto: </form:label><form:input disabled="true" path="fechaInicioS" id="fechaInicioS" cssClass="form-control" style="cursor:default"/>
 	</div>
@@ -67,7 +76,6 @@
 							</div>
 							</div>
 </div>
-
 </div>
 <div class="row">
 <div class="col-md-5 col-md-offset-0">
@@ -91,7 +99,7 @@
 		</div>
 		<div class="col-md-5 col-md-offset-1">
 		<div class="row">
-				<label>Fecha:</label> <fmt:formatDate value="${presupuestoForm.fechaInicio}" pattern="dd/MM/yyyy" />
+				<label>Fecha:</label> ${presupuestoForm.fechaInicioS}
 			</div>
 			<div class="row">
 				<label>Cliente:</label> ${cliente.nombre} ${cliente.apellidos}
