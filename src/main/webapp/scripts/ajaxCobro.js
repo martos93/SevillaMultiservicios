@@ -69,13 +69,16 @@ function formateaValoresCobro() {
 	var presupuestado = $("#presupuestado").html();
 	var addFactura = $("#addFactura").html();
 	var margenManiobra = $("#margenManiobra").html();
+	var totalPresupuesto = $("#totalPresupuesto").html();
 
+	
 	manoObra = formateaNum(parseFloat(manoObra));
 	material = formateaNum(parseFloat(material));
 	subCont = formateaNum(parseFloat(subCont));
 	presupuestado = formateaNum(parseFloat(presupuestado));
 	addFactura = formateaNum(parseFloat(addFactura));
 	margenManiobra = formateaNum(parseFloat(margenManiobra));
+	totalPresupuesto = formateaNum(parseFloat(totalPresupuesto));
 	
 	$("#manoObra").html("&nbsp;"+manoObra+" €");
 	$("#material").html("&nbsp;"+material+" €");
@@ -83,6 +86,7 @@ function formateaValoresCobro() {
 	$("#presupuestado").html("&nbsp;"+presupuestado+" €");
 	$("#addFactura").html("&nbsp;"+addFactura+" €");
 	$("#margenManiobra").html("&nbsp;"+margenManiobra+" €");
+	$("#totalPresupuesto").html("&nbsp;"+totalPresupuesto+" €");
 
 	var filas = $("#tablaCobros tbody tr").length;
 	var val;
@@ -157,7 +161,6 @@ function guardarCobro(){
 	    success : function(data) {
 	    	$('body').html(data);
 	    	$("body").removeClass("modal-open");
-	    	alertaExito("Se ha producido un error al guardar el cobro.");
 	    },      
 	    error : function(data){
 	    	alertaError("Se ha producido un error al guardar el cobro.");
@@ -264,7 +267,6 @@ function guardarDireccionObra(){
 
 
 function formateaPersonalObra(){
-	debugger
 	var direccionObra = $("#direccionObra").val();
 	var split = direccionObra.split(",");
 	var html = "<ul>";
@@ -293,4 +295,38 @@ function guardarEmpleados(){
 	    }
 	});
 	
+}
+
+function eliminarEmpleadoPresupuesto(empleadoId){
+	if(confirm("Se borrará el empleado indicado de este presupuesto, borrando la agenda asociada con todos sus datos. ¿Está seguro?")){
+		
+	var presupuestoId = $("#presupuestoId").val();
+	$.ajax({
+	    url : "gestor/cobro/eliminarEmpleadoPresupuesto.do?empleadoId="+empleadoId+"&presupuestoId="+presupuestoId,
+	    type: "GET",
+	    data: empleadoId,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	$("body").removeClass("modal-open");
+	    	},      
+	    error : function(){
+	    	alertaError("Se ha producido un error al borrar el empleado.");
+	    }
+	});
+	}
+}
+
+function compruebaEmpleados(){
+	var empleados = $("#empleadoPres").val();
+	if(empleados==null){
+		$("#empleadoPres").prop('disabled', 'disabled');
+		$("#empleadoPres").append($('<option>', {
+		    value: -1,
+		    text: 'No quedan empleados por asignar'
+		}));
+		$(document).ready(function(){
+		    $('#ciudades').hide();
+		});
+		$("#guardarEmpleado").hide();
+	}
 }

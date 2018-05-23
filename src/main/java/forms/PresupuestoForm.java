@@ -33,6 +33,7 @@ public class PresupuestoForm {
 	private String	fechaObraS;
 	private String	codigoPostal;
 	private int		tipoTrabajo;
+	private String	tipoTrabajoS;
 	private String	involucradosObra;
 
 
@@ -254,6 +255,14 @@ public class PresupuestoForm {
 
 	public void setInvolucradosObra(final String involucradosObra) {
 		this.involucradosObra = involucradosObra;
+	}
+
+	public String getTipoTrabajoS() {
+		return tipoTrabajoS;
+	}
+
+	public void setTipoTrabajoS(String tipoTrabajoS) {
+		this.tipoTrabajoS = tipoTrabajoS;
 	}
 
 }

@@ -68,4 +68,8 @@ public class ClienteService {
 		cliente.setSolicitudes(new ArrayList<Solicitud>());
 		return cliente;
 	}
+
+	public Cliente findByPrincipal(final int id) {
+		return this.clienteRepository.findByPrincipal(id);
+	}
 }

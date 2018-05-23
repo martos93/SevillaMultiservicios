@@ -43,7 +43,7 @@
 <script src="scripts/ajaxGasto.js"></script>
 <script src="scripts/ajaxCobro.js"></script>
 <script src="scripts/ajaxAgenda.js"></script>
-
+<script src="scripts/ajaxSolicitud.js"></script>
 <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 <link rel="stylesheet" href="styles/common.css" type="text/css">

@@ -19,5 +19,8 @@
 	<definition name="cliente/listAll" extends="master.page">	
 		<put-attribute name="body" value="/views/cliente/list.jsp" />
 	</definition>
+	<definition name="cliente/registro" extends="master.page">	
+		<put-attribute name="body" value="/views/cliente/registro.jsp" />
+	</definition>
 	
 </tiles-definitions>

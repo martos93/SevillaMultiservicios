@@ -46,7 +46,7 @@
  
 <div class="input-group">
  <form:input path="ivaID" type="hidden" name="ivaID" value=""/>
-  <form:input path="porcentaje" type="number"  cssClass="form-control" aria-describedby="basic-addon2"/>
+  <form:input path="porcentaje" type="number" cssClass="form-control" aria-describedby="basic-addon2"/>
   <span class="input-group-addon" id="basic-addon2">%</span>
 </div>					
 </form:form>

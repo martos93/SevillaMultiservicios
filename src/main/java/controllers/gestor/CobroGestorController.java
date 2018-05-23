@@ -158,10 +158,40 @@ public class CobroGestorController extends AbstractController {
 			this.agendaService.save(agenda);
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
+			final ModelAndView result = this.crearVistaPadre(presupuestoId);
+			result.addObject("error", true);
+			result.addObject("mensaje", "Se producido un error al guardar el empleado.");
+
 		}
 		final ModelAndView result = this.crearVistaPadre(presupuestoId);
 		result.addObject("success", true);
-		result.addObject("mensaje", "Se ha guardado correctamente el empleado");
+		result.addObject("mensaje", "Se ha asignado correctamente el empleado. Se ha creado una agenda asociada a este presupuesto para el mismo.");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/eliminarEmpleadoPresupuesto", method = RequestMethod.GET)
+	public @ResponseBody ModelAndView eliminarEmpleadoPresupuesto(@RequestParam final int empleadoId, @RequestParam final int presupuestoId) {
+		final Empleado empleado = this.empleadoService.findOne(empleadoId);
+		final Presupuesto presupuesto = this.presupuestoService.findOne(presupuestoId);
+		try {
+			this.actorService.checkGestor();
+			Agenda agenda = null;
+			for (final Agenda a : empleado.getAgendas())
+				if (a.getPresupuesto().getId() == presupuestoId)
+					agenda = a;
+			empleado.getAgendas().remove(agenda);
+			this.empleadoService.save(empleado);
+			presupuesto.getAgendas().remove(agenda);
+			this.presupuestoService.save(presupuesto);
+
+			this.agendaService.delete(agenda);
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+		final ModelAndView result = this.crearVistaPadre(presupuestoId);
+		result.addObject("success", true);
+		result.addObject("mensaje", "Se ha borrado correctamente el empleado");
 
 		return result;
 	}
@@ -326,7 +356,7 @@ public class CobroGestorController extends AbstractController {
 				if (c.getPendiente().compareTo(new BigDecimal(0)) == -1) {
 					result = this.crearVistaPadre(p.getId());
 					result.addObject("error", true);
-					result.addObject("mensaje", "No puede añadir un cobro mayor de lo presupuestado.");
+					result.addObject("mensaje", "No puede añadir un cobro mayor de lo presupuestado o de la cantidad pendiente por cobrar.");
 					return result;
 				}
 				c = this.cobroService.save(c);

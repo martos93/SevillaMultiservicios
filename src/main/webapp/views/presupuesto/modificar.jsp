@@ -194,8 +194,29 @@
 </div>
 </form:form>
 
-<div class="container">
 
+	
+<div class="container">
+<style>
+.panel-heading {
+	background-color: #bf1200 !important;
+	color: #f5f5f5 !important";
+}
+</style>
+<div class="panel panel-default">
+		<div class="panel-heading">
+			<font style="color: white"><b>Observaciones</b><button data-toggle="modal" data-target="#modalObservaciones" title="Añadir" style="margin:-9px -16px -2px -6px;outline: none;color:white;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Añadir" style="color:white"><span class='glyphicon glyphicon-plus'></span></a></button></font>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-12 col-md-offset-0">
+        			<jstl:if test="${fn:length(observaciones)>0}">
+					<div id="observacionesPres"><script>formateaObservaciones()</script></div>
+					</jstl:if>
+				</div>
+			</div>
+		</div>
+	</div>
 				<button type="button" class="btn btn-danger"  data-toggle="modal"
 				data-target="#modalConcepto"
 				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
@@ -208,6 +229,43 @@
 				onclick="guardarDatosPresupuesto(${presupuestoForm.id},${cliente.id})">Guardar presupuesto
 				<span class="glyphicon glyphicon-floppy-save"></span>
 				</button>
+</div>
+
+<!-- Modal observaciones-->
+<div class="modal fade" id="modalObservaciones" tabindex="-1" role="dialog"
+	aria-labelledby="modalObservacionesLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalObservacionesLabelEdit">Añadir observaciones</h4>
+			</div>
+			<div class="modal-body">
+				<form:form id="formularioObservaciones" modelAttribute="presupuestoForm">
+<input id="observaciones" type="hidden" value="${observaciones}" class="form-control" type="text"/>
+							
+					<div class="row">
+						<div class="col-md-12 col-md-offset-0">
+							<label for="observacion">Observación:</label>
+							<div class="form-group">
+									<input id="observacion" class="form-control" type="text"/>
+							</div>
+						</div>
+					</div>
+
+				</form:form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="guardarObservaciones" type="button" class="btn btn-danger"
+					style="color: #fff !important; background-color: #bf1200 !important; border-color: #bf1200 !important;"
+					onclick="guardarObservaciones()">Guardar</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Modal concepto-->

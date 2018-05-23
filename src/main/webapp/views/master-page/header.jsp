@@ -27,8 +27,8 @@
         <ul class="dropdown-menu">
             <li><a href="gestor/cliente/listAll.do">Ver presupuestos</a></li>
 			<li role="separator" class="divider"></li>
-            <li><a href="#">Solicitudes de presupuestos</a></li>
-            <li><a href="#">Nuevo presupuesto</a></li>
+            <li><a href="gestor/solicitud/verSolicitudes.do">Solicitudes de presupuestos</a></li>
+        <li><a href="#">Nuevo presupuesto</a></li>
         </ul>
 	  </li>
       <li><a href="gestor/empleado/listAll.do">Empleados</a></li>
@@ -41,16 +41,17 @@
         <ul class="dropdown-menu">
             <li><a href="empleado/agenda/verAgendas.do">Ver mis agendas</a></li>
 			<li role="separator" class="divider"></li>
-            <li><a href="#">Solicitudes de presupuestos</a></li>
-            <li><a href="#">Nuevo presupuesto</a></li>
-        </ul>
+            </ul>
 	  </li>
+	    </security:authorize>
+	    <security:authorize access="hasRole('CLIENTE')">
+	     <li><a href="cliente/solicitud/verSolicitudes.do">Solicitudes</a></li>
 	    </security:authorize>
     </ul>
 	<security:authorize access="isAnonymous()">
     <ul class="nav navbar-nav navbar-right">
       <li><a href="security/login.do"><span class="glyphicon glyphicon-user"></span> Entrar</a></li>
-      <li><a href="security/register.do"><span class="glyphicon glyphicon-log-in"></span> Registro</a></li>
+      <li><a href="cliente/registro.do"><span class="glyphicon glyphicon-log-in"></span> Registro</a></li>
     </ul>
 	</security:authorize>
 	

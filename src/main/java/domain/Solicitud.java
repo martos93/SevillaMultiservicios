@@ -2,17 +2,21 @@
 package domain;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -26,6 +30,7 @@ public class Solicitud extends DomainEntity {
 	private boolean		leidoGestor;
 	private String		motivoRechazo;
 	private String		titulo;
+	private Date		fechaCreacion;
 
 
 	@NotNull
@@ -120,14 +125,24 @@ public class Solicitud extends DomainEntity {
 		this.presupuesto = presupuesto;
 	}
 
-	@Valid
-	@OneToOne(optional = false)
+	@NotNull
+	@ManyToOne
 	public TipoTrabajo getTipoTrabajo() {
 		return this.tipoTrabajo;
 	}
 
 	public void setTipoTrabajo(final TipoTrabajo tipoTrabajo) {
 		this.tipoTrabajo = tipoTrabajo;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(final Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
 	}
 
 }

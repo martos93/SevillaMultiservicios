@@ -38,7 +38,7 @@ public class Agenda extends DomainEntity {
 
 
 	@Valid
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	public Empleado getEmpleado() {
 		return this.empleado;
 	}
@@ -48,7 +48,7 @@ public class Agenda extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	public Presupuesto getPresupuesto() {
 		return this.presupuesto;
 	}

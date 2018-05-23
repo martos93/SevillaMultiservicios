@@ -154,3 +154,65 @@ function guardarDatosPresupuesto(presupuestoId,clienteId){
 	
 }
 
+function guardarObservaciones(){
+	var observacion = $('#observacion').val();
+	var presupuestoId = $('#presupuestoId').val();
+	var error = false;
+	if(observacion==""){
+		$("#observacion").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		error = true;
+	}
+	if(error){
+		alertaError("Debe completar los campos obligatorios.");
+		return false;
+	}
+	var json = {"observaciones":observacion,"id":presupuestoId};
+	$.ajax({
+	    url : "gestor/presupuesto/guardarObservaciones.do",
+	    type: "POST",
+	    data: JSON.stringify(json),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },	    
+	    success : function(data) {
+	    	$('body').html(data);
+	    	},      
+	    error : function(){
+	    	alertaError("Se ha producido un error al guardar la dirección de obra.");
+	    }
+	});
+	
+}
+
+function formateaObservaciones(){
+	
+	var observaciones = $("#observaciones").val();
+	if(observaciones.length>0){
+		var split = observaciones.split(",");
+		var html = "<ul>";
+		for(var i=0;i<split.length;i++){
+			html+="<li>"+split[i]+ "<button data-toggle=\"tooltip\" onclick=\"eliminarObservacion('"+i+"')\" data-placement=\"top\" title=\"Eliminar\" style=\"margin:-9px -16px -2px -6px;outline: none;color:#bf1200;\" type=\"button\" class=\"btn btn-link\"><span class='glyphicon glyphicon-remove'></span></a></button>"+"</li>";
+		}
+		html += "</ul>";
+		$("#observacionesPres").html(html);	
+	}
+	
+}
+
+function eliminarObservacion(i){
+	var presupuestoId = $('#presupuestoId').val();
+	
+	$.ajax({
+	    url : "gestor/presupuesto/eliminarObservacion.do?indice="+i+"&presupuestoId="+presupuestoId,
+	    type: "GET",
+	    data: i,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	$("body").removeClass("modal-open");
+	    	},      
+	    error : function(){
+	    	alertaError("Se ha producido un error al borrar el empleado.");
+	    }
+	});
+}

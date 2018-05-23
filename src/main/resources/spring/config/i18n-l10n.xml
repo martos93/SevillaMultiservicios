@@ -33,6 +33,8 @@
 		<value>/views/gasto/messages</value>
 		<value>/views/cobro/messages</value>
 		<value>/views/agenda/messages</value>
+		<value>/views/solicitud/messages</value>
+		
 	</util:list>
 
 </beans>

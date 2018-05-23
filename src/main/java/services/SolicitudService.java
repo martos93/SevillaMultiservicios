@@ -27,6 +27,10 @@ public class SolicitudService {
 		return this.presupuestoRepository.findAll();
 	}
 
+	public Collection<Solicitud> findAllOrderFecha() {
+		return this.presupuestoRepository.findAllOrderFecha();
+	}
+
 	public Solicitud findOne(final int id) {
 		return this.presupuestoRepository.findOne(id);
 	}

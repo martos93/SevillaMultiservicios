@@ -166,7 +166,6 @@ function eliminarCliente(id) {
 
 // Función para guardar clientes
 function guardarCliente() {
-	debugger
 	toastr.clear()
 	$('.has-error').hide();
 	var identificacion = $('#identificacion').val();
@@ -252,24 +251,26 @@ function guardarCliente() {
 		"telefono":telefono
 	};
 
-	$.ajax({
-		url : "gestor/cliente/nuevoCliente.do",
-		type : "POST",
-		data : JSON.stringify(json),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		success : function(data) {
-			console.log(data.error);
-			$('body').html(data);
-			$("body").removeClass("modal-open");
-		},
-		error : function(data) {
-			alertaError("Se ha producido un error al guardar el cliente.");
-		}
-	});
-
+	
+		$.ajax({
+			url : "gestor/cliente/nuevoCliente.do",
+			type : "POST",
+			data : JSON.stringify(json),
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success : function(data) {
+				console.log(data.error);
+				$('body').html(data);
+				$("body").removeClass("modal-open");
+			},
+			error : function(data) {
+				alertaError("Se ha producido un error al guardar el cliente.");
+			}
+		});
+	
+	
 }
 
 function crearTabla(id) {
@@ -404,3 +405,112 @@ $(document).ready(function() {
         }
     });
 });
+
+function registrarCliente() {
+	debugger
+	toastr.clear()
+	$('.has-error').hide();
+	var identificacion = $('#identificacion').val();
+	var nombre = $('#nombre').val();
+	var apellidos = $('#apellidos').val();
+	var codigoPostal = $('#codigoPostal').val();
+	var direccion = $('#direccion').val();
+	var localidad = $('#localidad').val();
+	var provincia = $('#provincia').val();
+	var email = $('#email').val();
+	var psw = $('#password').val();
+	var pswr = $('#passwordRepeat').val();
+	var usuario = $('#usuario').val();
+	var refCatastro = $('#refCatastro').val();
+	var telefono = $('#telefono').val();
+	var error = 'false';
+
+	var validaciones = [
+			identificacion, nombre, apellidos, codigoPostal, direccion, localidad, provincia, email, usuario,telefono
+	];
+	var nombresAtributos = [
+			"identificacion", "nombre", "apellidos", "codigoPostal", "direccion", "localidad", "provincia", "email", "usuario", "telefono"
+	];
+
+	if (psw == "" || pswr == "" || psw != pswr) {
+		$("#password").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		$("#passwordRepeat").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+
+		alertaError("Las contraseñas deben coincidir");
+		error = 'true';
+	} else if (psw.length < 8) {
+		$("#password").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		$("#passwordRepeat").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+		alertaError("La contraseña debe tener al menos 8 caracteres");
+		error = 'true';
+	}
+
+	validaciones.forEach(function(atributo, i, validaciones) {
+		if (atributo == "") {
+			$("#" + nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+			error = 'true';
+
+		} else {
+			if (nombresAtributos[i] == "email" && !emailRegex.test(email)) {
+				$("#" + nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+				error = 'true';
+				alertaError("Formato de correo no válido");
+			}
+			if (nombresAtributos[i] == "identificacion") {
+				var cmpdni = compruebaDni(identificacion);
+				if (cmpdni == 0) {
+					error = 'true';
+				}
+			}
+			if (nombresAtributos[i] == "telefono") {
+				if (atributo.length != 9) {
+					$("#" + nombresAtributos[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+					alertaError("Formato de telefono no válido. Debe tener 9 dígitos.");
+					error = 'true';
+				}
+			}
+		}
+	});
+
+	if (error == 'true') {
+		alertaError("Debe completar los campos obligatorios");
+		return false;
+	}
+
+	var json = {
+		"nombre" : nombre,
+		"apellidos" : apellidos,
+		"codigoPostal" : codigoPostal,
+		"direccion" : direccion,
+		"localidad" : localidad,
+		"provincia" : provincia,
+		"identificacion" : identificacion,
+		"email" : email,
+		"usuario" : usuario,
+		"password" : psw,
+		"passwordRepeat" : pswr,
+		"refCatastro" : refCatastro,
+		"telefono":telefono
+	};
+
+	
+		$.ajax({
+			url : "cliente/registroCliente.do",
+			type : "POST",
+			data : JSON.stringify(json),
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success : function(data) {
+				console.log(data.error);
+				$('body').html(data);
+				$("body").removeClass("modal-open");
+			},
+			error : function(data) {
+				alertaError("Se ha producido un error al guardar el cliente.");
+			}
+		});
+	
+	
+}

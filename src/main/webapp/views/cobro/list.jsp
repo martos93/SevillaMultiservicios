@@ -118,12 +118,12 @@
 					<label>Provincia:</label> ${presupuestoForm.provincia}
 				</div>
 				<div class="col-md-4 col-md-offset-0">
-					<label>C.P.:</label>
+					<label>C.P.:</label> ${presupuestoForm.codigoPostal}
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12 col-md-offset-0">
-					<label>Tipo de trabajo:</label>
+					<label>Tipo de trabajo:</label> ${presupuestoForm.tipoTrabajoS}
 				</div>
 			</div>
 		</div>
@@ -145,11 +145,12 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12 col-md-offset-0">
-					<label>Empleados:</label><button data-toggle="modal" data-target="#modalEmpleados" title="Añadir" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Añadir" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
+					<label>Empleados:</label><button data-toggle="modal" data-target="#modalEmpleados" onclick="" title="Añadir" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Añadir" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
 					<br>
 					<ul>
 						<jstl:forEach items="${empleadosPresupuesto}" var="empleado">
-							<li>${empleado.nombre} ${empleado.apellidos}</li>
+							<li>${empleado.nombre} ${empleado.apellidos}  <button data-toggle="tooltip" onclick="eliminarEmpleadoPresupuesto('${empleado.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></a></button>
+       </li>
 						</jstl:forEach>
 					</ul>
 				</div>
@@ -163,13 +164,16 @@
 		</div>
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-md-4 col-md-offset-0">
+				<div class="col-md-3 col-md-offset-0">
 					<label style="float:left">Presupuestado:</label> <div id="presupuestado"> ${presupuestado}</div>
 				</div>
-				<div class="col-md-4 col-md-offset-0">
+				<div class="col-md-3 col-md-offset-0">
 					<label style="float:left">Añadidos:</label>  <div id="addFactura">${addFactura}</div>
 				</div>
-				<div class="col-md-4 col-md-offset-0">
+				<div class="col-md-3 col-md-offset-0">
+					<label style="float:left">Total:</label>  <div id="totalPresupuesto">${addFactura+presupuestado}</div>
+				</div>
+				<div class="col-md-3 col-md-offset-0">
 					<label style="float:left">Margen de maniobra:</label>
 
 					<c:choose>
@@ -184,13 +188,13 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-4 col-md-offset-0">
+				<div class="col-md-3 col-md-offset-0">
 					<label style="float:left">Mano de obra:</label> <div id="manoObra">${manoObra}</div>
 				</div>
-				<div class="col-md-4 col-md-offset-0">
+				<div class="col-md-3 col-md-offset-0">
 					<label style="float:left">Materiales:</label> <div id="material">${material}</div>
 				</div>
-				<div class="col-md-4 col-md-offset-0">
+				<div class="col-md-3 col-md-offset-0">
 					<label style="float:left">Subcontrataciones:</label> <div id="subCont">${subCont}</div>
 				</div>
 			</div>
@@ -344,7 +348,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button id="guardar" type="button" class="btn btn-danger"
+				<button id="guardarDireccionObra" type="button" class="btn btn-danger"
 					style="color: #fff !important; background-color: #bf1200 !important; border-color: #bf1200 !important;"
 					onclick="guardarDireccionObra()">Guardar</button>
 			</div>
@@ -378,6 +382,7 @@
 									</select>
 									
 							</div>
+							<script>compruebaEmpleados()</script>
 						</div>
 					</div>
 
@@ -385,7 +390,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button id="guardar" type="button" class="btn btn-danger"
+				<button id="guardarEmpleados" type="button" class="btn btn-danger"
 					style="color: #fff !important; background-color: #bf1200 !important; border-color: #bf1200 !important;"
 					onclick="guardarEmpleados()">Guardar</button>
 			</div>

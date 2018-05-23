@@ -4,7 +4,9 @@ package controllers.gestor;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +109,7 @@ public class PresupuestoGestorController extends AbstractController {
 			final TareaForm tareaForm = new TareaForm();
 			tareaForm.setPresupuestoId(presupuesto.getId());
 			result.addObject("tareaForm", tareaForm);
-
+			result.addObject("observaciones", presupuesto.getObservaciones());
 		} catch (final Exception e) {
 			this.logger.error("Se ha producido un error al crear el presupuesto");
 		}
@@ -141,7 +143,7 @@ public class PresupuestoGestorController extends AbstractController {
 			final ArrayList<TipoTrabajo> tiposTrabajo = (ArrayList<TipoTrabajo>) this.tipoTrabajoService.findAll();
 			result.addObject("tiposTrabajo", tiposTrabajo);
 			result.addObject("tipoTrabajoId", presupuesto.getTipoTrabajo().getId());
-
+			result.addObject("observaciones", presupuesto.getObservaciones());
 		} catch (final Exception e) {
 			this.logger.error("Se ha producido un error al crear el presupuesto");
 		}
@@ -191,6 +193,7 @@ public class PresupuestoGestorController extends AbstractController {
 			final ArrayList<TipoTrabajo> tiposTrabajo = (ArrayList<TipoTrabajo>) this.tipoTrabajoService.findAll();
 			result.addObject("tiposTrabajo", tiposTrabajo);
 			result.addObject("tipoTrabajoId", presupuesto.getTipoTrabajo().getId());
+			result.addObject("observaciones", presupuesto.getObservaciones());
 		} catch (final Exception e) {
 			result = new ModelAndView("presupuesto/modificarPresupuesto");
 			result.addObject("ocultaCabecera", true);
@@ -210,8 +213,103 @@ public class PresupuestoGestorController extends AbstractController {
 			final TareaForm tareaForm = new TareaForm();
 			tareaForm.setPresupuestoId(presupuesto.getId());
 			result.addObject("tareaForm", tareaForm);
+			result.addObject("observaciones", presupuesto.getObservaciones());
 			this.logger.error("Se ha producido un error al modificar el presupuesto");
 		}
+		return result;
+	}
+
+	@RequestMapping(value = "/guardarObservaciones", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ModelAndView guardarObservaciones(@RequestBody PresupuestoForm presupuestoForm) {
+		ModelAndView result = null;
+		try {
+
+			this.actorService.checkGestor();
+			final Presupuesto p = this.presupuestoService.findOne(presupuestoForm.getId());
+			String observaciones = p.getObservaciones();
+			if (observaciones == null || observaciones.isEmpty()) {
+				observaciones = presupuestoForm.getObservaciones();
+				p.setObservaciones(observaciones);
+			} else {
+				observaciones += "," + presupuestoForm.getObservaciones();
+				p.setObservaciones(observaciones);
+			}
+
+			this.presupuestoService.save(p);
+
+			final Cliente cliente = this.clienteService.findOne(p.getCliente().getId());
+			presupuestoForm = this.presupuestoService.createForm(p);
+			result = new ModelAndView("presupuesto/modificarPresupuesto");
+			result.addObject("ocultaCabecera", true);
+			result.addObject("cliente", cliente);
+			result.addObject("presupuestoForm", presupuestoForm);
+
+			final BigDecimal totalPresupuesto = OperacionesPresupuesto.totalPresupuesto(p);
+			result.addObject("totalPresupuesto", totalPresupuesto);
+			final ConceptoForm conceptoForm = new ConceptoForm();
+			conceptoForm.setClienteId(cliente.getId());
+			conceptoForm.setPresupuestoId(presupuestoForm.getId());
+			result.addObject("conceptoForm", conceptoForm);
+
+			final TareaForm tareaForm = new TareaForm();
+			tareaForm.setPresupuestoId(presupuestoForm.getId());
+			result.addObject("tareaForm", tareaForm);
+			final ArrayList<TipoTrabajo> tiposTrabajo = (ArrayList<TipoTrabajo>) this.tipoTrabajoService.findAll();
+			result.addObject("tiposTrabajo", tiposTrabajo);
+			result.addObject("tipoTrabajoId", p.getTipoTrabajo().getId());
+			result.addObject("observaciones", p.getObservaciones());
+			result.addObject("success", true);
+			result.addObject("mensaje", "Se ha guardado correctamente la observacion.");
+
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/eliminarObservacion", method = RequestMethod.GET)
+	public @ResponseBody ModelAndView eliminarEmpleadoPresupuesto(@RequestParam final int indice, @RequestParam final int presupuestoId) {
+		final Presupuesto presupuesto = this.presupuestoService.findOne(presupuestoId);
+		ModelAndView result = null;
+		try {
+			this.actorService.checkGestor();
+			final String observaciones = presupuesto.getObservaciones();
+			String observacionesAux = "";
+			final List<String> obs = Arrays.asList(observaciones.split(","));
+			for (int i = 0; i < obs.size(); i++)
+				if (i != indice)
+					observacionesAux += obs.get(i) + ",";
+			if (!observacionesAux.isEmpty())
+				observacionesAux = observacionesAux.substring(0, observacionesAux.length() - 1);
+			presupuesto.setObservaciones(observacionesAux);
+			this.presupuestoService.save(presupuesto);
+			final Cliente cliente = this.clienteService.findOne(presupuesto.getCliente().getId());
+			final PresupuestoForm presupuestoForm = this.presupuestoService.createForm(presupuesto);
+			result = new ModelAndView("presupuesto/modificarPresupuesto");
+			result.addObject("ocultaCabecera", true);
+			result.addObject("cliente", cliente);
+			result.addObject("presupuestoForm", presupuestoForm);
+
+			final BigDecimal totalPresupuesto = OperacionesPresupuesto.totalPresupuesto(presupuesto);
+			result.addObject("totalPresupuesto", totalPresupuesto);
+			final ConceptoForm conceptoForm = new ConceptoForm();
+			conceptoForm.setClienteId(cliente.getId());
+			conceptoForm.setPresupuestoId(presupuestoForm.getId());
+			result.addObject("conceptoForm", conceptoForm);
+
+			final TareaForm tareaForm = new TareaForm();
+			tareaForm.setPresupuestoId(presupuestoForm.getId());
+			result.addObject("tareaForm", tareaForm);
+			final ArrayList<TipoTrabajo> tiposTrabajo = (ArrayList<TipoTrabajo>) this.tipoTrabajoService.findAll();
+			result.addObject("tiposTrabajo", tiposTrabajo);
+			result.addObject("tipoTrabajoId", presupuesto.getTipoTrabajo().getId());
+			result.addObject("observaciones", presupuesto.getObservaciones());
+		} catch (final Exception e) {
+			this.logger.error(e.getMessage());
+		}
+		result.addObject("success", true);
+		result.addObject("mensaje", "Se ha borrado correctamente la observacion");
+
 		return result;
 	}
 

@@ -75,6 +75,7 @@ public class PresupuestoService {
 		pForm.setDireccionObra(p.getDireccionObra());
 		pForm.setFactura(p.getFactura());
 		pForm.setCodigoPostal(p.getCodigoPostal());
+		pForm.setTipoTrabajoS(p.getTipoTrabajo().getDescripcion());
 		if (p.getFechaFin() != null) {
 			final String d1 = dateFormat.format(p.getFechaFin());
 			pForm.setFechaFin(new Date(d1));
