@@ -155,6 +155,13 @@ function crearPresupuestoSolicitud(){
 function rechazarSolicitud(){
 	var motivoRechazo = $('#rechazo').val();
 	var solicitudId = $("#solicitudIdRechazo").val();
+	
+	if(motivoRechazo==""){
+		$("#"+nombres[i]).after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+    	alertaError("Debe completar los campos obligatorios");
+		return false;
+	}
+	
 	var json = {
 			"id":solicitudId,
 			"motivoRechazo":motivoRechazo

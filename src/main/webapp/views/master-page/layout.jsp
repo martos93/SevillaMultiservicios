@@ -28,11 +28,11 @@
 
 <link rel="shortcut icon" href="favicon.ico"/> 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/bootstrap.min.js"></script>
 <script src="scripts/toastr.js"></script>
 <script src="scripts/alertas.js"></script>
 <script src="scripts/modales.js"></script>
@@ -44,7 +44,7 @@
 <script src="scripts/ajaxCobro.js"></script>
 <script src="scripts/ajaxAgenda.js"></script>
 <script src="scripts/ajaxSolicitud.js"></script>
-<script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="scripts/jquery.dataTables.min.js"></script>
 
 <link rel="stylesheet" href="styles/common.css" type="text/css">
 <link rel="stylesheet" href="styles/jmenu.css" media="screen" type="text/css" />

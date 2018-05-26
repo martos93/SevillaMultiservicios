@@ -232,19 +232,22 @@ function eliminarObservacion(i){
 }
 
 function enviarPresupuestoCliente(solicitudId){
-	var presupuestoId = $('#presupuestoId').val();
-	$.ajax({
-	    url : "gestor/presupuesto/enviarPresupuesto.do?solicitudId="+solicitudId+"&presupuestoId="+presupuestoId,
-	    type: "GET",
-	    data: solicitudId,
-	    success : function(data) {
-	    	$('body').html(data);
-	    	alertaExito("Se ha enviado el presupuesto.");
-	    	},      
-	    error : function(){
-	    	alertaError("Se ha producido un error al enviar el presupuesto.");
-	    }
-	});
+	
+	if(window.confirm("Una vez enviado el presupuesto al cliente no podrá volver a modificarse. ¿Está seguro?")){
+
+		var presupuestoId = $('#presupuestoId').val();
+		$.ajax({
+		    url : "gestor/presupuesto/enviarPresupuesto.do?solicitudId="+solicitudId+"&presupuestoId="+presupuestoId,
+		    type: "GET",
+		    data: solicitudId,
+		    success : function(data) {
+		    	verPresupuestoCliente(presupuestoId)
+		    	},      
+		    error : function(){
+		    	alertaError("Se ha producido un error al enviar el presupuesto.");
+		    }
+		});	
+	}
 }
 
 function aceptarRechazarPresupuesto(presupuestoId,valor){

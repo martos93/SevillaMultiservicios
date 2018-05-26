@@ -34,6 +34,7 @@ public class PresupuestoForm {
 	private String	tipoTrabajoS;
 	private String	involucradosObra;
 	private Integer	solicitudId;
+	private boolean	cerrado;
 
 
 	public String getFechaFinS() {
@@ -252,6 +253,14 @@ public class PresupuestoForm {
 
 	public void setSolicitudId(final Integer solicitudId) {
 		this.solicitudId = solicitudId;
+	}
+
+	public boolean isCerrado() {
+		return this.cerrado;
+	}
+
+	public void setCerrado(final boolean cerrado) {
+		this.cerrado = cerrado;
 	}
 
 }

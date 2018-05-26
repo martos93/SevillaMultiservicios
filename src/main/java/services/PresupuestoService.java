@@ -56,7 +56,7 @@ public class PresupuestoService {
 		presupuesto.setConceptos(new ArrayList<Concepto>());
 		presupuesto.setCobros(new ArrayList<Cobro>());
 		presupuesto.setAgendas(new ArrayList<Agenda>());
-
+		presupuesto.setCerrado(false);
 		return presupuesto;
 	}
 
@@ -66,6 +66,7 @@ public class PresupuestoService {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 		pForm.setAceptado(p.isAceptado());
+		pForm.setCerrado(p.isCerrado());
 		pForm.setAgendas(p.getAgendas());
 		pForm.setAlbaran(p.getAlbaran());
 		pForm.setCobros(p.getCobros());

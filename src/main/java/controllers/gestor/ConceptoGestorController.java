@@ -146,6 +146,7 @@ public class ConceptoGestorController extends AbstractController {
 		final TareaForm tareaForm = new TareaForm();
 		tareaForm.setPresupuestoId(p.getId());
 		result.addObject("tareaForm", tareaForm);
+		result.addObject("observaciones", p.getObservaciones());
 		return result;
 	}
 

@@ -90,6 +90,7 @@ public class TareaGestorController extends AbstractController {
 			final TareaForm tareaFormNew = new TareaForm();
 			tareaFormNew.setPresupuestoId(p.getId());
 			result.addObject("tareaForm", tareaFormNew);
+			result.addObject("observaciones", p.getObservaciones());
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}

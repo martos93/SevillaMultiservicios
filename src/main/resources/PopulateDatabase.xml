@@ -301,6 +301,7 @@
 		<property name="cliente" ref="cliente1" />
 		<property name="codigoPostal" value="41710" />
 		<property name="tipoTrabajo" ref="tipoTrabajo1" />
+		<property name="cerrado" value="false" />
 		
 		<property name="gastos">
 			<list>

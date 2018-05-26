@@ -38,6 +38,7 @@ public class Presupuesto extends DomainEntity {
 	private TipoTrabajo	tipoTrabajo;
 	private String		involucradosObra;
 	private Integer		solicitudTemporal;
+	private boolean		cerrado;
 
 
 	public Boolean isAceptado() {
@@ -259,6 +260,14 @@ public class Presupuesto extends DomainEntity {
 
 	public void setSolicitudTemporal(final Integer solicitudTemporal) {
 		this.solicitudTemporal = solicitudTemporal;
+	}
+
+	public boolean isCerrado() {
+		return this.cerrado;
+	}
+
+	public void setCerrado(final boolean cerrado) {
+		this.cerrado = cerrado;
 	}
 
 }

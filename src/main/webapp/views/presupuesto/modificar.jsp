@@ -136,7 +136,14 @@
   <table class="table">
 	 <thead>
       <tr>
-        <th>Conceptos</th>
+        <th>Conceptos <button data-toggle="modal" 
+onclick="limpiarDatosNuevoConcepto()"
+data-target="#modalConcepto"
+title="Añadir concepto"
+style="margin:-9px -16px -2px -6px;outline: none;color:white;"
+type="button"
+class="btn btn-link">
+<a data-placement="top" data-toggle="tooltip" title="Añadir concepto" style="color:white"><span class='glyphicon glyphicon-plus'></span></a></button></th>
         <th>Uds.</th>
         <th>Precio Ud.</th>
         <th>Subtotal</th>
@@ -221,12 +228,6 @@
 			</div>
 		</div>
 	</div>
-				<button type="button" class="btn btn-danger"  data-toggle="modal"
-				data-target="#modalConcepto"
-				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
-				onclick="limpiarDatosNuevoConcepto()">Añadir concepto
-				<span class="glyphicon glyphicon-pencil"></span>
-				</button>
 				
 				<button type="button" class="btn btn-danger"
 				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"

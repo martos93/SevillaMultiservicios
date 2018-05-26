@@ -100,11 +100,13 @@ public class PresupuestoController extends AbstractController {
 				solicitud.setEstado("ACEPTADO_CLIENTE");
 				this.solicitudService.save(solicitud);
 				presupuesto.setSolicitud(solicitud);
+				presupuesto.setCerrado(true);
 			} else {
 				presupuesto.setAceptado(false);
 				solicitud.setEstado("RECHAZADO_CLIENTE");
 				this.solicitudService.save(solicitud);
 				presupuesto.setSolicitud(solicitud);
+				presupuesto.setCerrado(true);
 			}
 			this.presupuestoService.save(presupuesto);
 
