@@ -90,7 +90,7 @@ public class PresupuestoController extends AbstractController {
 		final Presupuesto presupuesto = this.presupuestoService.findOne(presupuestoId);
 		final Solicitud solicitud = presupuesto.getSolicitud();
 
-		final ModelAndView result = null;
+		ModelAndView result = null;
 		try {
 			this.actorService.checkCliente();
 			solicitud.setLeidoGestor(false);
@@ -111,7 +111,7 @@ public class PresupuestoController extends AbstractController {
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
-		this.crearVistaPadre(presupuestoId);
+		result = this.crearVistaPadre(presupuestoId);
 		return result;
 	}
 
