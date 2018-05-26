@@ -24,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Presupuesto extends DomainEntity {
 
 	// Atributos
-	private boolean		aceptado;
+	private Boolean		aceptado;
 	private String		codigo;
 	private String		direccionObra;
 	private Date		fechaFin;
@@ -37,13 +37,14 @@ public class Presupuesto extends DomainEntity {
 	private String		codigoPostal;
 	private TipoTrabajo	tipoTrabajo;
 	private String		involucradosObra;
+	private Integer		solicitudTemporal;
 
 
-	public boolean isAceptado() {
+	public Boolean isAceptado() {
 		return this.aceptado;
 	}
 
-	public void setAceptado(final boolean aceptado) {
+	public void setAceptado(final Boolean aceptado) {
 		this.aceptado = aceptado;
 	}
 
@@ -243,12 +244,21 @@ public class Presupuesto extends DomainEntity {
 		this.tipoTrabajo = tipoTrabajo;
 	}
 
+	@SafeHtml
 	public String getInvolucradosObra() {
 		return this.involucradosObra;
 	}
 
 	public void setInvolucradosObra(final String involucradosObra) {
 		this.involucradosObra = involucradosObra;
+	}
+
+	public Integer getSolicitudTemporal() {
+		return this.solicitudTemporal;
+	}
+
+	public void setSolicitudTemporal(final Integer solicitudTemporal) {
+		this.solicitudTemporal = solicitudTemporal;
 	}
 
 }

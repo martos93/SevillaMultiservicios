@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import repositories.SolicitudRepository;
 public class SolicitudService {
 
 	@Autowired
-	private SolicitudRepository presupuestoRepository;
+	private SolicitudRepository solicitudRepository;
 
 
 	public SolicitudService() {
@@ -24,22 +25,32 @@ public class SolicitudService {
 	}
 
 	public Collection<Solicitud> findAll() {
-		return this.presupuestoRepository.findAll();
+		return this.solicitudRepository.findAll();
 	}
 
 	public Collection<Solicitud> findAllOrderFecha() {
-		return this.presupuestoRepository.findAllOrderFecha();
+		return this.solicitudRepository.findAllOrderFecha();
 	}
 
 	public Solicitud findOne(final int id) {
-		return this.presupuestoRepository.findOne(id);
+		return this.solicitudRepository.findOne(id);
 	}
 
 	public Solicitud save(final Solicitud solicitud) {
 		Assert.notNull(solicitud);
-		return this.presupuestoRepository.save(solicitud);
+		return this.solicitudRepository.save(solicitud);
 	}
 	public void delete(final Solicitud solicitud) {
-		this.presupuestoRepository.delete(solicitud);
+		this.solicitudRepository.delete(solicitud);
+	}
+
+	public ArrayList<Solicitud> solicitudesSinLeerGestor() {
+
+		return (ArrayList<Solicitud>) this.solicitudRepository.solicitudesSinLeerGestor();
+	}
+
+	public ArrayList<Solicitud> solicitudesSinLeerCliente() {
+
+		return (ArrayList<Solicitud>) this.solicitudRepository.solicitudesSinLeerCliente();
 	}
 }

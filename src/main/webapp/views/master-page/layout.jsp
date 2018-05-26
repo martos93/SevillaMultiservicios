@@ -71,6 +71,13 @@ $(function () {
 	</script>
 </jstl:if>
 
+<jstl:if test="${info == true}">
+	<script>
+	var mensaje = '${mensaje}';
+		alertaInfo(mensaje);
+	</script>
+</jstl:if>
+
 <jstl:if test="${error == true}">
 	<script>
 	var mensaje = '${mensaje}';

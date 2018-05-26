@@ -6,17 +6,15 @@ import java.util.Date;
 
 import domain.Agenda;
 import domain.Albaran;
-import domain.Cliente;
 import domain.Cobro;
 import domain.Concepto;
 import domain.Factura;
 import domain.Gasto;
-import domain.Solicitud;
 
 public class PresupuestoForm {
 
 	// Atributoscliente
-	private boolean	aceptado;
+	private Boolean	aceptado;
 	private String	codigo;
 	private String	direccionObra;
 	private Date	fechaFin;
@@ -35,6 +33,7 @@ public class PresupuestoForm {
 	private int		tipoTrabajo;
 	private String	tipoTrabajoS;
 	private String	involucradosObra;
+	private Integer	solicitudId;
 
 
 	public String getFechaFinS() {
@@ -69,11 +68,11 @@ public class PresupuestoForm {
 		this.id = id;
 	}
 
-	public boolean isAceptado() {
+	public Boolean getAceptado() {
 		return this.aceptado;
 	}
 
-	public void setAceptado(final boolean aceptado) {
+	public void setAceptado(final Boolean aceptado) {
 		this.aceptado = aceptado;
 	}
 
@@ -149,8 +148,6 @@ public class PresupuestoForm {
 	private Albaran					albaran;
 	private Factura					factura;
 	private Collection<Agenda>		agendas;
-	private Cliente					cliente;
-	private Solicitud				solicitud;
 
 
 	public Collection<Gasto> getGastos() {
@@ -201,22 +198,6 @@ public class PresupuestoForm {
 		this.agendas = agendas;
 	}
 
-	public Cliente getCliente() {
-		return this.cliente;
-	}
-
-	public void setCliente(final Cliente cliente) {
-		this.cliente = cliente;
-	}
-
-	public Solicitud getSolicitud() {
-		return this.solicitud;
-	}
-
-	public void setSolicitud(final Solicitud solicitud) {
-		this.solicitud = solicitud;
-	}
-
 	public int getClienteId() {
 		return this.clienteId;
 	}
@@ -258,11 +239,19 @@ public class PresupuestoForm {
 	}
 
 	public String getTipoTrabajoS() {
-		return tipoTrabajoS;
+		return this.tipoTrabajoS;
 	}
 
-	public void setTipoTrabajoS(String tipoTrabajoS) {
+	public void setTipoTrabajoS(final String tipoTrabajoS) {
 		this.tipoTrabajoS = tipoTrabajoS;
+	}
+
+	public Integer getSolicitudId() {
+		return this.solicitudId;
+	}
+
+	public void setSolicitudId(final Integer solicitudId) {
+		this.solicitudId = solicitudId;
 	}
 
 }

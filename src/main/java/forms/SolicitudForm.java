@@ -15,6 +15,7 @@ public class SolicitudForm {
 	private int			clienteId;
 	private int			presupuestoId;
 	private int			tipoTrabajoId;
+	private int			id;
 
 
 	public BigDecimal getCantidad() {
@@ -95,5 +96,13 @@ public class SolicitudForm {
 
 	public void setTipoTrabajoId(final int tipoTrabajoId) {
 		this.tipoTrabajoId = tipoTrabajoId;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(final int id) {
+		this.id = id;
 	}
 }

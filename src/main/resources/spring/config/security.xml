@@ -58,10 +58,14 @@
 		
 		<security:intercept-url pattern="/gestor/**" access="hasRole('GESTOR')" /> 
 		<security:intercept-url pattern="/gestor/concepto/eliminarConcepto.do" access="hasRole('GESTOR')" /> 
+		<security:intercept-url pattern="/presupuesto/**" access="hasRole('GESTOR')" /> 
+		
 		<security:intercept-url pattern="/cliente/**" access="hasRole('CLIENTE')" />
+		<security:intercept-url pattern="/presupuesto/**" access="hasRole('CLIENTE')" /> 
 		<security:intercept-url pattern="/empleado/**" access="hasRole('EMPLEADO')" /> 
+		
 		<security:intercept-url pattern="/cliente/registro.do" access="isAnonymous()" />
-	<security:intercept-url pattern="/cliente/registroCliente.do" access="isAnonymous()" />
+		<security:intercept-url pattern="/cliente/registroCliente.do" access="isAnonymous()" />
 	
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />

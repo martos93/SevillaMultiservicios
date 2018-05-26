@@ -77,20 +77,24 @@
 							</div>
 </div>
 </div>
+<jstl:if test="${presupuestoForm.solicitudId!=null && presupuestoForm.solicitudId!=0 }">
 <div class="row">
 <div class="col-md-5 col-md-offset-0">
 	<br>
+	<jstl:if test="${presupuestoForm.aceptado !=null}">
 	<c:choose>
     <c:when test="${presupuestoForm.aceptado}">
-	<label><b>Aceptado:</b><a data-toggle="tooltip" data-placement="top" title="El presupuesto ha sido aceptado por el cliente." style="color:green;"><span style="margin-left:5px;font-size:18px;" class='glyphicon glyphicon-ok'></span></a></label>
+	<label><b>Estado:</b><a data-toggle="tooltip" data-placement="top" title="El presupuesto ha sido aceptado por el cliente." style="color:green;"><span style="margin-left:5px;font-size:18px;" class='glyphicon glyphicon-ok'></span></a></label>
      </c:when>    
     <c:otherwise>
-    <label><b>Aceptado:</b><a data-toggle="tooltip" data-placement="top" title="El presupuesto no ha sido aceptado por el cliente." style="color:red;"><span style="margin-left:5px;font-size:18px;" class='glyphicon glyphicon-remove'></span></a></label>
+    <label><b>Estado:</b><a data-toggle="tooltip" data-placement="top" title="El presupuesto ha sido rechazado por el cliente." style="color:red;"><span style="margin-left:5px;font-size:18px;" class='glyphicon glyphicon-remove'></span></a></label>
     
     </c:otherwise>
 </c:choose>
+</jstl:if>
 	</div>
 </div>
+</jstl:if>
 <br><br>
 	<div class="row">
 		<div class="col-md-5 col-md-offset-1">
@@ -229,6 +233,14 @@
 				onclick="guardarDatosPresupuesto(${presupuestoForm.id},${cliente.id})">Guardar presupuesto
 				<span class="glyphicon glyphicon-floppy-save"></span>
 				</button>
+
+				<jstl:if test="${presupuesto.solicitud ==null && presupuesto.solicitudTemporal!=0}">
+				<button type="button" class="btn btn-danger" onclick="enviarPresupuestoCliente('${presupuestoForm.solicitudId}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Enviar a cliente
+				<span class="glyphicon glyphicon-envelope"></span>
+				</button>
+				</jstl:if>
 </div>
 
 <!-- Modal observaciones-->

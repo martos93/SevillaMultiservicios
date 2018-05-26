@@ -51,7 +51,7 @@ public class PresupuestoService {
 		final Presupuesto presupuesto = new Presupuesto();
 		final Date date = new Date(System.currentTimeMillis());
 		presupuesto.setFechaInicio(date);
-		presupuesto.setAceptado(false);
+		presupuesto.setAceptado(null);
 		presupuesto.setGastos(new ArrayList<Gasto>());
 		presupuesto.setConceptos(new ArrayList<Concepto>());
 		presupuesto.setCobros(new ArrayList<Cobro>());
@@ -68,7 +68,6 @@ public class PresupuestoService {
 		pForm.setAceptado(p.isAceptado());
 		pForm.setAgendas(p.getAgendas());
 		pForm.setAlbaran(p.getAlbaran());
-		pForm.setCliente(p.getCliente());
 		pForm.setCobros(p.getCobros());
 		pForm.setCodigo(p.getCodigo());
 		pForm.setConceptos(p.getConceptos());
@@ -96,9 +95,9 @@ public class PresupuestoService {
 		pForm.setLocalidad(p.getLocalidad());
 		pForm.setObservaciones(p.getObservaciones());
 		pForm.setProvincia(p.getProvincia());
-		pForm.setSolicitud(p.getSolicitud());
 		pForm.setTitulo(p.getTitulo());
 		pForm.setId(p.getId());
+		pForm.setSolicitudId(p.getSolicitudTemporal());
 		return pForm;
 
 	}

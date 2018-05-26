@@ -49,35 +49,40 @@ public class ActorService {
 		Assert.isTrue(!auts.contains(auts2));
 	}
 
-	public void checkGestor() {
-		try {
-			final Collection<Authority> auts = LoginService.getPrincipal().getAuthorities();
-			final Collection<Authority> auts2 = new ArrayList<Authority>();
-			final Authority a = new Authority();
-			a.setAuthority(Authority.GESTOR);
-			auts2.add(a);
-			Assert.isTrue(!auts.contains(auts2));
-		} catch (final Exception e) {
-			this.logger.error(e);
-		}
-	}
-
-	public void checkEmpleado() {
+	public boolean checkGestor() throws IllegalArgumentException {
 		final Collection<Authority> auts = LoginService.getPrincipal().getAuthorities();
 		final Collection<Authority> auts2 = new ArrayList<Authority>();
-		final Authority c = new Authority();
-		c.setAuthority(Authority.EMPLEADO);
-		auts2.add(c);
-		Assert.isTrue(!auts.contains(auts2));
+		final Authority a = new Authority();
+		a.setAuthority(Authority.GESTOR);
+		auts2.add(a);
+		for (final Authority at : auts)
+			if (at.getAuthority().equals(a.getAuthority()))
+				return true;
+		return false;
 	}
 
-	public void checkCliente() {
+	public boolean checkEmpleado() {
 		final Collection<Authority> auts = LoginService.getPrincipal().getAuthorities();
 		final Collection<Authority> auts2 = new ArrayList<Authority>();
-		final Authority b = new Authority();
-		b.setAuthority(Authority.CLIENTE);
-		auts2.add(b);
-		Assert.isTrue(!auts.contains(auts2));
+		final Authority a = new Authority();
+		a.setAuthority(Authority.EMPLEADO);
+		auts2.add(a);
+		for (final Authority at : auts)
+			if (at.getAuthority().equals(a.getAuthority()))
+				return true;
+		return false;
+	}
+
+	public boolean checkCliente() {
+		final Collection<Authority> auts = LoginService.getPrincipal().getAuthorities();
+		final Collection<Authority> auts2 = new ArrayList<Authority>();
+		final Authority a = new Authority();
+		a.setAuthority(Authority.CLIENTE);
+		auts2.add(a);
+		for (final Authority at : auts)
+			if (at.getAuthority().equals(a.getAuthority()))
+				return true;
+		return false;
 	}
 
 	public UserAccount userAccountEmpleado() {

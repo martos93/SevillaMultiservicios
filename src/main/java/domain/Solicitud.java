@@ -26,11 +26,12 @@ public class Solicitud extends DomainEntity {
 	private BigDecimal	cantidad;
 	private String		descripcion;
 	private String		estado;
-	private boolean		leidoCliente;
-	private boolean		leidoGestor;
+	private Boolean		leidoCliente;
+	private Boolean		leidoGestor;
 	private String		motivoRechazo;
 	private String		titulo;
 	private Date		fechaCreacion;
+	private Integer		presupuestoTemporal;
 
 
 	@NotNull
@@ -62,19 +63,19 @@ public class Solicitud extends DomainEntity {
 		this.estado = estado;
 	}
 
-	public boolean isLeidoCliente() {
+	public Boolean isLeidoCliente() {
 		return this.leidoCliente;
 	}
 
-	public void setLeidoCliente(final boolean leidoCliente) {
+	public void setLeidoCliente(final Boolean leidoCliente) {
 		this.leidoCliente = leidoCliente;
 	}
 
-	public boolean isLeidoGestor() {
+	public Boolean isLeidoGestor() {
 		return this.leidoGestor;
 	}
 
-	public void setLeidoGestor(final boolean leidoGestor) {
+	public void setLeidoGestor(final Boolean leidoGestor) {
 		this.leidoGestor = leidoGestor;
 	}
 
@@ -143,6 +144,14 @@ public class Solicitud extends DomainEntity {
 
 	public void setFechaCreacion(final Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Integer getPresupuestoTemporal() {
+		return this.presupuestoTemporal;
+	}
+
+	public void setPresupuestoTemporal(final Integer presupuestoTemporal) {
+		this.presupuestoTemporal = presupuestoTemporal;
 	}
 
 }

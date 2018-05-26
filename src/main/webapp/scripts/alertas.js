@@ -23,3 +23,8 @@ function alertaError(error) {
 function alertaExito(exito) {
 	toastr["success"](exito)
 }
+
+function alertaInfo(info) {
+	toastr["info"](info)
+}
+

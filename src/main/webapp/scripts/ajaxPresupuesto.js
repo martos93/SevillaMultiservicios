@@ -177,9 +177,10 @@ function guardarObservaciones(){
         },	    
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$("body").removeClass("modal-open");
 	    	},      
 	    error : function(){
-	    	alertaError("Se ha producido un error al guardar la dirección de obra.");
+	    	alertaError("Se ha producido un error al guardar las observaciones.");
 	    }
 	});
 	
@@ -200,6 +201,19 @@ function formateaObservaciones(){
 	
 }
 
+function formateaObservacionesVer(){
+	var observaciones = $("#observaciones").val();
+	if(observaciones.length>0){
+		var split = observaciones.split(",");
+		var html = "<ul>";
+		for(var i=0;i<split.length;i++){
+			html+="<li>"+split[i]+"</li>";
+		}
+		html += "</ul>";
+		$("#observacionesPres").html(html);	
+	}
+}
+
 function eliminarObservacion(i){
 	var presupuestoId = $('#presupuestoId').val();
 	
@@ -212,7 +226,47 @@ function eliminarObservacion(i){
 	    	$("body").removeClass("modal-open");
 	    	},      
 	    error : function(){
-	    	alertaError("Se ha producido un error al borrar el empleado.");
+	    	alertaError("Se ha producido un error al borrar la observacion.");
 	    }
 	});
+}
+
+function enviarPresupuestoCliente(solicitudId){
+	var presupuestoId = $('#presupuestoId').val();
+	$.ajax({
+	    url : "gestor/presupuesto/enviarPresupuesto.do?solicitudId="+solicitudId+"&presupuestoId="+presupuestoId,
+	    type: "GET",
+	    data: solicitudId,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	alertaExito("Se ha enviado el presupuesto.");
+	    	},      
+	    error : function(){
+	    	alertaError("Se ha producido un error al enviar el presupuesto.");
+	    }
+	});
+}
+
+function aceptarRechazarPresupuesto(presupuestoId,valor){
+	
+	$.ajax({
+	    url : "presupuesto/aceptarRechazarPresupuesto.do?presupuestoId="+presupuestoId+"&valor="+valor,
+	    type: "GET",
+	    data: presupuestoId,
+	    success : function(data) {
+	    	debugger
+	    	$('body').html(data);
+	    	if(valor==1){
+	    		alertaExito("Se ha aceptado el presupuesto.");
+	    	}else{
+	        	alertaExito("Se ha rechazado el presupuesto.");
+	    	}
+		    	
+	    	},      
+	    error : function(data){
+	    	debugger
+	    	alertaError("Se ha producido un error al rechazar la solicitud.");
+	    }
+	});
+	
 }

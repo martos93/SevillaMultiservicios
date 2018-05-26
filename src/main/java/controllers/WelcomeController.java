@@ -1,48 +1,74 @@
-/* WelcomeController.java
+/*
+ * WelcomeController.java
  *
  * Copyright (C) 2016 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
+ *
+ * The use of this project is hereby constrained to the conditions of the
+ * TDG Licence, a copy of which you may download from
  * http://www.tdg-seville.info/License.html
- * 
+ *
  */
 
 package controllers;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Solicitud;
+import services.ActorService;
+import services.SolicitudService;
+
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController extends AbstractController {
 
+	@Autowired
+	private SolicitudService	solicitudService;
+
+	@Autowired
+	private ActorService		actorService;
+
+
 	// Constructors -----------------------------------------------------------
-	
+
 	public WelcomeController() {
 		super();
 	}
-		
-	// Index ------------------------------------------------------------------		
+
+	// Index ------------------------------------------------------------------
 
 	@RequestMapping(value = "/index")
-	public ModelAndView index(@RequestParam(required=false, defaultValue="John Doe") String name) {
+	public ModelAndView index(@RequestParam(required = false, defaultValue = "John Doe") final String name) {
 		ModelAndView result;
-		SimpleDateFormat formatter;
-		String moment;
-		
-		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		moment = formatter.format(new Date());
-				
-		result = new ModelAndView("welcome/index");
-		result.addObject("name", name);
-		result.addObject("moment", moment);
 
+		result = new ModelAndView("welcome/index");
+
+		try {
+			if (this.actorService.checkGestor()) {
+				final ArrayList<Solicitud> solicitudes = this.solicitudService.solicitudesSinLeerGestor();
+				result.addObject("solicitudes", solicitudes);
+				if (solicitudes.size() > 0) {
+					result.addObject("info", true);
+					result.addObject("mensaje", "Una o más solicitudes han cambiado de estado.");
+				}
+			}
+
+			if (this.actorService.checkCliente()) {
+				final ArrayList<Solicitud> solicitudes = this.solicitudService.solicitudesSinLeerCliente();
+				result.addObject("solicitudes", solicitudes);
+				if (solicitudes.size() > 0) {
+					result.addObject("info", true);
+					result.addObject("mensaje", "Una o más solicitudes han cambiado de estado.");
+				}
+			}
+		} catch (final Exception e) {
+			return result;
+		}
 		return result;
 	}
 }

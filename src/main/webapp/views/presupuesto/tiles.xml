@@ -23,4 +23,9 @@
 		<definition name="presupuesto/modificarPresupuesto" extends="master.page">	
 		<put-attribute name="body" value="/views/presupuesto/modificar.jsp" />
 	</definition>
+	
+		<definition name="presupuesto/verPresupuestoCliente" extends="master.page">	
+		<put-attribute name="body" value="/views/presupuesto/ver.jsp" />
+	</definition>
+	
 </tiles-definitions>

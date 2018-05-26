@@ -1,6 +1,7 @@
 
 package controllers.cliente;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import controllers.AbstractController;
 import domain.Cliente;
 import domain.Solicitud;
+import forms.PresupuestoForm;
 import forms.SolicitudForm;
 import security.LoginService;
 import services.ActorService;
@@ -54,6 +56,13 @@ public class SolicitudClienteController extends AbstractController {
 		result.addObject("solicitudes", solicitudes);
 		result.addObject("tiposTrabajo", this.tipoTrabajoService.findAll());
 		result.addObject("solicitudForm", new SolicitudForm());
+		result.addObject("presupuestoForm", new PresupuestoForm());
+		final ArrayList<Solicitud> sol = this.solicitudService.solicitudesSinLeerCliente();
+		for (final Solicitud s : sol) {
+			s.setLeidoCliente(true);
+			this.solicitudService.save(s);
+		}
+
 		return result;
 	}
 
@@ -74,9 +83,9 @@ public class SolicitudClienteController extends AbstractController {
 			s.setLeidoGestor(false);
 			s.setTipoTrabajo(this.tipoTrabajoService.findOne(solicitudForm.getTipoTrabajoId()));
 			s.setFechaCreacion(new Date(System.currentTimeMillis()));
+			s.setLeidoGestor(false);
+			s.setLeidoCliente(true);
 			s = this.solicitudService.save(s);
-			//			cliente.getSolicitudes().add(s);
-			//			this.clienteService.save(cliente);
 			result = this.crearVistaPadre();
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
@@ -93,6 +102,7 @@ public class SolicitudClienteController extends AbstractController {
 		result.addObject("solicitudes", solicitudes);
 		result.addObject("tiposTrabajo", this.tipoTrabajoService.findAll());
 		result.addObject("solicitudForm", new SolicitudForm());
+		result.addObject("presupuestoForm", new PresupuestoForm());
 
 		return result;
 	}
