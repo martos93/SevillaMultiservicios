@@ -17,7 +17,9 @@ import javax.validation.constraints.NotNull;
 public class Albaran extends DomainEntity {
 
 	// Atributos
-	private BigDecimal importeTotalSinIVA;
+	private BigDecimal	importeTotalSinIVA;
+	private Boolean		leido;
+	private Boolean		terminado;
 
 
 	@NotNull
@@ -51,5 +53,17 @@ public class Albaran extends DomainEntity {
 	}
 	public void setPresupuesto(final Presupuesto presupuesto) {
 		this.presupuesto = presupuesto;
+	}
+	public Boolean getLeido() {
+		return leido;
+	}
+	public void setLeido(Boolean leido) {
+		this.leido = leido;
+	}
+	public Boolean getTerminado() {
+		return terminado;
+	}
+	public void setTerminado(Boolean terminado) {
+		this.terminado = terminado;
 	}
 }

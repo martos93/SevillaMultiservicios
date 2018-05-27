@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import controllers.AbstractController;
 import domain.Cliente;
+import domain.Concepto;
 import domain.Presupuesto;
 import domain.Solicitud;
 import domain.TipoTrabajo;
@@ -115,6 +116,7 @@ public class PresupuestoGestorController extends AbstractController {
 			result = new ModelAndView("presupuesto/modificarPresupuesto");
 			result.addObject("ocultaCabecera", true);
 			result.addObject("cliente", cliente);
+			presupuestoForm.setId(presupuesto.getId());
 			result.addObject("presupuestoForm", presupuestoForm);
 
 			final BigDecimal totalPresupuesto = OperacionesPresupuesto.totalPresupuesto(presupuesto);
@@ -304,6 +306,19 @@ public class PresupuestoGestorController extends AbstractController {
 		Solicitud sol = this.solicitudService.findOne(solicitudId);
 		ModelAndView result = null;
 		try {
+			if (presupuesto.getConceptos().isEmpty()) {
+				result = this.crearVistaPadre(presupuesto);
+				result.addObject("error", true);
+				result.addObject("mensaje", "No puede enviar un presupuesto sin conceptos ni tareas.");
+				return result;
+			}
+			for (final Concepto c : presupuesto.getConceptos())
+				if (c.getTareas().isEmpty()) {
+					result = this.crearVistaPadre(presupuesto);
+					result.addObject("error", true);
+					result.addObject("mensaje", "No puede enviar un presupuesto con conceptos sin tareas.");
+					return result;
+				}
 			this.actorService.checkGestor();
 			sol.setPresupuesto(presupuesto);
 			sol.setLeidoCliente(false);

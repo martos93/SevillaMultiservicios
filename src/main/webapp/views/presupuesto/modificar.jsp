@@ -242,6 +242,30 @@ class="btn btn-link">
 				<span class="glyphicon glyphicon-envelope"></span>
 				</button>
 				</jstl:if>
+				
+				<jstl:if test="${presupuesto.factura == null && presupuesto.albaran == null && presupuesto.solicitud.estado == 'ACEPTADO_CLIENTE'}">
+				<button type="button" class="btn btn-danger" onclick="crearFactura('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;margin-right:5px;border-color: #bf1200 !important;"
+				onclick="">Crear Factura
+				<span class="glyphicon glyphicon-book"></span>
+				
+				<button type="button" class="btn btn-danger" onclick="crearAlbaran('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Crear albarán
+				<span class="glyphicon glyphicon-open-file"></span>
+				</jstl:if>
+				
+				<jstl:if test="${presupuesto.factura == null && presupuesto.albaran == null && presupuesto.solicitudTemporal == 0}">
+				<button type="button" class="btn btn-danger" onclick="crearFactura('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;margin-right:5px;border-color: #bf1200 !important;"
+				onclick="">Crear Factura
+				<span class="glyphicon glyphicon-book"></span>
+				
+				<button type="button" class="btn btn-danger" onclick="crearAlbaran('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Crear albarán
+				<span class="glyphicon glyphicon-open-file"></span>
+				</jstl:if>
 </div>
 
 <!-- Modal observaciones-->

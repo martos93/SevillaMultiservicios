@@ -80,14 +80,24 @@ $("#cliente_filter").html("<label style='float:left'>Buscar:</label><input type=
 		<display:column property="provincia" title="Provincia" />
 
 		<display:column>
-		<jstl:if test="${presupuesto.cerrado == true}">
+		<jstl:if test="${presupuesto.solicitud!=null}">
+	
 			 <button onclick="verPresupuestoCliente('${presupuesto.id}')"style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Ver" style="color:#bf1200;"><span class='glyphicon glyphicon-search'></span></a></button>
-       	 </jstl:if>
+      
 		
-		<jstl:if test="${presupuesto.cerrado == false}">
-			 <button onclick="modificarPresupuesto('${presupuesto.id}')"style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
-       	 </jstl:if>
+		
+       </jstl:if>
        
+       
+       
+       <jstl:if test="${presupuesto.solicitud==null}">
+         <jstl:if test="${presupuesto.factura==null && presupuesto.albaran == null}">
+       <button onclick="modificarPresupuesto('${presupuesto.id}')"style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+       	 </jstl:if>
+       	  <jstl:if test="${presupuesto.factura!=null || presupuesto.albaran!=null}">
+       	  	 <button onclick="verPresupuestoCliente('${presupuesto.id}')"style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Ver" style="color:#bf1200;"><span class='glyphicon glyphicon-search'></span></a></button>
+       	  </jstl:if>
+       </jstl:if>
        <button onclick="resumenFinanciero('${presupuesto.id}')" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Resumen financiero" style="color:#bf1200;"><span class='glyphicon glyphicon-piggy-bank'></span></a></button>
          <button onclick="verGastos('${presupuesto.id}')" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Hoja de gastos" style="color:#bf1200;"><span class='glyphicon glyphicon-eur'></span></a></button>
        

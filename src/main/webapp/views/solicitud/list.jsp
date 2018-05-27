@@ -116,17 +116,17 @@
 		<display:column title="Ver">
 		<security:authorize access="hasRole('GESTOR')">
 			<jstl:if
-				test="${solicitud.presupuestoTemporal != 0 && solicitud.presupuestoTemporal!=null}">
-				<button onclick="modificarPresupuesto('${solicitud.presupuestoTemporal}')"
-					style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
-					type="button" class="btn btn-link">
-					<a data-toggle="tooltip" data-placement="top"
-						title="Ver Presupuesto" style="color: #bf1200;"><span
-						class='glyphicon glyphicon-file'></span></a>
-				</button>
+				test="${solicitud.estado == 'ACEPTADO' || solicitud.estado == 'PENDIENTE'}">
+				<button onclick="modificarPresupuesto('${solicitud.presupuestoTemporal}')"style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+		</jstl:if>
+		
+		<jstl:if test="${solicitud.estado == 'TERMINADO' || solicitud.estado == 'ACEPTADO_CLIENTE'}">
+			 <button onclick="verPresupuestoCliente('${solicitud.presupuesto.id}')"style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Ver" style="color:#bf1200;"><span class='glyphicon glyphicon-search'></span></a></button>
+       	 </jstl:if>
 				
-			</jstl:if>
 			</security:authorize>
+			
+			
 			<security:authorize access="hasRole('CLIENTE')">
 			<jstl:if
 				test="${solicitud.presupuesto.id != 0 && solicitud.presupuesto.id!=null}">

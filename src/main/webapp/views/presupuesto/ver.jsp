@@ -16,6 +16,8 @@
         <script src="scripts/datepicker/datepicker.min.js"></script>
 
         <script src="scripts/datepicker/i18n/datepicker.es.js"></script>
+    <script src="scripts/ajaxFactura.js"></script>
+ <script src="scripts/ajaxAlbaran.js"></script>
 
 <%int var=0;%>
 <form:form id="formularioConcepto"  modelAttribute="presupuestoForm">
@@ -126,7 +128,36 @@
   <table class="table">
 	 <thead>
       <tr>
-        <th>Conceptos</th>
+        <th>Conceptos 
+        <security:authorize access="hasRole('GESTOR')">
+        <jstl:if test="${verFactura}">
+        <jstl:if test="${factura.terminado!=true}">
+        <button data-toggle="modal" 
+onclick="limpiarDatosNuevoConceptoFactura()"
+data-target="#modalConcepto"
+title="Añadir concepto"
+style="margin:-9px -16px -2px -6px;outline: none;color:white;"
+type="button"
+class="btn btn-link">
+<a data-placement="top" data-toggle="tooltip" title="Añadir concepto a factura" style="color:white"><span class='glyphicon glyphicon-plus'></span></a></button>
+</jstl:if>
+
+</jstl:if>
+ <jstl:if test="${verAlbaran}">
+        <jstl:if test="${albaran.terminado!=true}">
+        <button data-toggle="modal" 
+onclick="limpiarDatosNuevoConceptoAlbaran()"
+data-target="#modalConceptoAlbaran"
+title="Añadir concepto"
+style="margin:-9px -16px -2px -6px;outline: none;color:white;"
+type="button"
+class="btn btn-link">
+<a data-placement="top" data-toggle="tooltip" title="Añadir concepto al albaran" style="color:white"><span class='glyphicon glyphicon-plus'></span></a></button>
+</jstl:if>
+
+</jstl:if>
+</security:authorize>
+</th>
         <th>Uds.</th>
         <th>Precio Ud.</th>
         <th>Subtotal</th>
@@ -160,6 +191,78 @@
       </jstl:forEach>
       
     </jstl:forEach>
+    <jstl:if test="${verFactura}">
+     <jstl:forEach items="${factura.conceptos}" var="conceptoF" varStatus="loopConceptoF">
+    
+    <tr>
+        <td><b>${conceptoF.titulo}</b>
+        <jstl:if test="${factura.terminado!=true}">
+        <button onclick="editarConceptoFactura('${conceptoF.id}')" data-toggle="modal" data-target="#modalConcepto" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+        <button data-toggle="tooltip" onclick="eliminarConceptoFactura('${conceptoF.id}','${presupuestoForm.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></a></button>
+        <button data-toggle="modal" onclick="limpiarDatosCrearTareaFactura('${conceptoF.id}')"	data-target="#modalTarea" title="Nueva tarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Nueva tarea" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
+        </jstl:if>
+       <script>actualizaPreciosConceptosFactura('${loopConceptoF.index}','${conceptoF.total}');</script>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td id="totalConceptoF_${loopConceptoF.index}"></td>
+      </tr>
+      <jstl:forEach items="${conceptoF.tareas}" var="tareaF" varStatus="loopF">
+      <script>actualizaPreciosFactura('<%=var %>','${tareaF.precioUnidad}','${tareaF.subTotal}');</script>
+      <tr>
+        <td>&nbsp ${tareaF.descripcion}
+       	<jstl:if test="${factura.terminado!=true}">
+        <button onclick="editarTareaFactura('${tareaF.id}')"  data-toggle="modal" data-target="#modalTarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+        <button data-toggle="tooltip" onclick="eliminarTareaFactura('${conceptoF.id}','${presupuestoForm.id}','${tareaF.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
+        </jstl:if>
+        </td>
+        <td>&nbsp ${tareaF.unidades}</td>
+        <td id="precioUdF_<%=var %>"></td>
+        <td id="subTotalF_<%=var %>"></td>
+        <td id="totalPresF"></td>
+      </tr>
+      <%var=var+1;%>
+      </jstl:forEach>
+     
+    </jstl:forEach>
+    </jstl:if>
+    <jstl:if test="${verAlbaran}">
+      <jstl:forEach items="${albaran.conceptos}" var="conceptoF" varStatus="loopConceptoF">
+    
+    <tr>
+        <td><b>${conceptoF.titulo}</b>
+        <jstl:if test="${albaran.terminado!=true}">
+        <button onclick="editarConceptoAlbaran('${conceptoF.id}')" data-toggle="modal" data-target="#modalConceptoAlbaran" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+        <button data-toggle="tooltip" onclick="eliminarConceptoAlbaran('${conceptoF.id}','${presupuestoForm.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></a></button>
+        <button data-toggle="modal" onclick="limpiarDatosCrearTareaAlbaran('${conceptoF.id}')"	data-target="#modalTareaAlbaran" title="Nueva tarea" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-placement="top" data-toggle="tooltip" title="Nueva tarea" style="color:#bf1200"><span class='glyphicon glyphicon-plus'></span></a></button>
+        </jstl:if>
+       <script>actualizaPreciosConceptosFactura('${loopConceptoF.index}','${conceptoF.total}');</script>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td id="totalConceptoF_${loopConceptoF.index}"></td>
+      </tr>
+      <jstl:forEach items="${conceptoF.tareas}" var="tareaF" varStatus="loopF">
+      <script>actualizaPreciosFactura('<%=var %>','${tareaF.precioUnidad}','${tareaF.subTotal}');</script>
+      <tr>
+        <td>&nbsp ${tareaF.descripcion}
+       	<jstl:if test="${albaran.terminado!=true}">
+        <button onclick="editarTareaAlbaran('${tareaF.id}')"  data-toggle="modal" data-target="#modalTareaAlbaran" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Editar" style="color:#bf1200;"><span class='glyphicon glyphicon-pencil'></span></a></button>
+        <button data-toggle="tooltip" onclick="eliminarTareaAlbaran('${conceptoF.id}','${presupuestoForm.id}','${tareaF.id}')" data-placement="top" title="Eliminar" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><span class='glyphicon glyphicon-remove'></span></button>
+        </jstl:if>
+        </td>
+        <td>&nbsp ${tareaF.unidades}</td>
+        <td id="precioUdF_<%=var %>"></td>
+        <td id="subTotalF_<%=var %>"></td>
+        <td id="totalPresF"></td>
+      </tr>
+      <%var=var+1;%>
+      </jstl:forEach>
+     
+    </jstl:forEach>   
+    </jstl:if>
      <tr>
      <td> </td>
      <td> </td>
@@ -167,6 +270,7 @@
      <td> </td>
      <td> </td>
      </tr>
+      <jstl:if test="${verFactura == null && verAlbaran==null}">
       <tr id="ultimaFila">
         <td><b>*Este presupuesto no incluye el 21% de IVA.</b></td>
         <td></td>
@@ -175,6 +279,46 @@
 		</td>
         <td id="totalPresupuesto"><b><script>formateaTotalPresup();</script></b></td>
       </tr>
+      </jstl:if>
+      <jstl:if test="${verFactura != null}">
+      <tr id="ultimaFila">
+        <td><b></b></td>
+        <td></td>
+        <td></td>
+        <td id="totalPresupuestoTabla"><b>TOTAL PRESUPUESTO</b> <input type=hidden id="totalPresupuestoHidden" name="titalPresupuestoHidden" value="${importeTotalSinIVA}">
+		</td>
+        <td id="totalPresupuesto"><b></b></td>
+      </tr>
+       <tr>
+        <td><b></b></td>
+        <td></td>
+        <td></td>
+        <td id="totalPresupuestoTabla"><b>IVA</b> <input type=hidden id="ivaHidden" value="${ivaCalculado}">
+		</td>
+        <td id="totalPresupuestoIVA"><b></b></td>
+      </tr>
+       <tr>
+        <td><b></b></td>
+        <td></td>
+        <td></td>
+        <td id="totalPresupuestoTabla"><b>TOTAL PRESUPUESTO CON IVA</b> <input type=hidden id="totalPresupuestoIVAHidden" value="${importeTotalConIVA}">
+		</td>
+        <td id="totalPresupuestoConIVA"><b></b></td>
+      </tr>
+      <script>formateaTotalPresupFactura();</script>
+      </jstl:if>
+      
+       <jstl:if test="${verAlbaran!=null}">
+      <tr id="ultimaFila">
+        <td><b>*Este presupuesto no incluye el 21% de IVA.</b></td>
+        <td></td>
+        <td></td>
+        <td id="totalPresupuestoTabla"><b>TOTAL PRESUPUESTO</b> <input type=hidden id="totalPresupuestoHidden" name="titalPresupuestoHidden" value="${importeTotalSinIVA}">
+		</td>
+        <td id="totalPresupuesto"><b><script>formateaTotalPresup();</script></b></td>
+      </tr>
+      </jstl:if>
+      
     </tbody>
   </table>
 </div>
@@ -203,6 +347,7 @@
 		</div>
 	</div>
 	
+	<security:authorize access="hasRole('CLIENTE')">
 	<jstl:if test="${presupuestoForm.aceptado ==null}">
 	
 	<button type="button" class="btn btn-danger"
@@ -217,16 +362,287 @@
 				<span class="glyphicon glyphicon-remove"></span>
 				</button>
 </jstl:if>
+
+<jstl:if test="${factura != null && verPresupuesto==true}">
+			<jstl:if test="${factura.terminado==true}">
+			<button type="button" class="btn btn-danger" onclick="verFactura('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Ver Factura
+				<span class="glyphicon glyphicon-book"></span>
+				</jstl:if>
+			</jstl:if>
+			
+				<jstl:if test="${albaran != null && verPresupuesto==true}">
+			<button type="button" class="btn btn-danger" onclick="verAlbaran('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Ver albarán
+				<span class="glyphicon glyphicon-open-file"></span>
+			</jstl:if>
+</security:authorize>
+
+<security:authorize access="hasRole('GESTOR')">
+
+<jstl:if test="${presupuestoForm.aceptado !=null && presupuestoForm.aceptado == true}">
+<jstl:if test="${factura != null && verFactura && factura.terminado != true}">
+<button type="button" class="btn btn-danger" onclick="terminarFactura('${factura.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;margin-right:10px;border-color: #bf1200 !important;"
+				onclick="">Terminar Factura
+				<span class="glyphicon glyphicon-book"></span>
+</jstl:if>
+
+<jstl:if test="${albaran != null && verAlbaran && albaran.terminado != true}">
+<button type="button" class="btn btn-danger" onclick="terminarAlbaran('${albaran.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;margin-right:10px;border-color: #bf1200 !important;"
+				onclick="">Terminar Albarán
+				<span class="glyphicon glyphicon-book"></span>
+</jstl:if>
+
+<jstl:if test="${factura == null && albaran == null}">
+<button type="button" class="btn btn-danger" onclick="crearFactura('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;margin-right:10px;border-color: #bf1200 !important;"
+				onclick="">Crear Factura
+				<span class="glyphicon glyphicon-book"></span>
+</jstl:if>
+<jstl:if test="${factura == null && albaran == null}">	
+				<button type="button" class="btn btn-danger" onclick="crearAlbaran('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Crear albarán
+				<span class="glyphicon glyphicon-open-file"></span>
+			</jstl:if>	
+			
+			<jstl:if test="${factura != null && verPresupuesto==true}">
+			<button type="button" class="btn btn-danger" onclick="verFactura('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Ver Factura
+				<span class="glyphicon glyphicon-book"></span>
+			</jstl:if>
+			
+				<jstl:if test="${albaran != null && verPresupuesto==true}">
+			<button type="button" class="btn btn-danger" onclick="verAlbaran('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Ver albarán
+				<span class="glyphicon glyphicon-open-file"></span>
+			</jstl:if>
+</jstl:if>
+
+<jstl:if test="${factura != null && factura.presupuesto.solicitud == null && verPresupuesto==true}">
+<button type="button" class="btn btn-danger" onclick="verFactura('${presupuestoForm.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+				onclick="">Ver Factura
+				<span class="glyphicon glyphicon-book"></span>
+
+</jstl:if>
+<jstl:if test="${factura.presupuesto.solicitud == null && factura != null && verFactura && factura.terminado != true}">
+<button type="button" class="btn btn-danger" onclick="terminarFactura('${factura.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;margin-right:10px;border-color: #bf1200 !important;"
+				onclick="">Terminar Factura
+				<span class="glyphicon glyphicon-book"></span>
+</jstl:if>
+<jstl:if test="${albaran.presupuesto.solicitud == null && albaran != null && verAlbaran && albaran.terminado != true}">
+<button type="button" class="btn btn-danger" onclick="terminarAlbaran('${albaran.id}')"
+				style=" color: #fff !important;background-color: #bf1200 !important;margin-right:10px;border-color: #bf1200 !important;"
+				onclick="">Terminar Albarán
+				<span class="glyphicon glyphicon-book"></span>
+</jstl:if>
+
+</security:authorize>
 </div>
 
 
 </form:form>
 
+<jstl:if test="${verFactura}">
+<!-- Modal concepto-->
+<div class="modal fade" id="modalConcepto" tabindex="-1" role="dialog"
+	aria-labelledby="modalConceptoLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalConceptoLabel">Nuevo Concepto</h4>
+				<h4 class="modal-title" id="modalConceptoLabelEdit">Modificar Concepto</h4>
+			</div>
+			<div class="modal-body">
+				<form:form id="formularioConcepto" modelAttribute="conceptoForm">
+				<input type=hidden id="conceptoId" name="conceptoId" value="${conceptoForm.conceptoId}">
+				<input type=hidden id="presupuestoId" name="presupuestoId" value="${conceptoForm.presupuestoId}">
+				<input type=hidden id="clienteId" name="clienteId" value="${conceptoForm.clienteId}">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-12 col-md-offset-0">
+								<form:label path="tituloC" for="tituloC">Concepto:</form:label>
+								<form:input cssClass="form-control" path="tituloC" />
+							</div>
+						</div>
+					</div>
+				</form:form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="guardarConcepto" type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+					onclick="guardarConceptoFactura()">Guardar</button>
+					<button id="editarConcepto" type="button" class="btn btn-danger"
+					style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+					onclick="modificarConceptoFactura()">Editar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal Tarea-->
+<div class="modal fade" id="modalTarea" tabindex="-1" role="dialog"
+	aria-labelledby="modalTareaLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalTareaLabel">Nueva tarea</h4>
+			</div>
+			<div class="modal-body">
+				<form:form id="formularioConcepto" modelAttribute="tareaForm">
+				<input type=hidden id="conceptoId" name="conceptoId" value="">
+				<input type=hidden id="presupuestoId" name="presupuestoId" value="${tareaForm.presupuestoId}">
+				<input type=hidden id="tareaId" name="tareaId" value="${tareaForm.tareaId}">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-12 col-md-offset-0">
+								<form:label path="descripcion" for="descripcion">Descripcion:</form:label>
+								<form:input cssClass="form-control" path="descripcion" /><br>
+							</div>
+						</div>
+						<div class="row">
+							<div id="uds" class="col-md-4 col-md-offset-0">
+								<form:label path="unidades" for="unidades">Unidades:</form:label>
+								<form:input cssClass="form-control numeric" path="unidades" onchange="actualizaSubtotalTareaFactura()"/>
+							</div>
+							<div id="pud" class="col-md-4 col-md-offset-0">
+								<form:label path="precioUnidad" for="precioUnidad">Precio unidad:</form:label>
+								<form:input cssClass="form-control" onchange="actualizaSubtotalTareaFactura()" path="precioUnidad" />
+							</div>
+							<div  class="col-md-4 col-md-offset-0">
+								<form:label path="subTotal" for="subTotal">Subtotal:</form:label>
+								<form:input cssClass="form-control" path="subTotal" disabled="true" />
+							</div>
+						</div>
+					</div>
+				</form:form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="guardarTarea" type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+					onclick="guardarTareaFactura()">Guardar</button>
+					<button id="editarTarea" type="button" class="btn btn-danger"
+					style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+					onclick="modificarTareaFactura()">Editar</button>
+			</div>
+		</div>
+	</div>
+</div>
+</jstl:if>
 
 
-
-
-
+<jstl:if test="${verAlbaran}">
+<!-- Modal concepto albaran-->
+<div class="modal fade" id="modalConceptoAlbaran" tabindex="-1" role="dialog"
+	aria-labelledby="modalConceptoLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalConceptoLabel">Nuevo Concepto</h4>
+				<h4 class="modal-title" id="modalConceptoLabelEdit">Modificar Concepto</h4>
+			</div>
+			<div class="modal-body">
+				<form:form id="formularioConcepto" modelAttribute="conceptoForm">
+				<input type=hidden id="conceptoId" name="conceptoId" value="${conceptoForm.conceptoId}">
+				<input type=hidden id="presupuestoId" name="presupuestoId" value="${conceptoForm.presupuestoId}">
+				<input type=hidden id="clienteId" name="clienteId" value="${conceptoForm.clienteId}">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-12 col-md-offset-0">
+								<form:label path="tituloC" for="tituloC">Concepto:</form:label>
+								<form:input cssClass="form-control" path="tituloC" />
+							</div>
+						</div>
+					</div>
+				</form:form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="guardarConcepto" type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+					onclick="guardarConceptoAlbaran()">Guardar</button>
+					<button id="editarConcepto" type="button" class="btn btn-danger"
+					style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+					onclick="modificarConceptoAlbaran()">Editar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal Tarea albaran-->
+<div class="modal fade" id="modalTareaAlbaran" tabindex="-1" role="dialog"
+	aria-labelledby="modalTareaLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="modalTareaLabel">Nueva tarea</h4>
+			</div>
+			<div class="modal-body">
+				<form:form id="formularioConcepto" modelAttribute="tareaForm">
+				<input type=hidden id="conceptoId" name="conceptoId" value="">
+				<input type=hidden id="presupuestoId" name="presupuestoId" value="${tareaForm.presupuestoId}">
+				<input type=hidden id="tareaId" name="tareaId" value="${tareaForm.tareaId}">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-12 col-md-offset-0">
+								<form:label path="descripcion" for="descripcion">Descripcion:</form:label>
+								<form:input cssClass="form-control" path="descripcion" /><br>
+							</div>
+						</div>
+						<div class="row">
+							<div id="uds" class="col-md-4 col-md-offset-0">
+								<form:label path="unidades" for="unidades">Unidades:</form:label>
+								<form:input cssClass="form-control numeric" path="unidades" onchange="actualizaSubtotalTareaFactura()"/>
+							</div>
+							<div id="pud" class="col-md-4 col-md-offset-0">
+								<form:label path="precioUnidad" for="precioUnidad">Precio unidad:</form:label>
+								<form:input cssClass="form-control" onchange="actualizaSubtotalTareaFactura()" path="precioUnidad" />
+							</div>
+							<div  class="col-md-4 col-md-offset-0">
+								<form:label path="subTotal" for="subTotal">Subtotal:</form:label>
+								<form:input cssClass="form-control" path="subTotal" disabled="true" />
+							</div>
+						</div>
+					</div>
+				</form:form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="guardarTarea" type="button" class="btn btn-danger"
+				style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+					onclick="guardarTareaAlbaran()">Guardar</button>
+					<button id="editarTarea" type="button" class="btn btn-danger"
+					style=" color: #fff !important;background-color: #bf1200 !important;border-color: #bf1200 !important;"
+					onclick="modificarTareaAlbaran()">Editar</button>
+			</div>
+		</div>
+	</div>
+</div>
+</jstl:if>
 
 
 

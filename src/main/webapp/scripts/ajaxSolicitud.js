@@ -194,6 +194,7 @@ function limpiarModalRechazo(solicitudId){
 }
 
 function verPresupuestoCliente(presupuestoId){
+	debugger
 	$.ajax({
 	    url : "presupuesto/verPresupuesto.do?presupuestoId="+presupuestoId,
 	    type: "GET",

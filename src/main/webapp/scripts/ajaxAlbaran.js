@@ -1,4 +1,133 @@
-function limpiarDatosCrearTarea(conceptoId){
+function limpiarDatosNuevoConceptoAlbaran(){
+	$('.has-error').hide();
+	$('#editarConcepto').hide();
+	$('#guardarConcepto').show();
+	$('#tituloC').val("");
+	$('#modalConceptoLabel').show();
+	$('#modalConceptoLabelEdit').hide();
+}
+
+function guardarConceptoAlbaran(){
+	toastr.clear()
+	$('.has-error').hide();
+	var tituloC = $('#tituloC').val();
+	var conceptoId = $('#conceptoId').val();
+	var presupuestoId = $('#presupuestoId').val();
+	var clienteId = $('#clienteId').val();
+	
+	if(tituloC==""){
+		$("#tituloC").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+    	alertaError("El nombre del concepto es obligatorio");
+    	return false;
+	}
+	
+	var json = {"tituloC":tituloC,"conceptoId":conceptoId,"presupuestoId":presupuestoId,"clienteId":clienteId};
+	$.ajax({
+	    
+		url : "albaran/nuevoConcepto.do",
+	    type: "POST",
+	    data: JSON.stringify(json),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success : function(data) {
+	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
+	    	alertaExito("Se ha guardado correctamente el concepto.");
+	    },      
+	    error : function(data){
+	    	alertaError("Se ha producido un error al guardar el concepto.");
+	    }
+	});
+	
+}
+
+function actualizaPreciosConceptosAlbaran(id,total){
+	debugger
+	total = total*1;
+	total = formateaNum(total);
+	if(total!="0,00"){
+	$('#totalConceptoF_'+id).html("<b>"+total+" €</b>");
+	}
+}
+
+function eliminarConceptoAlbaran(conceptoId,presupuestoId) {
+	if(confirm("Se borrará el concepto y todas sus tareas asociadas. Una vez borrado no podrá recuperar los datos. ¿Está seguro?")){
+		$.ajax({
+		    url : "albaran/eliminarConcepto.do?conceptoId="+conceptoId+"&presupuestoId="+presupuestoId,
+		    type: "GET",
+		    data: conceptoId,
+		    success : function(data) {
+		    	$('body').html(data);
+		    	},      
+		    error : function(){
+		    	alertaError("Se ha producido un error al borrar el concepto.");
+		    }
+		});
+		
+	}
+}
+
+function editarConceptoAlbaran(conceptoId) {
+	$('.has-error').hide();
+	$('#editarConcepto').show();
+	$('#guardarConcepto').hide();
+	$('#modalConceptoLabel').hide();
+	$('#modalConceptoLabelEdit').show();
+	
+		$.ajax({
+		    url : "albaran/editarConcepto.do?conceptoId="+conceptoId,
+		    type: "GET",
+		    data: conceptoId,
+		    success : function(data) {
+		    	$('#tituloC').val(data.tituloC);
+		    	$('#conceptoId').val(data.conceptoId);
+		    	},      
+		    error : function(){
+		    	alertaError("Se ha producido un error al editar el concepto.");
+		    }
+		});
+		
+}
+
+function modificarConceptoAlbaran(){
+	toastr.clear()
+	$('.has-error').hide();
+	var tituloC = $('#tituloC').val();
+	var conceptoId = $('#conceptoId').val();
+	var presupuestoId = $('#presupuestoId').val();
+	var clienteId = $('#clienteId').val();
+	
+	if(tituloC==""){
+		$("#tituloC").after('<span style="color:red" class=\"glyphicon glyphicon-remove form-control-feedback\ has-error"></span>');
+    	alertaError("El nombre del concepto es obligatorio");
+    	return false;
+	}
+	
+	var json = {"tituloC":tituloC,"conceptoId":conceptoId,"presupuestoId":presupuestoId,"clienteId":clienteId};
+	$.ajax({
+	    
+		url : "albaran/modificarConcepto.do",
+	    type: "POST",
+	    data: JSON.stringify(json),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success : function(data) {
+	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
+	    	alertaExito("Se ha modificado correctamente el concepto.");
+	    },      
+	    error : function(data){
+	    	alertaError("Se ha producido un error al modificar el concepto.");
+	    }
+	});
+	
+}
+
+function limpiarDatosCrearTareaAlbaran(conceptoId){
 	$('.has-error').hide();
 	$('#editarTarea').hide();
 	$('#guardarTarea').show();
@@ -10,17 +139,15 @@ function limpiarDatosCrearTarea(conceptoId){
 	$('#conceptoId').val(conceptoId);
 	$('#unidades').prop("type", "number");
 	$('#unidades').prop("min", "0");
-//	$('#precioUnidad').prop("type","number");
-//	$('#precioUnidad').prop("min","0");
 }
 
-function editarTarea(tareaId) {
+function editarTareaAlbaran(tareaId) {
 	$('.has-error').hide();
 	$('#editarTarea').show();
 	$('#guardarTarea').hide();
 	
 		$.ajax({
-		    url : "gestor/tarea/editarTarea.do?tareaId="+tareaId,
+		    url : "albaran/editarTarea.do?tareaId="+tareaId,
 		    type: "GET",
 		    data: tareaId,
 		    success : function(data) {
@@ -38,7 +165,7 @@ function editarTarea(tareaId) {
 		});
 }
 
-function modificarTarea(){
+function modificarTareaAlbaran(){
 	toastr.clear()
 	$('.has-error').hide();
 	var descripcion = $('#descripcion').val();
@@ -88,7 +215,7 @@ function modificarTarea(){
 	
 	$.ajax({
 	    
-		url : "gestor/tarea/modificarTarea.do",
+		url : "albaran/modificarTarea.do",
 	    type: "POST",
 	    data: JSON.stringify(json),
 	    beforeSend: function(xhr) {
@@ -106,11 +233,10 @@ function modificarTarea(){
 	
 }
 
-//función para eliminar tareas
-function eliminarTarea(conceptoId,presupuestoId,tareaId) {
+function eliminarTareaAlbaran(conceptoId,presupuestoId,tareaId) {
 	if(confirm("Se borrará la tarea seleccionada. Una vez borrada no podrá recuperar los datos. ¿Está seguro?")){
 		$.ajax({
-		    url : "gestor/tarea/eliminarTarea.do?conceptoId="+conceptoId+"&presupuestoId="+presupuestoId+"&tareaId="+tareaId,
+		    url : "albaran/eliminarTarea.do?conceptoId="+conceptoId+"&presupuestoId="+presupuestoId+"&tareaId="+tareaId,
 		    type: "GET",
 		    data: conceptoId,
 		    success : function(data) {
@@ -124,7 +250,7 @@ function eliminarTarea(conceptoId,presupuestoId,tareaId) {
 	}
 }
 
-function guardarTarea(){
+function guardarTareaAlbaran(){
 	toastr.clear()
 	$('.has-error').hide();
 	var descripcion = $('#descripcion').val();
@@ -173,7 +299,7 @@ function guardarTarea(){
 	
 	$.ajax({
 	    
-		url : "gestor/tarea/nuevaTarea.do",
+		url : "albaran/nuevaTarea.do",
 	    type: "POST",
 	    data: JSON.stringify(json),
 	    beforeSend: function(xhr) {
@@ -192,7 +318,7 @@ function guardarTarea(){
 	
 }
 
-function actualizaSubtotalTarea(){
+function actualizaSubtotalTareaAlbaran(){
 	var precioUd = $('#precioUnidad').val();
 	var unidades = $('#unidades').val();
 	if(String(unidades).includes("-")){
@@ -207,7 +333,7 @@ function actualizaSubtotalTarea(){
 	if(String(precioUd).includes("-")){
 		$('#precioUnidad').val(String(precioUd).replace("-",""));
 	}
-	debugger
+	
 	if(String(precioUd).includes(",")){
 		$('#precioUnidad').val(String(precioUd).split("\,")[0]+"."+String(precioUd).split("\,")[1]);
 	}
@@ -228,13 +354,14 @@ function formateaNum(n){
 	return value;
 }
 
-function actualizaPrecios(id,precioUnidad,subTotal){
+function actualizaPreciosAlbaran(id,precioUnidad,subTotal){
+	debugger
 	precioUnidad = precioUnidad*1;
 	precioUnidad = formateaNum(precioUnidad);
 	subTotal = subTotal*1;
 	subTotal = formateaNum(subTotal);
-	$('#precioUd_'+id).html("&nbsp "+precioUnidad+" €");
-	$('#subTotal_'+id).html("&nbsp "+subTotal+" €");
+	$('#precioUdF_'+id).html("&nbsp "+precioUnidad+" €");
+	$('#subTotalF_'+id).html("&nbsp "+subTotal+" €");
 	
 }
 
@@ -259,3 +386,41 @@ $(document).ready(function() {
         }
     });
 });
+
+function formateaTotalPresupAlbaran(){
+	var totalPresupuesto = $('#totalPresupuestoHidden').val()*1;
+	var totalPresupuestoIVA = $('#ivaHidden').val()*1;
+	var totalPresupuestoConIVA = $('#totalPresupuestoIVAHidden').val()*1;
+	 
+	 totalPresupuesto = formateaNum(totalPresupuesto);
+	 totalPresupuestoIVA = formateaNum(totalPresupuestoIVA);
+	 totalPresupuestoConIVA = formateaNum(totalPresupuestoConIVA);
+	 if(totalPresupuesto!="0,00"){
+	 $('#totalPresupuesto').html("<b>"+totalPresupuesto+" €</b>");
+	 }
+	 if(totalPresupuestoIVA!="0,00"){
+		 $('#totalPresupuestoIVA').html("<b>"+totalPresupuestoIVA+" €</b>");
+		 }
+	 if(totalPresupuestoConIVA!="0,00"){
+		 $('#totalPresupuestoConIVA').html("<b>"+totalPresupuestoConIVA+" €</b>");
+		 }
+}
+
+function terminarAlbaran(albaranId) {
+	if(confirm("Se creará el albaran correspondiente. Una vez creada no podrá editarse. ¿Está seguro?")){
+		$.ajax({
+		    url : "albaran/terminarAlbaran.do?albaranId="+albaranId,
+		    type: "GET",
+		    data: albaranId,
+		    success : function(data) {
+		    	debugger
+		    	$('body').html(data);
+		    	},      
+		    error : function(){
+		    	debugger
+		    	alertaError("Se ha producido un error al terminar el albaran.");
+		    }
+		});	
+	}
+		
+}

@@ -19,6 +19,8 @@ public class Factura extends DomainEntity {
 	// Atributos
 	private BigDecimal	importeTotalConIVA;
 	private BigDecimal	importeTotalSinIVA;
+	private Boolean		leido;
+	private Boolean		terminado;
 
 
 	@NotNull
@@ -63,6 +65,18 @@ public class Factura extends DomainEntity {
 
 	public void setConceptos(final Collection<Concepto> conceptos) {
 		this.conceptos = conceptos;
+	}
+	public Boolean getLeido() {
+		return this.leido;
+	}
+	public void setLeido(final Boolean leido) {
+		this.leido = leido;
+	}
+	public Boolean getTerminado() {
+		return terminado;
+	}
+	public void setTerminado(Boolean terminado) {
+		this.terminado = terminado;
 	}
 
 }

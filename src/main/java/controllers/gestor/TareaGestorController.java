@@ -2,6 +2,7 @@
 package controllers.gestor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import domain.Cliente;
 import domain.Concepto;
 import domain.Presupuesto;
 import domain.Tarea;
+import domain.TipoTrabajo;
 import forms.ConceptoForm;
 import forms.PresupuestoForm;
 import forms.TareaForm;
@@ -28,6 +30,7 @@ import services.ClienteService;
 import services.ConceptoService;
 import services.PresupuestoService;
 import services.TareaService;
+import services.TipoTrabajoService;
 import utilities.OperacionesPresupuesto;
 
 @Controller
@@ -50,6 +53,8 @@ public class TareaGestorController extends AbstractController {
 
 	@Autowired
 	private TareaService		tareaService;
+	@Autowired
+	private TipoTrabajoService	tipoTrabajoService;
 
 
 	@RequestMapping(value = "/nuevaTarea", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -91,6 +96,11 @@ public class TareaGestorController extends AbstractController {
 			tareaFormNew.setPresupuestoId(p.getId());
 			result.addObject("tareaForm", tareaFormNew);
 			result.addObject("observaciones", p.getObservaciones());
+
+			final ArrayList<TipoTrabajo> tiposTrabajo = (ArrayList<TipoTrabajo>) this.tipoTrabajoService.findAll();
+			result.addObject("tiposTrabajo", tiposTrabajo);
+			result.addObject("tipoTrabajoId", p.getTipoTrabajo().getId());
+			result.addObject("presupuesto", p);
 		} catch (final Exception e) {
 			this.logger.error(e.getMessage());
 		}
@@ -135,6 +145,12 @@ public class TareaGestorController extends AbstractController {
 		final TareaForm tareaForm = new TareaForm();
 		tareaForm.setPresupuestoId(p.getId());
 		result.addObject("tareaForm", tareaForm);
+		final ArrayList<TipoTrabajo> tiposTrabajo = (ArrayList<TipoTrabajo>) this.tipoTrabajoService.findAll();
+		result.addObject("tiposTrabajo", tiposTrabajo);
+		result.addObject("tipoTrabajoId", p.getTipoTrabajo().getId());
+		result.addObject("presupuesto", p);
+		result.addObject("observaciones", p.getObservaciones());
+
 		return result;
 	}
 

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import domain.Solicitud;
 import services.ActorService;
+import services.FacturaService;
 import services.SolicitudService;
 
 @Controller
@@ -29,6 +30,9 @@ public class WelcomeController extends AbstractController {
 
 	@Autowired
 	private SolicitudService	solicitudService;
+
+	@Autowired
+	private FacturaService		facturaService;
 
 	@Autowired
 	private ActorService		actorService;
@@ -45,7 +49,7 @@ public class WelcomeController extends AbstractController {
 	@RequestMapping(value = "/index")
 	public ModelAndView index(@RequestParam(required = false, defaultValue = "John Doe") final String name) {
 		ModelAndView result;
-
+		boolean factura = false;
 		result = new ModelAndView("welcome/index");
 
 		try {
@@ -61,7 +65,17 @@ public class WelcomeController extends AbstractController {
 			if (this.actorService.checkCliente()) {
 				final ArrayList<Solicitud> solicitudes = this.solicitudService.solicitudesSinLeerCliente();
 				result.addObject("solicitudes", solicitudes);
-				if (solicitudes.size() > 0) {
+				if (solicitudes.size() > 0)
+					for (final Solicitud s : solicitudes)
+						if (s.getPresupuesto().getFactura() != null && s.getPresupuesto().getFactura().getLeido() == false) {
+							factura = true;
+
+							break;
+						}
+				if (factura && solicitudes.size() > 0) {
+					result.addObject("info", true);
+					result.addObject("mensaje", "Se ha creado una factura de uno de sus presupuestos.");
+				} else if (solicitudes.size() > 0) {
 					result.addObject("info", true);
 					result.addObject("mensaje", "Una o más solicitudes han cambiado de estado.");
 				}

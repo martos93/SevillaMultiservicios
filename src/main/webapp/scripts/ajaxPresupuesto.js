@@ -129,7 +129,7 @@ function guardarDatosPresupuesto(presupuestoId,clienteId){
 			"fechaFinS":fechaFinS,
 			"fechaObraS":fechaObraS,
 			"codigoPostal":codigoPostal,
-			"tipoTrabajo":tipoTrabajo
+			"tipoTrabajo":tipoTrabajo,
 	}
 	
 	$.ajax({
@@ -241,7 +241,13 @@ function enviarPresupuestoCliente(solicitudId){
 		    type: "GET",
 		    data: solicitudId,
 		    success : function(data) {
-		    	verPresupuestoCliente(presupuestoId)
+		    	debugger
+		    	if(data.includes("No puede enviar")){
+		    		$('body').html(data);
+		    	}else{
+		    		verPresupuestoCliente(presupuestoId);
+		    	}
+		    	
 		    	},      
 		    error : function(){
 		    	alertaError("Se ha producido un error al enviar el presupuesto.");
@@ -257,7 +263,6 @@ function aceptarRechazarPresupuesto(presupuestoId,valor){
 	    type: "GET",
 	    data: presupuestoId,
 	    success : function(data) {
-	    	debugger
 	    	$('body').html(data);
 	    	if(valor==1){
 	    		alertaExito("Se ha aceptado el presupuesto.");
@@ -267,8 +272,77 @@ function aceptarRechazarPresupuesto(presupuestoId,valor){
 		    	
 	    	},      
 	    error : function(data){
-	    	debugger
 	    	alertaError("Se ha producido un error al rechazar la solicitud.");
+	    }
+	});
+	
+}
+
+function crearFactura(presupuestoId){
+	
+	$.ajax({
+	    url : "presupuesto/crearFactura.do?presupuestoId="+presupuestoId,
+	    type: "GET",
+	    data: presupuestoId,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	
+	    	
+	    	},      
+	    error : function(data){
+	    	alertaError("Se ha producido un error al crear la factura.");
+	    }
+	});
+	
+}
+
+function crearAlbaran(presupuestoId){
+	
+	$.ajax({
+	    url : "presupuesto/crearAlbaran.do?presupuestoId="+presupuestoId,
+	    type: "GET",
+	    data: presupuestoId,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	
+	    	
+	    	},      
+	    error : function(data){
+	    	alertaError("Se ha producido un error al crear el albarán.");
+	    }
+	});
+	
+}
+
+function verAlbaran(presupuestoId){
+	
+	$.ajax({
+	    url : "albaran/verAlbaran.do?presupuestoId="+presupuestoId,
+	    type: "GET",
+	    data: presupuestoId,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	
+	    	},      
+	    error : function(data){
+	    	alertaError("Se ha producido un error al ver el albarán.");
+	    }
+	});
+	
+}
+
+function verFactura(presupuestoId){
+	
+	$.ajax({
+	    url : "factura/verFactura.do?presupuestoId="+presupuestoId,
+	    type: "GET",
+	    data: presupuestoId,
+	    success : function(data) {
+	    	$('body').html(data);
+	    	
+	    	},      
+	    error : function(data){
+	    	alertaError("Se ha producido un error al ver la factura.");
 	    }
 	});
 	
