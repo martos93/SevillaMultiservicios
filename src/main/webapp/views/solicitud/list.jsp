@@ -52,6 +52,11 @@
 
 	<display:table name="solicitudes" id="solicitud" class="table">
 
+<security:authorize access="hasRole('GESTOR')">
+	<display:column title="Cliente">
+	${solicitud.cliente.nombre} ${solicitud.cliente.apellidos} 
+	</display:column>
+</security:authorize>
 		<display:column property="titulo" title="Titulo" />
 		<display:column title="Fecha">
 		<input type="hidden" id="clienteSolicitud_${solicitud_rowNum}" value="${solicitud.cliente.id}">

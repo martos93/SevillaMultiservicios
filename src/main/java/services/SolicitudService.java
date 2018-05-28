@@ -53,4 +53,8 @@ public class SolicitudService {
 
 		return (ArrayList<Solicitud>) this.solicitudRepository.solicitudesSinLeerCliente();
 	}
+
+	public ArrayList<Solicitud> solicitudesCliente(final int id) {
+		return (ArrayList<Solicitud>) this.solicitudRepository.solicitudesCliente(id);
+	}
 }

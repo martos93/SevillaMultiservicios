@@ -14,6 +14,21 @@
 
 <jsp:useBean id="date" class="java.util.Date" />
 
-<hr />
 
-<b>Copyright &copy; <fmt:formatDate value="${date}" pattern="yyyy" /> Sample Co., Inc.</b>
+
+<style>
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #bf1200;
+    color: white;
+    text-align: center;
+}
+</style>
+
+<div class="footer">
+  <b>Copyright &copy; <fmt:formatDate value="${date}" pattern="yyyy" /> Sevilla Multiservicios</b>
+</div>
+

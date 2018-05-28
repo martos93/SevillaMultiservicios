@@ -16,8 +16,21 @@ function verPresupuestos(id) {
 	});
 }
 
+function limpiarDatosEdit() {
+	$('.has-error').hide();
+	$('#guardar').hide();
+	$('#password').hide();
+	$('#passwordRepeat').hide();
+	$('#usuario').hide();
+	$('#pwdlabel').hide();
+	$('#pwdrlabel').hide();
+	$('#usuariolabel').hide();
+	$('#editar').show();
+}
+
 // función para abrir el modal de editar clientes
 function editarCliente(id) {
+	debugger
 	$('#password').hide();
 	$('#passwordRepeat').hide();
 	$('#usuario').hide();
@@ -344,18 +357,6 @@ function limpiarDatos() {
 	$('#pwdrlabel').show();
 	$('#usuariolabel').show();
 	$('#guardar').show();
-}
-
-function limpiarDatosEdit() {
-	$('.has-error').hide();
-	$('#guardar').hide();
-	$('#password').hide();
-	$('#passwordRepeat').hide();
-	$('#usuario').hide();
-	$('#pwdlabel').hide();
-	$('#pwdrlabel').hide();
-	$('#usuariolabel').hide();
-	$('#editar').show();
 }
 
 function compruebaDni(dni) {

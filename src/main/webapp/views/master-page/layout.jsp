@@ -88,14 +88,11 @@ $(function () {
 		<tiles:insertAttribute name="header" />
 	</div>
 	<div>
-		<h1>
-			<tiles:insertAttribute name="title" />
-		</h1>
 		<tiles:insertAttribute name="body" />	
 	</div>
-	<div>
+	
+<div>
 		<tiles:insertAttribute name="footer" />
 	</div>
-
 </body>
 </html>

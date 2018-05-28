@@ -23,13 +23,19 @@
 
 <div class="container">
 
-	<display:table name="agendas" id="agenda"
-		requestURI="${requestURI}" class="table">
+	<display:table name="agendas" id="agenda" requestURI="${requestURI}"
+		class="table">
 
-		<display:column  title="Presupuesto">
-		${agenda.presupuesto.codigo } <button  data-toggle="modal"
-				data-target="#modalAgenda" onclick="verAgenda('${agenda.id}')" style="margin:-9px -16px -2px -6px;outline: none;color:#bf1200;" type="button" class="btn btn-link"><a data-toggle="tooltip" data-placement="top" title="Ver agenda" style="color:#bf1200;"><span class='glyphicon glyphicon-list-alt'></span></a></button>
-       
+		<display:column title="Presupuesto">
+		${agenda.presupuesto.codigo } <button data-toggle="modal"
+				data-target="#modalAgenda" onclick="verAgenda('${agenda.id}')"
+				style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
+				type="button" class="btn btn-link">
+				<a data-toggle="tooltip" data-placement="top" title="Ver agenda"
+					style="color: #bf1200;"><span
+					class='glyphicon glyphicon-list-alt'></span></a>
+			</button>
+
 		</display:column>
 
 
@@ -37,37 +43,37 @@
 </div>
 
 <style>
-.modal {
-    @media(min-width: @screen-sm-min) {
-        text-align: center;
+.modal {@media (min-width : @screen-sm-min) {text-align: center ;
 
         &:before {
-            content: '';
-            height: 100%;
-            width: 1px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .modal-dialog {
-            text-align: left;
-            margin: 10px auto;
-            display: inline-block;
-            vertical-align: middle;
-        }
-    }
+	content: '';
+	height: 100%;
+	width: 1px;
+	display: inline-block;
+	vertical-align: middle;
 }
 
-.modal-dialog,
+.modal-dialog {
+	text-align: left;
+	margin: 10px auto;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+}
+}
+.modal-dialog {
+	margin-top: 345.5px;
+}
+
 .modal-content {
-    height: 80%;
-    width: 90%;
-    margin-right:14px;
+	width: 90%;
+    margin-right: 14px;
 }
 
 .modal-body {
-    max-height: calc(100% - 120px);
-    overflow-y: scroll;
+	max-height: calc(100% - 120px);
+	overflow-y: scroll;
 }
 </style>
 
@@ -80,75 +86,78 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="modalPresupuestoLabel">Entradas en la agenda</h4>
+				<h4 class="modal-title" id="modalPresupuestoLabel">Entradas en
+					la agenda</h4>
 			</div>
 			<div class="modal-body">
-				<form:form id="formularioAgenda"
-					modelAttribute="agendaForm">
+				<form:form id="formularioAgenda" modelAttribute="agendaForm">
 					<form:input type="hidden" path="agendaId" />
 					<security:authorize access="hasRole('EMPLEADO')">
-					<div class="row">
-						<div class="col-md-3 col-md-offset-0">
-							<label for="fechaS">Fecha:</label>
-							<div class="form-group" id="fechaSpan">
-								<div class='input-group date' id='fechaD'>
+						<div class="row">
+							<div class="col-md-3 col-md-offset-0">
+								<label for="fechaS">Fecha:</label>
+								<div class="form-group" id="fechaSpan">
+									<div class='input-group date' id='fechaD'>
 
-									<input disabled="disabled" id="fecha"
-										class="form-control datepicker-here"
-										style="cursor: default;" data-position="right top" />
-									<span class="input-group-addon" id="fireDate"
-										style="cursor: pointer;"> <span
-										class="glyphicon glyphicon-calendar"></span>
-									</span>
+										<input disabled="disabled" id="fecha"
+											class="form-control datepicker-here" style="cursor: default;"
+											data-position="right top" /> <span class="input-group-addon"
+											id="fireDate" style="cursor: pointer;"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
 								</div>
 							</div>
+							<div class="col-md-8 col-md-offset-0">
+								<label for="entradaAgendaTexto">Entrada:</label> <input
+									id="entradaAgendaTexto" type="text" class="form-control" />
+							</div>
+							<div class="col-md-1 col-md-offset-0">
+								<br>
+								<button type="button" class="btn btn-danger" data-toggle="modal"
+									data-target="#modalPresupuesto"
+									style="color: #fff !important; margin-top: 5px; background-color: #bf1200 !important; border-color: #bf1200 !important;"
+									onclick="addEntrada()">
+									<span class="glyphicon glyphicon-plus"></span> Añadir
+								</button>
+							</div>
 						</div>
-						<div class="col-md-8 col-md-offset-0">
-						<label for="entradaAgendaTexto">Entrada:</label>
-						
-						<input id="entradaAgendaTexto" type="text" class="form-control"/>
-						</div>
-						<div class="col-md-1 col-md-offset-0">
-						<br>
-							<button type="button" class="btn btn-danger" data-toggle="modal"
-				data-target="#modalPresupuesto"
-				style=" color: #fff !important;margin-top:5px;background-color: #bf1200 !important;border-color: #bf1200 !important;"
-				onclick="addEntrada()">
-				<span class="glyphicon glyphicon-plus"></span> Añadir
-			</button>
-						</div>
-					</div>
 					</security:authorize>
 					<div class="form-group">
-						
+
 						<div class="row">
-						<ul>
-						<jstl:forEach items="${agenda.entradas}" var="entrada"><li>${entrada}</li></jstl:forEach>
-						</ul>
+							<ul>
+								<jstl:forEach items="${agenda.entradas}" var="entrada">
+									<li>${entrada}</li>
+								</jstl:forEach>
+							</ul>
 						</div>
-						
+
 					</div>
 				</form:form>
 			</div>
 			<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+
+			</div>
 		</div>
-		</div>
-		
+
 	</div>
 </div>
 <script>
-var fecha = $('#fecha').val();
-//Initialization
-$('#fecha').datepicker({ language: 'es', maxDate: new Date() });
-// Access instance of plugin
-$('#fecha').data('datepicker');
-dp = $('#fecha').datepicker().data('datepicker');
-$('#fireDate').on('click', function() {
-dp.show();
-$('#fecha').focus();
-});
-$("#datepickers-container").addClass("desplazar");
-$('#fecha').val(fecha);
+	var fecha = $('#fecha').val();
+	//Initialization
+	$('#fecha').datepicker({
+		language : 'es',
+		maxDate : new Date()
+	});
+	// Access instance of plugin
+	$('#fecha').data('datepicker');
+	dp = $('#fecha').datepicker().data('datepicker');
+	$('#fireDate').on('click', function() {
+		dp.show();
+		$('#fecha').focus();
+	});
+	$("#datepickers-container").addClass("desplazar");
+	$('#fecha').val(fecha);
 </script>

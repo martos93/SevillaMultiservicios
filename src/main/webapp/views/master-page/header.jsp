@@ -28,7 +28,6 @@
             <li><a href="gestor/cliente/listAll.do">Ver presupuestos</a></li>
 			<li role="separator" class="divider"></li>
             <li><a href="gestor/solicitud/verSolicitudes.do">Solicitudes de presupuestos</a></li>
-        <li><a href="#">Nuevo presupuesto</a></li>
         </ul>
 	  </li>
       <li><a href="gestor/empleado/listAll.do">Empleados</a></li>

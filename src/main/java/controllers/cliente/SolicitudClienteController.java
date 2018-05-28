@@ -52,7 +52,7 @@ public class SolicitudClienteController extends AbstractController {
 		result = new ModelAndView("solicitud/verSolicitudes");
 		this.actorService.checkCliente();
 		final Cliente cliente = this.clienteService.findByPrincipal(LoginService.getPrincipal().getId());
-		final List<Solicitud> solicitudes = (List<Solicitud>) cliente.getSolicitudes();
+		final List<Solicitud> solicitudes = this.solicitudService.solicitudesCliente(cliente.getId());
 		result.addObject("solicitudes", solicitudes);
 		result.addObject("tiposTrabajo", this.tipoTrabajoService.findAll());
 		result.addObject("solicitudForm", new SolicitudForm());
