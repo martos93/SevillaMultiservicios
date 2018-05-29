@@ -257,6 +257,7 @@ function guardarDireccionObra(){
         },	    
 	    success : function(data) {
 	    	$('body').html(data);
+	    	$( "body" ).removeClass( "modal-open" );
 	    	},      
 	    error : function(){
 	    	alertaError("Se ha producido un error al guardar la dirección de obra.");

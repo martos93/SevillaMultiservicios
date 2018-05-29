@@ -54,7 +54,7 @@ function addEntrada() {
 		success : function(data) {
 			$('body').html(data);
 			$("body").removeClass("modal-open");
-			alertaError("Se ha guardado correctamente la entrada.");
+			alertaExito("Se ha guardado correctamente la entrada.");
 		},
 		error : function(data) {
 			alertaError("Se ha producido un error al guardar la entrada.");

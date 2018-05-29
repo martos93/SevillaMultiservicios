@@ -401,7 +401,8 @@ class="btn btn-link">
 
 <script>
 var fin = $('#fechaFinS').val();
-$('#fechaFinS').datepicker({ language: 'es', maxDate: new Date() });
+//$('#fechaFinS').datepicker({ language: 'es', maxDate: new Date() });
+$('#fechaFinS').datepicker({ language: 'es'});
 $('#fechaFinS').data('datepicker');
 var dp2 = $('#fechaFinS').datepicker().data('datepicker');
 $('#fireDateS').on('click', function() {

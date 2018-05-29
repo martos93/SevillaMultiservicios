@@ -220,14 +220,17 @@ function actualizaCantidadGasto(){
 	if(String(cantidad).includes("-")){
 		$('#cantidad').val(String(cantidad).replace("-",""));
 	}
-	if(String(cantidad).includes(".")){
-		$('#cantidad').val(String(cantidad).split("\.")[0]);
+	
+	
+	if(String(cantidad).split(".")[1].length>2){
+		var aux = String(cantidad).split(".")[1];
+		aux = aux.substring(0,2);
+		cantidad = String(cantidad).split(".")[0]+"."+aux;
+		cantidad = formateaNum(cantidad*1);
+	}else{
+		cantidad = formateaNum(cantidad*1);
 	}
-	cantidad = $('#cantidad').val()*1;
-	if(cantidad !== null && cantidad>0){
-	cantidad = formateaNum(cantidad);
-	$('#cantidad').val(String(cantidad));
-	}
+	$('#cantidad').val(cantidad);
 }
 
 $(document).ready(function() {

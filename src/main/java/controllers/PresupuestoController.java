@@ -253,11 +253,11 @@ public class PresupuestoController extends AbstractController {
 		for (final Concepto c : presupuesto.getConceptos())
 			if (c.getTotal() != null)
 				importeTotalSinIVA = importeTotalSinIVA.add(c.getTotal());
-		for (final Concepto c : presupuesto.getAlbaran().getConceptos())
-			if (c.getTotal() != null)
-				importeTotalSinIVA = importeTotalSinIVA.add(c.getTotal());
-		importeTotalSinIVA = importeTotalSinIVA.setScale(2, BigDecimal.ROUND_HALF_UP);
-		result.addObject("importeTotalSinIVA", importeTotalSinIVA);
+		//		for (final Concepto c : presupuesto.getAlbaran().getConceptos())
+		//			if (c.getTotal() != null)
+		//				importeTotalSinIVA = importeTotalSinIVA.add(c.getTotal());
+		//		importeTotalSinIVA = importeTotalSinIVA.setScale(2, BigDecimal.ROUND_HALF_UP);
+		//		result.addObject("importeTotalSinIVA", importeTotalSinIVA);
 		return result;
 	}
 

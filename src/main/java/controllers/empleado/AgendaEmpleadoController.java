@@ -66,9 +66,9 @@ public class AgendaEmpleadoController extends AbstractController {
 		ModelAndView result;
 		result = new ModelAndView("agenda/verAgendas");
 		final String entrada = agendaForm.getFecha() + " - " + agendaForm.getEntradaTexto();
-		final Agenda agenda = this.agendaService.findOne(agendaForm.getAgendaId());
+		Agenda agenda = this.agendaService.findOne(agendaForm.getAgendaId());
 		agenda.getEntradas().add(entrada);
-		this.agendaService.save(agenda);
+		agenda = this.agendaService.save(agenda);
 		final Empleado e = this.empleadoService.obtenerEmpleadoLogueado(LoginService.getPrincipal().getUsername());
 		final List<Agenda> agendas = (List<Agenda>) e.getAgendas();
 		result.addObject("agendas", agendas);

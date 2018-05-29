@@ -94,7 +94,7 @@
 					<label>Email:</label> ${cliente.email}
 				</div>
 				<div class="col-md-4 col-md-offset-0">
-					<label>Telefono:</label> ${cliente.email}
+					<label>Telefono:</label> ${cliente.telefono}
 				</div>
 			</div>
 		</div>
@@ -260,6 +260,8 @@
 	</div>
 	
 </div>
+
+<div class="container"><br></div>
 
 <!-- Modal Cobro-->
 <div class="modal fade" id="modalCobro" tabindex="-1" role="dialog"

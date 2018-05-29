@@ -27,7 +27,7 @@
 		class="table">
 
 		<display:column title="Presupuesto">
-		${agenda.presupuesto.codigo } <button data-toggle="modal"
+		${agenda.presupuesto.codigo } - ${agenda.presupuesto.titulo}<button data-toggle="modal"
 				data-target="#modalAgenda" onclick="verAgenda('${agenda.id}')"
 				style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
 				type="button" class="btn btn-link">
@@ -64,10 +64,12 @@
 }
 .modal-dialog {
 	margin-top: 345.5px;
+	width: 90%;
 }
 
 .modal-content {
 	width: 90%;
+	height:90%;
     margin-right: 14px;
 }
 
