@@ -420,6 +420,10 @@ public class CobroGestorController extends AbstractController {
 		if (p.getFactura() != null)
 			for (final Concepto c : p.getFactura().getConceptos())
 				addFactura = addFactura.add(c.getTotal());
+		if (p.getAlbaran() != null)
+			for (final Concepto c : p.getFactura().getConceptos())
+				addFactura = addFactura.add(c.getTotal());
+
 		result.addObject("addFactura", addFactura);
 		BigDecimal mo = new BigDecimal(0);
 		BigDecimal mat = new BigDecimal(0);

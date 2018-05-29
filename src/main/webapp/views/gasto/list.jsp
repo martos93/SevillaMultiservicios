@@ -150,7 +150,6 @@
 					<div class="row">
 						<div class="col-md-11 col-md-offset-0">
 							<form:label path="tipo" for="tipo">Tipo de gasto:</form:label>
-							<form:label path="tipo" for="sel1">Select list:</form:label>
 							<form:select path="tipo" name="tipo" class="form-control"
 								id="tipo">
 								<option value="Material" selected>Material</option>

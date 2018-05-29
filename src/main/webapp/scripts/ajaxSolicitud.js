@@ -7,11 +7,15 @@ function limpiarDatosCrearSolicitud(){
 }
 
 function formateaCantidadSol(){
-	$("#cantidad").val(formateaNum(parseFloat($("#cantidad").val())));
+	debugger
+	var param = parseFloat($("#cantidad").val());
+	param = formateaNum(param);
+	$("#cantidad").val(param);
 	
 }
 
 function formateaCantidadSoli(num,i){
+	debugger
 	var cant = formateaNum(parseFloat($("#cantSol_"+i).html()));
 	$("#cantSol_"+i).html(cant+" €");
 }
