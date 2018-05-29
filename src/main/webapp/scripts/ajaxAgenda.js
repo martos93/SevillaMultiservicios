@@ -14,6 +14,24 @@ function verAgendas(empleadoId) {
 
 function verAgenda(agendaId) {
 	$("#agendaId").val(agendaId);
+	
+	$.ajax({
+		url : "empleado/agenda/verAgenda.do?agendaId=" + agendaId,
+		type : "GET",
+		data : agendaId,
+		success : function(data) {
+			debugger
+			var list = "<ul>";
+			for(x in data.entradas){
+				list = list+"<li>"+data.entradas[x]+"</li>";
+			}
+			list = list + "</ul>";
+			$("#entradas").html(list);
+		},
+		error : function(data) {
+			alertaError("Se ha producido un error al encontrar las agendas.");
+		}
+	});
 }
 
 function addEntrada() {

@@ -126,13 +126,10 @@
 						</div>
 					</security:authorize>
 					<div class="form-group">
-
+						
 						<div class="row">
-							<ul>
-								<jstl:forEach items="${agenda.entradas}" var="entrada">
-									<li>${entrada}</li>
-								</jstl:forEach>
-							</ul>
+							<div id="entradas">
+							</div>
 						</div>
 
 					</div>
