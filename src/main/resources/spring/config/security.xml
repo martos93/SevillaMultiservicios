@@ -53,7 +53,7 @@
 		<security:intercept-url pattern="/gestor/cliente/eliminaCliente.do" access="hasRole('GESTOR')" /> 
 		<security:intercept-url pattern="/gestor/cliente/editarCliente.do" access="hasRole('GESTOR')" /> 
 		<security:intercept-url pattern="/gestor/cliente/modificarCliente.do" access="hasRole('GESTOR')" /> 
-		
+		<security:intercept-url pattern="/empleado/**" access="hasRole('GESTOR')" /> 
 		<security:intercept-url pattern="/gestor/iva/list.do" access="hasRole('GESTOR')" /> 
 		<security:intercept-url pattern="/gestor/iva/modificarIVA.do" access="hasRole('GESTOR')" /> 
 		
@@ -66,6 +66,7 @@
 		<security:intercept-url pattern="/albaran/**" access="isAuthenticated()" /> 
 		
 		<security:intercept-url pattern="/empleado/**" access="hasRole('EMPLEADO')" /> 
+		
 		
 		<security:intercept-url pattern="/cliente/registro.do" access="isAnonymous()" />
 		<security:intercept-url pattern="/cliente/registroCliente.do" access="isAnonymous()" />

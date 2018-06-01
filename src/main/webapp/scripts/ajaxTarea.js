@@ -205,15 +205,35 @@ function actualizaSubtotalTarea(){
 		$('#unidades').val(unidades.split(",")[0]);
 	}
 	if(String(precioUd).includes("-")){
-		$('#precioUnidad').val(String(precioUd).replace("-",""));
+		precioUd = String(precioUd).replace("-","");
 	}
 	debugger
-	if(String(precioUd).includes(",")){
-		$('#precioUnidad').val(String(precioUd).split("\,")[0]+"."+String(precioUd).split("\,")[1]);
+	
+	if(String(precioUd).includes(",")&&String(precioUd).includes(".")){
+	var array = precioUd.split("\.");
+	var precioUdAux = "";
+		for(x in array){
+			precioUdAux += array[x];
+		}
+		precioAux = precioUdAux.replace(",","\.");
+	}else{
+		precioUdAux = String(precioUd);
 	}
-	precioUd = $('#precioUnidad').val()*1;
-	unidades = $('#unidades').val();
-	if(precioUd !== null && unidades !== null && precioUd>0 && unidades > 0){
+//	precioUd = $('#precioUnidad').val()*1;
+//	unidades = $('#unidades').val();
+//	if(precioUd == null){
+//		precioUd = 0;
+//	}
+//	if(unidades == null){
+//		unidades = 0;
+//	}
+	if(precioUdAux!=null && precioUdAux!=""){
+	precioUd = parseFloat(precioUdAux);
+	}else{
+		precioUd = 0.0;
+	}
+	
+	if(precioUd>=0 && unidades >=0){
 	var subTotal = (precioUd*unidades);
 	subTotal = formateaNum(subTotal);
 		$('#subTotal').val(subTotal);

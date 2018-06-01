@@ -26,6 +26,7 @@
 	<display:table name="agendas" id="agenda" requestURI="${requestURI}"
 		class="table">
 
+		<security:authorize access="hasRole('EMPLEADO')">
 		<display:column title="Presupuesto">
 		${agenda.presupuesto.codigo } - ${agenda.presupuesto.titulo}<button data-toggle="modal"
 				data-target="#modalAgenda" onclick="verAgenda('${agenda.id}')"
@@ -37,7 +38,21 @@
 			</button>
 
 		</display:column>
+</security:authorize>
 
+<security:authorize access="hasRole('GESTOR')">
+		<display:column title="Presupuesto">
+		${agenda.presupuesto.codigo } - ${agenda.presupuesto.titulo}<button data-toggle="modal"
+				data-target="#modalAgenda" onclick="verAgendaGestor('${agenda.id}')"
+				style="margin: -9px -16px -2px -6px; outline: none; color: #bf1200;"
+				type="button" class="btn btn-link">
+				<a data-toggle="tooltip" data-placement="top" title="Ver agenda"
+					style="color: #bf1200;"><span
+					class='glyphicon glyphicon-list-alt'></span></a>
+			</button>
+
+		</display:column>
+</security:authorize>
 
 	</display:table>
 </div>

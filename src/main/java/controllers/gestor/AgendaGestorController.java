@@ -1,10 +1,9 @@
 
 package controllers.gestor;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,32 +16,18 @@ import controllers.AbstractController;
 import domain.Agenda;
 import domain.Empleado;
 import forms.AgendaForm;
-import services.ActorService;
 import services.AgendaService;
-import services.ClienteService;
 import services.EmpleadoService;
-import services.PresupuestoService;
 
 @Controller
 @RequestMapping("/gestor/agenda")
 public class AgendaGestorController extends AbstractController {
 
-	private final Logger		logger	= LoggerFactory.getLogger(this.getClass());
+	@Autowired
+	private EmpleadoService	empleadoService;
 
 	@Autowired
-	private ActorService		actorService;
-
-	@Autowired
-	private ClienteService		clienteService;
-
-	@Autowired
-	private EmpleadoService		empleadoService;
-
-	@Autowired
-	private PresupuestoService	presupuestoService;
-
-	@Autowired
-	private AgendaService		agendaService;
+	private AgendaService	agendaService;
 
 
 	@RequestMapping(value = "/verAgendas", method = RequestMethod.GET)
@@ -56,6 +41,18 @@ public class AgendaGestorController extends AbstractController {
 		result.addObject("empleado", e);
 
 		return result;
+	}
+
+	@RequestMapping(value = "/verAgenda", method = RequestMethod.GET)
+	public @ResponseBody AgendaForm ver(@RequestParam final int agendaId) {
+		final AgendaForm agendaForm = new AgendaForm();
+		final Agenda agenda = this.agendaService.findOne(agendaId);
+		final List<String> agendas = (List<String>) agenda.getEntradas();
+		final ArrayList<String> aux = new ArrayList<String>();
+		for (final String s : agendas)
+			aux.add(s);
+		agendaForm.setEntradas(aux);
+		return agendaForm;
 	}
 
 }
