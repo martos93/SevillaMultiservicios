@@ -18,7 +18,7 @@ import forms.ClienteForm;
 import services.ClienteService;
 
 @Controller
-@RequestMapping("/cliente")
+@RequestMapping("/registro")
 public class ClienteController extends AbstractController {
 
 	@Autowired
@@ -26,7 +26,7 @@ public class ClienteController extends AbstractController {
 	private final Logger	logger	= LoggerFactory.getLogger(this.getClass());
 
 
-	@RequestMapping(value = "/registro", method = RequestMethod.GET)
+	@RequestMapping(value = "/cliente", method = RequestMethod.GET)
 	public ModelAndView registro() {
 		ModelAndView result;
 		result = new ModelAndView("cliente/registro");

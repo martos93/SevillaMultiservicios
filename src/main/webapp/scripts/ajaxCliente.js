@@ -496,7 +496,7 @@ function registrarCliente() {
 
 	
 		$.ajax({
-			url : "cliente/registroCliente.do",
+			url : "registro/registroCliente.do",
 			type : "POST",
 			data : JSON.stringify(json),
 			beforeSend : function(xhr) {
